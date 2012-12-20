@@ -1,0 +1,11 @@
+prefix=/usr/local
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include/openvrml
+
+Name: OpenVRML-GL
+Description: OpenGL renderer for OpenVRML.
+Version: 0.16.2
+Requires: openvrml = 0.16.2
+Libs: -L${libdir} -lopenvrml-gl -lGLU -lGL  -lm
+Cflags: -I${includedir} -pthread

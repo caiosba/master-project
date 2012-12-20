@@ -1,0 +1,11 @@
+target=x11
+api_version=1.0
+
+multihead=yes
+
+Name: GdkGLExt Uninstalled
+Description: OpenGL Extension to GDK (${target} target), Not Installed
+Version: 1.2.0
+Requires: gdk-2.0 pango pangox gmodule-2.0
+Libs: ${pc_top_builddir}${pcfiledir}/gdk/libgdkglext-${target}-${api_version}.la  -lGLU -lGL  -lXmu -lXt  -lSM -lICE
+Cflags: -I${pc_top_builddir}${pcfiledir} -I${pc_top_builddir}${pcfiledir}/. -I${pc_top_builddir}${pcfiledir}/gdk  

@@ -1,0 +1,3 @@
+openvrml/ScriptJDK.lo: openvrml/ScriptJDK.cpp ../../config.h
+
+../../config.h:

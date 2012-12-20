@@ -1,0 +1,423 @@
+<refentry id="gtkglext-gdkglconfig">
+<refmeta>
+<refentrytitle role="top_of_page">Frame Buffer Configuration</refentrytitle>
+<manvolnum>3</manvolnum>
+<refmiscinfo>GTKGLEXT Library</refmiscinfo>
+</refmeta>
+
+<refnamediv>
+<refname>Frame Buffer Configuration</refname>
+<refpurpose>OpenGL frame buffer configuration object</refpurpose>
+<!--[<xref linkend="desc" endterm="desc.title"/>]-->
+</refnamediv>
+
+<refsynopsisdiv role="synopsis">
+<title role="synopsis.title">Synopsis</title>
+<anchor id="GdkGLConfig"/>
+<synopsis>
+
+#include &lt;gdk/gdkgl.h&gt;
+
+
+enum        <link linkend="GdkGLConfigMode">GdkGLConfigMode</link>;
+            <link linkend="GdkGLConfig-struct">GdkGLConfig</link>;
+<link linkend="GdkGLConfig">GdkGLConfig</link>* <link linkend="gdk-gl-config-new">gdk_gl_config_new</link>              (const <link linkend="int">int</link> *attrib_list);
+<link linkend="GdkGLConfig">GdkGLConfig</link>* <link linkend="gdk-gl-config-new-for-screen">gdk_gl_config_new_for_screen</link>   (<link linkend="GdkScreen">GdkScreen</link> *screen,
+                                             const <link linkend="int">int</link> *attrib_list);
+<link linkend="GdkGLConfig">GdkGLConfig</link>* <link linkend="gdk-gl-config-new-by-mode">gdk_gl_config_new_by_mode</link>      (<link linkend="GdkGLConfigMode">GdkGLConfigMode</link> mode);
+<link linkend="GdkGLConfig">GdkGLConfig</link>* <link linkend="gdk-gl-config-new-by-mode-for-screen">gdk_gl_config_new_by_mode_for_screen</link>
+                                            (<link linkend="GdkScreen">GdkScreen</link> *screen,
+                                             <link linkend="GdkGLConfigMode">GdkGLConfigMode</link> mode);
+<link linkend="GdkScreen">GdkScreen</link>*  <link linkend="gdk-gl-config-get-screen">gdk_gl_config_get_screen</link>        (<link linkend="GdkGLConfig">GdkGLConfig</link> *glconfig);
+<link linkend="gboolean">gboolean</link>    <link linkend="gdk-gl-config-get-attrib">gdk_gl_config_get_attrib</link>        (<link linkend="GdkGLConfig">GdkGLConfig</link> *glconfig,
+                                             <link linkend="int">int</link> attribute,
+                                             <link linkend="int">int</link> *value);
+<link linkend="GdkColormap">GdkColormap</link>* <link linkend="gdk-gl-config-get-colormap">gdk_gl_config_get_colormap</link>     (<link linkend="GdkGLConfig">GdkGLConfig</link> *glconfig);
+<link linkend="GdkVisual">GdkVisual</link>*  <link linkend="gdk-gl-config-get-visual">gdk_gl_config_get_visual</link>        (<link linkend="GdkGLConfig">GdkGLConfig</link> *glconfig);
+<link linkend="gint">gint</link>        <link linkend="gdk-gl-config-get-depth">gdk_gl_config_get_depth</link>         (<link linkend="GdkGLConfig">GdkGLConfig</link> *glconfig);
+<link linkend="gint">gint</link>        <link linkend="gdk-gl-config-get-layer-plane">gdk_gl_config_get_layer_plane</link>   (<link linkend="GdkGLConfig">GdkGLConfig</link> *glconfig);
+<link linkend="gint">gint</link>        <link linkend="gdk-gl-config-get-n-aux-buffers">gdk_gl_config_get_n_aux_buffers</link> (<link linkend="GdkGLConfig">GdkGLConfig</link> *glconfig);
+<link linkend="gint">gint</link>        <link linkend="gdk-gl-config-get-n-sample-buffers">gdk_gl_config_get_n_sample_buffers</link>
+                                            (<link linkend="GdkGLConfig">GdkGLConfig</link> *glconfig);
+<link linkend="gboolean">gboolean</link>    <link linkend="gdk-gl-config-is-rgba">gdk_gl_config_is_rgba</link>           (<link linkend="GdkGLConfig">GdkGLConfig</link> *glconfig);
+<link linkend="gboolean">gboolean</link>    <link linkend="gdk-gl-config-is-double-buffered">gdk_gl_config_is_double_buffered</link>
+                                            (<link linkend="GdkGLConfig">GdkGLConfig</link> *glconfig);
+<link linkend="gboolean">gboolean</link>    <link linkend="gdk-gl-config-is-stereo">gdk_gl_config_is_stereo</link>         (<link linkend="GdkGLConfig">GdkGLConfig</link> *glconfig);
+<link linkend="gboolean">gboolean</link>    <link linkend="gdk-gl-config-has-alpha">gdk_gl_config_has_alpha</link>         (<link linkend="GdkGLConfig">GdkGLConfig</link> *glconfig);
+<link linkend="gboolean">gboolean</link>    <link linkend="gdk-gl-config-has-depth-buffer">gdk_gl_config_has_depth_buffer</link>  (<link linkend="GdkGLConfig">GdkGLConfig</link> *glconfig);
+<link linkend="gboolean">gboolean</link>    <link linkend="gdk-gl-config-has-stencil-buffer">gdk_gl_config_has_stencil_buffer</link>
+                                            (<link linkend="GdkGLConfig">GdkGLConfig</link> *glconfig);
+<link linkend="gboolean">gboolean</link>    <link linkend="gdk-gl-config-has-accum-buffer">gdk_gl_config_has_accum_buffer</link>  (<link linkend="GdkGLConfig">GdkGLConfig</link> *glconfig);
+
+
+</synopsis>
+</refsynopsisdiv>
+
+<refsect1 role="object_hierarchy">
+<title role="object_hierarchy.title">Object Hierarchy</title>
+<synopsis>
+
+  <link linkend="GObject">GObject</link>
+   +----GdkGLConfig
+</synopsis>
+
+</refsect1>
+
+
+
+
+
+
+
+
+<refsect1 role="desc">
+<title role="desc.title">Description</title>
+<para>
+
+</para>
+</refsect1>
+
+<refsect1 role="details">
+<title role="details.title">Details</title>
+<refsect2>
+<title><anchor id="GdkGLConfigMode" role="enum"/>enum GdkGLConfigMode</title>
+<indexterm><primary>GdkGLConfigMode</primary></indexterm><programlisting>typedef enum
+{
+  GDK_GL_MODE_RGB         = 0,
+  GDK_GL_MODE_RGBA        = 0,       /* same as RGB */
+  GDK_GL_MODE_INDEX       = 1 &lt;&lt; 0,
+  GDK_GL_MODE_SINGLE      = 0,
+  GDK_GL_MODE_DOUBLE      = 1 &lt;&lt; 1,
+  GDK_GL_MODE_STEREO      = 1 &lt;&lt; 2,
+  GDK_GL_MODE_ALPHA       = 1 &lt;&lt; 3,
+  GDK_GL_MODE_DEPTH       = 1 &lt;&lt; 4,
+  GDK_GL_MODE_STENCIL     = 1 &lt;&lt; 5,
+  GDK_GL_MODE_ACCUM       = 1 &lt;&lt; 6,
+  GDK_GL_MODE_MULTISAMPLE = 1 &lt;&lt; 7   /* not supported yet */
+} GdkGLConfigMode;
+</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="GdkGLConfig-struct" role="struct"/>GdkGLConfig</title>
+<indexterm><primary>GdkGLConfig</primary></indexterm><programlisting>typedef struct _GdkGLConfig GdkGLConfig;</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="gdk-gl-config-new" role="function"/>gdk_gl_config_new ()</title>
+<indexterm><primary>gdk_gl_config_new</primary></indexterm><programlisting><link linkend="GdkGLConfig">GdkGLConfig</link>* gdk_gl_config_new              (const <link linkend="int">int</link> *attrib_list);</programlisting>
+<para>
+Returns an OpenGL frame buffer configuration that match the specified
+attributes.
+</para>
+<para>
+attrib_list is a int array that contains the attribute/value pairs.
+Available attributes are: 
+GDK_GL_USE_GL, GDK_GL_BUFFER_SIZE, GDK_GL_LEVEL, GDK_GL_RGBA,
+GDK_GL_DOUBLEBUFFER, GDK_GL_STEREO, GDK_GL_AUX_BUFFERS,
+GDK_GL_RED_SIZE, GDK_GL_GREEN_SIZE, GDK_GL_BLUE_SIZE, GDK_GL_ALPHA_SIZE,
+GDK_GL_DEPTH_SIZE, GDK_GL_STENCIL_SIZE, GDK_GL_ACCUM_RED_SIZE,
+GDK_GL_ACCUM_GREEN_SIZE, GDK_GL_ACCUM_BLUE_SIZE, GDK_GL_ACCUM_ALPHA_SIZE.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>attrib_list</parameter>&nbsp;:</term>
+<listitem><simpara> a list of attribute/value pairs. The last attribute must
+              be GDK_GL_ATTRIB_LIST_NONE.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the new <link linkend="GdkGLConfig"><type>GdkGLConfig</type></link>.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="gdk-gl-config-new-for-screen" role="function"/>gdk_gl_config_new_for_screen ()</title>
+<indexterm><primary>gdk_gl_config_new_for_screen</primary></indexterm><programlisting><link linkend="GdkGLConfig">GdkGLConfig</link>* gdk_gl_config_new_for_screen   (<link linkend="GdkScreen">GdkScreen</link> *screen,
+                                             const <link linkend="int">int</link> *attrib_list);</programlisting>
+<para>
+Returns an OpenGL frame buffer configuration that match the specified
+attributes.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>screen</parameter>&nbsp;:</term>
+<listitem><simpara> target screen.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>attrib_list</parameter>&nbsp;:</term>
+<listitem><simpara> a list of attribute/value pairs. The last attribute must
+              be GDK_GL_ATTRIB_LIST_NONE.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the new <link linkend="GdkGLConfig"><type>GdkGLConfig</type></link>.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="gdk-gl-config-new-by-mode" role="function"/>gdk_gl_config_new_by_mode ()</title>
+<indexterm><primary>gdk_gl_config_new_by_mode</primary></indexterm><programlisting><link linkend="GdkGLConfig">GdkGLConfig</link>* gdk_gl_config_new_by_mode      (<link linkend="GdkGLConfigMode">GdkGLConfigMode</link> mode);</programlisting>
+<para>
+Returns an OpenGL frame buffer configuration that match the specified
+display mode.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>mode</parameter>&nbsp;:</term>
+<listitem><simpara> display mode bit mask.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the new <link linkend="GdkGLConfig"><type>GdkGLConfig</type></link>.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="gdk-gl-config-new-by-mode-for-screen" role="function"/>gdk_gl_config_new_by_mode_for_screen ()</title>
+<indexterm><primary>gdk_gl_config_new_by_mode_for_screen</primary></indexterm><programlisting><link linkend="GdkGLConfig">GdkGLConfig</link>* gdk_gl_config_new_by_mode_for_screen
+                                            (<link linkend="GdkScreen">GdkScreen</link> *screen,
+                                             <link linkend="GdkGLConfigMode">GdkGLConfigMode</link> mode);</programlisting>
+<para>
+Returns an OpenGL frame buffer configuration that match the specified
+display mode.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>screen</parameter>&nbsp;:</term>
+<listitem><simpara> target screen.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>mode</parameter>&nbsp;:</term>
+<listitem><simpara> display mode bit mask.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the new <link linkend="GdkGLConfig"><type>GdkGLConfig</type></link>.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="gdk-gl-config-get-screen" role="function"/>gdk_gl_config_get_screen ()</title>
+<indexterm><primary>gdk_gl_config_get_screen</primary></indexterm><programlisting><link linkend="GdkScreen">GdkScreen</link>*  gdk_gl_config_get_screen        (<link linkend="GdkGLConfig">GdkGLConfig</link> *glconfig);</programlisting>
+<para>
+Gets <link linkend="GdkScreen"><type>GdkScreen</type></link>.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>glconfig</parameter>&nbsp;:</term>
+<listitem><simpara> a <link linkend="GdkGLConfig"><type>GdkGLConfig</type></link>.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the <link linkend="GdkScreen"><type>GdkScreen</type></link>.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="gdk-gl-config-get-attrib" role="function"/>gdk_gl_config_get_attrib ()</title>
+<indexterm><primary>gdk_gl_config_get_attrib</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gdk_gl_config_get_attrib        (<link linkend="GdkGLConfig">GdkGLConfig</link> *glconfig,
+                                             <link linkend="int">int</link> attribute,
+                                             <link linkend="int">int</link> *value);</programlisting>
+<para>
+Gets information about a OpenGL frame buffer configuration.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>glconfig</parameter>&nbsp;:</term>
+<listitem><simpara> a <link linkend="GdkGLConfig"><type>GdkGLConfig</type></link>.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>attribute</parameter>&nbsp;:</term>
+<listitem><simpara> the attribute to be returned.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>value</parameter>&nbsp;:</term>
+<listitem><simpara> returns the requested value.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE if it succeeded, FALSE otherwise.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="gdk-gl-config-get-colormap" role="function"/>gdk_gl_config_get_colormap ()</title>
+<indexterm><primary>gdk_gl_config_get_colormap</primary></indexterm><programlisting><link linkend="GdkColormap">GdkColormap</link>* gdk_gl_config_get_colormap     (<link linkend="GdkGLConfig">GdkGLConfig</link> *glconfig);</programlisting>
+<para>
+Gets the <link linkend="GdkColormap"><type>GdkColormap</type></link> that is appropriate for the OpenGL frame buffer
+configuration.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>glconfig</parameter>&nbsp;:</term>
+<listitem><simpara> a <link linkend="GdkGLConfig"><type>GdkGLConfig</type></link>.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the appropriate <link linkend="GdkColormap"><type>GdkColormap</type></link>.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="gdk-gl-config-get-visual" role="function"/>gdk_gl_config_get_visual ()</title>
+<indexterm><primary>gdk_gl_config_get_visual</primary></indexterm><programlisting><link linkend="GdkVisual">GdkVisual</link>*  gdk_gl_config_get_visual        (<link linkend="GdkGLConfig">GdkGLConfig</link> *glconfig);</programlisting>
+<para>
+Gets the <link linkend="GdkVisual"><type>GdkVisual</type></link> that is appropriate for the OpenGL frame buffer
+configuration.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>glconfig</parameter>&nbsp;:</term>
+<listitem><simpara> a <link linkend="GdkGLConfig"><type>GdkGLConfig</type></link>.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the appropriate <link linkend="GdkVisual"><type>GdkVisual</type></link>.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="gdk-gl-config-get-depth" role="function"/>gdk_gl_config_get_depth ()</title>
+<indexterm><primary>gdk_gl_config_get_depth</primary></indexterm><programlisting><link linkend="gint">gint</link>        gdk_gl_config_get_depth         (<link linkend="GdkGLConfig">GdkGLConfig</link> *glconfig);</programlisting>
+<para>
+Gets the color depth of the OpenGL-capable visual.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>glconfig</parameter>&nbsp;:</term>
+<listitem><simpara> a <link linkend="GdkGLConfig"><type>GdkGLConfig</type></link>.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> number of bits per pixel
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="gdk-gl-config-get-layer-plane" role="function"/>gdk_gl_config_get_layer_plane ()</title>
+<indexterm><primary>gdk_gl_config_get_layer_plane</primary></indexterm><programlisting><link linkend="gint">gint</link>        gdk_gl_config_get_layer_plane   (<link linkend="GdkGLConfig">GdkGLConfig</link> *glconfig);</programlisting>
+<para>
+Gets the layer plane (level) of the frame buffer.
+Zero is the default frame buffer.
+Positive layer planes correspond to frame buffers that overlay the default
+buffer, and negative layer planes correspond to frame buffers that underlie
+the default frame buffer.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>glconfig</parameter>&nbsp;:</term>
+<listitem><simpara> a <link linkend="GdkGLConfig"><type>GdkGLConfig</type></link>.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> layer plane.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="gdk-gl-config-get-n-aux-buffers" role="function"/>gdk_gl_config_get_n_aux_buffers ()</title>
+<indexterm><primary>gdk_gl_config_get_n_aux_buffers</primary></indexterm><programlisting><link linkend="gint">gint</link>        gdk_gl_config_get_n_aux_buffers (<link linkend="GdkGLConfig">GdkGLConfig</link> *glconfig);</programlisting>
+<para>
+Gets the number of auxiliary color buffers.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>glconfig</parameter>&nbsp;:</term>
+<listitem><simpara> a <link linkend="GdkGLConfig"><type>GdkGLConfig</type></link>.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> number of auxiliary color buffers.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="gdk-gl-config-get-n-sample-buffers" role="function"/>gdk_gl_config_get_n_sample_buffers ()</title>
+<indexterm><primary>gdk_gl_config_get_n_sample_buffers</primary></indexterm><programlisting><link linkend="gint">gint</link>        gdk_gl_config_get_n_sample_buffers
+                                            (<link linkend="GdkGLConfig">GdkGLConfig</link> *glconfig);</programlisting>
+<para>
+Gets the number of multisample buffers.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>glconfig</parameter>&nbsp;:</term>
+<listitem><simpara> a <link linkend="GdkGLConfig"><type>GdkGLConfig</type></link>.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> number of multisample buffers.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="gdk-gl-config-is-rgba" role="function"/>gdk_gl_config_is_rgba ()</title>
+<indexterm><primary>gdk_gl_config_is_rgba</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gdk_gl_config_is_rgba           (<link linkend="GdkGLConfig">GdkGLConfig</link> *glconfig);</programlisting>
+<para>
+Returns whether the configured frame buffer is RGBA mode.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>glconfig</parameter>&nbsp;:</term>
+<listitem><simpara> a <link linkend="GdkGLConfig"><type>GdkGLConfig</type></link>.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE if the configured frame buffer is RGBA mode, FALSE
+              otherwise.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="gdk-gl-config-is-double-buffered" role="function"/>gdk_gl_config_is_double_buffered ()</title>
+<indexterm><primary>gdk_gl_config_is_double_buffered</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gdk_gl_config_is_double_buffered
+                                            (<link linkend="GdkGLConfig">GdkGLConfig</link> *glconfig);</programlisting>
+<para>
+Returns whether the configuration supports the double-buffered visual.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>glconfig</parameter>&nbsp;:</term>
+<listitem><simpara> a <link linkend="GdkGLConfig"><type>GdkGLConfig</type></link>.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE if the double-buffered visual is supported, FALSE
+              otherwise.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="gdk-gl-config-is-stereo" role="function"/>gdk_gl_config_is_stereo ()</title>
+<indexterm><primary>gdk_gl_config_is_stereo</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gdk_gl_config_is_stereo         (<link linkend="GdkGLConfig">GdkGLConfig</link> *glconfig);</programlisting>
+<para>
+Returns whether the configuration supports the stereo visual.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>glconfig</parameter>&nbsp;:</term>
+<listitem><simpara> a <link linkend="GdkGLConfig"><type>GdkGLConfig</type></link>.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE if the stereo visual is supported, FALSE otherwise.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="gdk-gl-config-has-alpha" role="function"/>gdk_gl_config_has_alpha ()</title>
+<indexterm><primary>gdk_gl_config_has_alpha</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gdk_gl_config_has_alpha         (<link linkend="GdkGLConfig">GdkGLConfig</link> *glconfig);</programlisting>
+<para>
+Returns whether the configured color buffer has alpha bits.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>glconfig</parameter>&nbsp;:</term>
+<listitem><simpara> a <link linkend="GdkGLConfig"><type>GdkGLConfig</type></link>.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE if the color buffer has alpha bits, FALSE otherwise.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="gdk-gl-config-has-depth-buffer" role="function"/>gdk_gl_config_has_depth_buffer ()</title>
+<indexterm><primary>gdk_gl_config_has_depth_buffer</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gdk_gl_config_has_depth_buffer  (<link linkend="GdkGLConfig">GdkGLConfig</link> *glconfig);</programlisting>
+<para>
+Returns whether the configured frame buffer has depth buffer.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>glconfig</parameter>&nbsp;:</term>
+<listitem><simpara> a <link linkend="GdkGLConfig"><type>GdkGLConfig</type></link>.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE if the frame buffer has depth buffer, FALSE otherwise.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="gdk-gl-config-has-stencil-buffer" role="function"/>gdk_gl_config_has_stencil_buffer ()</title>
+<indexterm><primary>gdk_gl_config_has_stencil_buffer</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gdk_gl_config_has_stencil_buffer
+                                            (<link linkend="GdkGLConfig">GdkGLConfig</link> *glconfig);</programlisting>
+<para>
+Returns whether the configured frame buffer has stencil buffer.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>glconfig</parameter>&nbsp;:</term>
+<listitem><simpara> a <link linkend="GdkGLConfig"><type>GdkGLConfig</type></link>.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE if the frame buffer has stencil buffer, FALSE otherwise.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="gdk-gl-config-has-accum-buffer" role="function"/>gdk_gl_config_has_accum_buffer ()</title>
+<indexterm><primary>gdk_gl_config_has_accum_buffer</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gdk_gl_config_has_accum_buffer  (<link linkend="GdkGLConfig">GdkGLConfig</link> *glconfig);</programlisting>
+<para>
+Returns whether the configured frame buffer has accumulation buffer.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>glconfig</parameter>&nbsp;:</term>
+<listitem><simpara> a <link linkend="GdkGLConfig"><type>GdkGLConfig</type></link>.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE if the frame buffer has accumulation buffer, FALSE
+              otherwise.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+
+</refsect1>
+
+
+
+
+</refentry>

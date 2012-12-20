@@ -1,0 +1,352 @@
+<refentry id="gtkglext-gdkglx">
+<refmeta>
+<refentrytitle role="top_of_page">X Window System Interaction</refentrytitle>
+<manvolnum>3</manvolnum>
+<refmiscinfo>GTKGLEXT Library</refmiscinfo>
+</refmeta>
+
+<refnamediv>
+<refname>X Window System Interaction</refname>
+<refpurpose>Internal X-related functions</refpurpose>
+<!--[<xref linkend="desc" endterm="desc.title"/>]-->
+</refnamediv>
+
+<refsynopsisdiv role="synopsis">
+<title role="synopsis.title">Synopsis</title>
+
+<synopsis>
+
+#include &lt;gdk/x11/gdkglx.h&gt;
+
+
+<link linkend="gboolean">gboolean</link>    <link linkend="gdk-x11-gl-query-glx-extension">gdk_x11_gl_query_glx_extension</link>  (<link linkend="GdkGLConfig">GdkGLConfig</link> *glconfig,
+                                             const <link linkend="char">char</link> *extension);
+<link linkend="GdkGLConfig">GdkGLConfig</link>* <link linkend="gdk-x11-gl-config-new-from-visualid">gdk_x11_gl_config_new_from_visualid</link>
+                                            (<link linkend="VisualID">VisualID</link> xvisualid);
+<link linkend="GdkGLConfig">GdkGLConfig</link>* <link linkend="gdk-x11-gl-config-new-from-visualid-for-screen">gdk_x11_gl_config_new_from_visualid_for_screen</link>
+                                            (<link linkend="GdkScreen">GdkScreen</link> *screen,
+                                             <link linkend="VisualID">VisualID</link> xvisualid);
+<link linkend="Display">Display</link>*    <link linkend="gdk-x11-gl-config-get-xdisplay">gdk_x11_gl_config_get_xdisplay</link>  (<link linkend="GdkGLConfig">GdkGLConfig</link> *glconfig);
+<link linkend="int">int</link>         <link linkend="gdk-x11-gl-config-get-screen-number">gdk_x11_gl_config_get_screen_number</link>
+                                            (<link linkend="GdkGLConfig">GdkGLConfig</link> *glconfig);
+<link linkend="XVisualInfo">XVisualInfo</link>* <link linkend="gdk-x11-gl-config-get-xvinfo">gdk_x11_gl_config_get_xvinfo</link>   (<link linkend="GdkGLConfig">GdkGLConfig</link> *glconfig);
+<link linkend="gboolean">gboolean</link>    <link linkend="gdk-x11-gl-config-is-mesa-glx">gdk_x11_gl_config_is_mesa_glx</link>   (<link linkend="GdkGLConfig">GdkGLConfig</link> *glconfig);
+<link linkend="GdkGLContext">GdkGLContext</link>* <link linkend="gdk-x11-gl-context-foreign-new">gdk_x11_gl_context_foreign_new</link>
+                                            (<link linkend="GdkGLConfig">GdkGLConfig</link> *glconfig,
+                                             <link linkend="GdkGLContext">GdkGLContext</link> *share_list,
+                                             <link linkend="GLXContext">GLXContext</link> glxcontext);
+<link linkend="GLXContext">GLXContext</link>  <link linkend="gdk-x11-gl-context-get-glxcontext">gdk_x11_gl_context_get_glxcontext</link>
+                                            (<link linkend="GdkGLContext">GdkGLContext</link> *glcontext);
+<link linkend="GLXPixmap">GLXPixmap</link>   <link linkend="gdk-x11-gl-pixmap-get-glxpixmap">gdk_x11_gl_pixmap_get_glxpixmap</link> (<link linkend="GdkGLPixmap">GdkGLPixmap</link> *glpixmap);
+<link linkend="Window">Window</link>      <link linkend="gdk-x11-gl-window-get-glxwindow">gdk_x11_gl_window_get_glxwindow</link> (<link linkend="GdkGLWindow">GdkGLWindow</link> *glwindow);
+#define     <link linkend="GDK-GL-CONFIG-XDISPLAY:CAPS">GDK_GL_CONFIG_XDISPLAY</link>          (glconfig)
+#define     <link linkend="GDK-GL-CONFIG-SCREEN-XNUMBER:CAPS">GDK_GL_CONFIG_SCREEN_XNUMBER</link>    (glconfig)
+#define     <link linkend="GDK-GL-CONFIG-XVINFO:CAPS">GDK_GL_CONFIG_XVINFO</link>            (glconfig)
+#define     <link linkend="GDK-GL-CONFIG-XCOLORMAP:CAPS">GDK_GL_CONFIG_XCOLORMAP</link>         (glconfig)
+#define     <link linkend="GDK-GL-CONTEXT-GLXCONTEXT:CAPS">GDK_GL_CONTEXT_GLXCONTEXT</link>       (glcontext)
+#define     <link linkend="GDK-GL-PIXMAP-GLXPIXMAP:CAPS">GDK_GL_PIXMAP_GLXPIXMAP</link>         (glpixmap)
+#define     <link linkend="GDK-GL-WINDOW-GLXWINDOW:CAPS">GDK_GL_WINDOW_GLXWINDOW</link>         (glwindow)
+</synopsis>
+</refsynopsisdiv>
+
+
+
+
+
+
+
+
+
+<refsect1 role="desc">
+<title role="desc.title">Description</title>
+<para>
+
+</para>
+</refsect1>
+
+<refsect1 role="details">
+<title role="details.title">Details</title>
+<refsect2>
+<title><anchor id="gdk-x11-gl-query-glx-extension" role="function"/>gdk_x11_gl_query_glx_extension ()</title>
+<indexterm><primary>gdk_x11_gl_query_glx_extension</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gdk_x11_gl_query_glx_extension  (<link linkend="GdkGLConfig">GdkGLConfig</link> *glconfig,
+                                             const <link linkend="char">char</link> *extension);</programlisting>
+<para>
+Determines whether a given GLX extension is supported.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>glconfig</parameter>&nbsp;:</term>
+<listitem><simpara> a <link linkend="GdkGLConfig"><type>GdkGLConfig</type></link>.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>extension</parameter>&nbsp;:</term>
+<listitem><simpara> name of GLX extension.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE if the GLX extension is supported, FALSE if not
+              supported.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="gdk-x11-gl-config-new-from-visualid" role="function"/>gdk_x11_gl_config_new_from_visualid ()</title>
+<indexterm><primary>gdk_x11_gl_config_new_from_visualid</primary></indexterm><programlisting><link linkend="GdkGLConfig">GdkGLConfig</link>* gdk_x11_gl_config_new_from_visualid
+                                            (<link linkend="VisualID">VisualID</link> xvisualid);</programlisting>
+<para>
+Creates <link linkend="GdkGLConfig"><type>GdkGLConfig</type></link> from given visual ID that specifies the OpenGL-capable
+visual.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>xvisualid</parameter>&nbsp;:</term>
+<listitem><simpara> visual ID.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the new <link linkend="GdkGLConfig"><type>GdkGLConfig</type></link>.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="gdk-x11-gl-config-new-from-visualid-for-screen" role="function"/>gdk_x11_gl_config_new_from_visualid_for_screen ()</title>
+<indexterm><primary>gdk_x11_gl_config_new_from_visualid_for_screen</primary></indexterm><programlisting><link linkend="GdkGLConfig">GdkGLConfig</link>* gdk_x11_gl_config_new_from_visualid_for_screen
+                                            (<link linkend="GdkScreen">GdkScreen</link> *screen,
+                                             <link linkend="VisualID">VisualID</link> xvisualid);</programlisting>
+<para>
+Creates <link linkend="GdkGLConfig"><type>GdkGLConfig</type></link> from given visual ID that specifies the OpenGL-capable
+visual.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>screen</parameter>&nbsp;:</term>
+<listitem><simpara> target screen.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>xvisualid</parameter>&nbsp;:</term>
+<listitem><simpara> visual ID.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the new <link linkend="GdkGLConfig"><type>GdkGLConfig</type></link>.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="gdk-x11-gl-config-get-xdisplay" role="function"/>gdk_x11_gl_config_get_xdisplay ()</title>
+<indexterm><primary>gdk_x11_gl_config_get_xdisplay</primary></indexterm><programlisting><link linkend="Display">Display</link>*    gdk_x11_gl_config_get_xdisplay  (<link linkend="GdkGLConfig">GdkGLConfig</link> *glconfig);</programlisting>
+<para>
+Gets X Display.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>glconfig</parameter>&nbsp;:</term>
+<listitem><simpara> a <link linkend="GdkGLConfig"><type>GdkGLConfig</type></link>.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> pointer to the Display.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="gdk-x11-gl-config-get-screen-number" role="function"/>gdk_x11_gl_config_get_screen_number ()</title>
+<indexterm><primary>gdk_x11_gl_config_get_screen_number</primary></indexterm><programlisting><link linkend="int">int</link>         gdk_x11_gl_config_get_screen_number
+                                            (<link linkend="GdkGLConfig">GdkGLConfig</link> *glconfig);</programlisting>
+<para>
+Gets X screen number.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>glconfig</parameter>&nbsp;:</term>
+<listitem><simpara> a <link linkend="GdkGLConfig"><type>GdkGLConfig</type></link>.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the screen number.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="gdk-x11-gl-config-get-xvinfo" role="function"/>gdk_x11_gl_config_get_xvinfo ()</title>
+<indexterm><primary>gdk_x11_gl_config_get_xvinfo</primary></indexterm><programlisting><link linkend="XVisualInfo">XVisualInfo</link>* gdk_x11_gl_config_get_xvinfo   (<link linkend="GdkGLConfig">GdkGLConfig</link> *glconfig);</programlisting>
+<para>
+Gets XVisualInfo data.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>glconfig</parameter>&nbsp;:</term>
+<listitem><simpara> a <link linkend="GdkGLConfig"><type>GdkGLConfig</type></link>.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> pointer to the XVisualInfo data.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="gdk-x11-gl-config-is-mesa-glx" role="function"/>gdk_x11_gl_config_is_mesa_glx ()</title>
+<indexterm><primary>gdk_x11_gl_config_is_mesa_glx</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gdk_x11_gl_config_is_mesa_glx   (<link linkend="GdkGLConfig">GdkGLConfig</link> *glconfig);</programlisting>
+<para>
+Returns whether the server's GLX entension is Mesa.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>glconfig</parameter>&nbsp;:</term>
+<listitem><simpara> a <link linkend="GdkGLConfig"><type>GdkGLConfig</type></link>.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE if Mesa GLX, FALSE otherwise.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="gdk-x11-gl-context-foreign-new" role="function"/>gdk_x11_gl_context_foreign_new ()</title>
+<indexterm><primary>gdk_x11_gl_context_foreign_new</primary></indexterm><programlisting><link linkend="GdkGLContext">GdkGLContext</link>* gdk_x11_gl_context_foreign_new
+                                            (<link linkend="GdkGLConfig">GdkGLConfig</link> *glconfig,
+                                             <link linkend="GdkGLContext">GdkGLContext</link> *share_list,
+                                             <link linkend="GLXContext">GLXContext</link> glxcontext);</programlisting>
+<para>
+Creates <link linkend="GdkGLContext"><type>GdkGLContext</type></link> from existing GLXContext.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>glconfig</parameter>&nbsp;:</term>
+<listitem><simpara> <link linkend="GdkGLConfig"><type>GdkGLConfig</type></link> that represents the visual the GLXContext uses.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>share_list</parameter>&nbsp;:</term>
+<listitem><simpara> the <link linkend="GdkGLContext"><type>GdkGLContext</type></link> which shares display lists with the
+             GLXContext, or NULL.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>glxcontext</parameter>&nbsp;:</term>
+<listitem><simpara> exsisting GLXContext.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the newly-created <link linkend="GdkGLContext"><type>GdkGLContext</type></link> wrapper.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="gdk-x11-gl-context-get-glxcontext" role="function"/>gdk_x11_gl_context_get_glxcontext ()</title>
+<indexterm><primary>gdk_x11_gl_context_get_glxcontext</primary></indexterm><programlisting><link linkend="GLXContext">GLXContext</link>  gdk_x11_gl_context_get_glxcontext
+                                            (<link linkend="GdkGLContext">GdkGLContext</link> *glcontext);</programlisting>
+<para>
+Gets GLXContext.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>glcontext</parameter>&nbsp;:</term>
+<listitem><simpara> a <link linkend="GdkGLContext"><type>GdkGLContext</type></link>.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the GLXContext.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="gdk-x11-gl-pixmap-get-glxpixmap" role="function"/>gdk_x11_gl_pixmap_get_glxpixmap ()</title>
+<indexterm><primary>gdk_x11_gl_pixmap_get_glxpixmap</primary></indexterm><programlisting><link linkend="GLXPixmap">GLXPixmap</link>   gdk_x11_gl_pixmap_get_glxpixmap (<link linkend="GdkGLPixmap">GdkGLPixmap</link> *glpixmap);</programlisting>
+<para>
+Gets GLXPixmap.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>glpixmap</parameter>&nbsp;:</term>
+<listitem><simpara> a <link linkend="GdkGLPixmap"><type>GdkGLPixmap</type></link>.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the GLXPixmap.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="gdk-x11-gl-window-get-glxwindow" role="function"/>gdk_x11_gl_window_get_glxwindow ()</title>
+<indexterm><primary>gdk_x11_gl_window_get_glxwindow</primary></indexterm><programlisting><link linkend="Window">Window</link>      gdk_x11_gl_window_get_glxwindow (<link linkend="GdkGLWindow">GdkGLWindow</link> *glwindow);</programlisting>
+<para>
+Gets X Window.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>glwindow</parameter>&nbsp;:</term>
+<listitem><simpara> a <link linkend="GdkGLWindow"><type>GdkGLWindow</type></link>.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the Window.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="GDK-GL-CONFIG-XDISPLAY:CAPS" role="macro"/>GDK_GL_CONFIG_XDISPLAY()</title>
+<indexterm><primary>GDK_GL_CONFIG_XDISPLAY</primary></indexterm><programlisting>#define     GDK_GL_CONFIG_XDISPLAY(glconfig)</programlisting>
+<para>
+Gets X Display.
+</para><variablelist role="params">
+<varlistentry><term><parameter>glconfig</parameter>&nbsp;:</term>
+<listitem><simpara>a <link linkend="GdkGLConfig"><type>GdkGLConfig</type></link>.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>pointer to the Display.
+
+
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="GDK-GL-CONFIG-SCREEN-XNUMBER:CAPS" role="macro"/>GDK_GL_CONFIG_SCREEN_XNUMBER()</title>
+<indexterm><primary>GDK_GL_CONFIG_SCREEN_XNUMBER</primary></indexterm><programlisting>#define     GDK_GL_CONFIG_SCREEN_XNUMBER(glconfig)</programlisting>
+<para>
+Gets X screen number.
+</para><variablelist role="params">
+<varlistentry><term><parameter>glconfig</parameter>&nbsp;:</term>
+<listitem><simpara>a <link linkend="GdkGLConfig"><type>GdkGLConfig</type></link>.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>the screen number.
+
+
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="GDK-GL-CONFIG-XVINFO:CAPS" role="macro"/>GDK_GL_CONFIG_XVINFO()</title>
+<indexterm><primary>GDK_GL_CONFIG_XVINFO</primary></indexterm><programlisting>#define     GDK_GL_CONFIG_XVINFO(glconfig)</programlisting>
+<para>
+Gets XVisualInfo data.
+</para><variablelist role="params">
+<varlistentry><term><parameter>glconfig</parameter>&nbsp;:</term>
+<listitem><simpara>a <link linkend="GdkGLConfig"><type>GdkGLConfig</type></link>.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>pointer to the XVisualInfo data.
+
+
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="GDK-GL-CONFIG-XCOLORMAP:CAPS" role="macro"/>GDK_GL_CONFIG_XCOLORMAP()</title>
+<indexterm><primary>GDK_GL_CONFIG_XCOLORMAP</primary></indexterm><programlisting>#define     GDK_GL_CONFIG_XCOLORMAP(glconfig)</programlisting>
+<para>
+Gets X Colormap.
+</para><variablelist role="params">
+<varlistentry><term><parameter>glconfig</parameter>&nbsp;:</term>
+<listitem><simpara>a <link linkend="GdkGLConfig"><type>GdkGLConfig</type></link>.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>the Colormap.
+
+
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="GDK-GL-CONTEXT-GLXCONTEXT:CAPS" role="macro"/>GDK_GL_CONTEXT_GLXCONTEXT()</title>
+<indexterm><primary>GDK_GL_CONTEXT_GLXCONTEXT</primary></indexterm><programlisting>#define     GDK_GL_CONTEXT_GLXCONTEXT(glcontext)</programlisting>
+<para>
+Gets GLXContext.
+</para><variablelist role="params">
+<varlistentry><term><parameter>glcontext</parameter>&nbsp;:</term>
+<listitem><simpara>a <link linkend="GdkGLContext"><type>GdkGLContext</type></link>.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>the GLXContext.
+
+
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="GDK-GL-PIXMAP-GLXPIXMAP:CAPS" role="macro"/>GDK_GL_PIXMAP_GLXPIXMAP()</title>
+<indexterm><primary>GDK_GL_PIXMAP_GLXPIXMAP</primary></indexterm><programlisting>#define     GDK_GL_PIXMAP_GLXPIXMAP(glpixmap)</programlisting>
+<para>
+Gets GLXPixmap.
+</para><variablelist role="params">
+<varlistentry><term><parameter>glpixmap</parameter>&nbsp;:</term>
+<listitem><simpara>a <link linkend="GdkGLPixmap"><type>GdkGLPixmap</type></link>.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>the GLXPixmap.
+
+
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="GDK-GL-WINDOW-GLXWINDOW:CAPS" role="macro"/>GDK_GL_WINDOW_GLXWINDOW()</title>
+<indexterm><primary>GDK_GL_WINDOW_GLXWINDOW</primary></indexterm><programlisting>#define     GDK_GL_WINDOW_GLXWINDOW(glwindow)</programlisting>
+<para>
+Gets X Window.
+</para><variablelist role="params">
+<varlistentry><term><parameter>glwindow</parameter>&nbsp;:</term>
+<listitem><simpara>a <link linkend="GdkGLWindow"><type>GdkGLWindow</type></link>.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>the Window.
+
+
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+
+</refsect1>
+
+
+
+
+</refentry>

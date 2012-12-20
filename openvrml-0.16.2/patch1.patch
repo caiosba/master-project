@@ -1,0 +1,1794 @@
+From bad5dbbc2ba68b96f2fb3ed6c21e78f57827882d Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Javier=20Jard=C3=B3n?= <jjardon@gnome.org>
+Date: Sun, 25 Apr 2010 22:34:03 +0200
+Subject: [PATCH] Use accessor functions instead direct access.
+
+The new GTK+ required version is 2.18
+
+Fixes https://bugzilla.gnome.org/show_bug.cgi?id=603949
+---
+ configure.ac                   |    4 +-
+ examples/button.c              |   22 ++++++++++++++++----
+ examples/color.c               |    4 ++-
+ examples/coolwave.c            |   41 ++++++++++++++++++++++++++++++--------
+ examples/coolwave2.c           |   42 +++++++++++++++++++++++++++++++--------
+ examples/font-pangoft2-tex.c   |   19 ++++++++++++++---
+ examples/font-pangoft2.c       |   20 +++++++++++++-----
+ examples/font.c                |   23 +++++++++++++++------
+ examples/gears.c               |   22 ++++++++++++++++----
+ examples/logo.c                |   40 +++++++++++++++++++++++++++++--------
+ examples/low-level.c           |   16 +++++++++++---
+ examples/multiarb.c            |   24 ++++++++++++++++++----
+ examples/pixmap-mixed.c        |   29 +++++++++++++++++----------
+ examples/pixmap.c              |   15 ++++++++-----
+ examples/rotating-square.c     |   33 ++++++++++++++++++++++++------
+ examples/scribble-gl.c         |   21 ++++++++++++++-----
+ examples/shapes.c              |   34 ++++++++++++++++++++++++-------
+ examples/share-lists.c         |    4 ++-
+ examples/simple-mixed.c        |   21 +++++++++++++------
+ examples/simple-pbuffer-sgix.c |   15 ++++++++++---
+ examples/simple.c              |    7 ++++-
+ examples/template.c            |   22 ++++++++++++++++----
+ examples/viewlw.c              |   40 ++++++++++++++++++++++++++++---------
+ gtk/gtkglwidget.c              |   24 ++++++++++++++--------
+ 24 files changed, 400 insertions(+), 142 deletions(-)
+
+diff --git a/configure.ac b/configure.ac
+index 0134ee7..899a81b 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -220,9 +220,9 @@ AS_IF([test x$gdktarget = xwin32],
+ 
+ AC_CHECK_HEADERS([inttypes.h stdlib.h string.h])
+ 
+-PKG_CHECK_MODULES([GTK], [gtk+-2.0 >= 2.8], ,
++PKG_CHECK_MODULES([GTK], [gtk+-2.0 >= 2.18], ,
+                   [AS_IF([test -z "${GTK_LIBS+x}"],
+-                         [AC_MSG_FAILURE([GTK+ 2.8 or newer is required.])])])
++                         [AC_MSG_FAILURE([GTK+ 2.18 or newer is required.])])])
+ PKG_CHECK_MODULES([GDK], [gdk-2.0], ,
+                   [AS_IF([test -z "${GDK_LIBS+x}"],
+                          [AC_MSG_FAILURE([GDK is required.])])])
+diff --git a/examples/button.c b/examples/button.c
+index 9c48539..1c35055 100644
+--- a/examples/button.c
++++ b/examples/button.c
+@@ -66,13 +66,18 @@ configure_event (GtkWidget         *widget,
+                  GdkEventConfigure *event,
+                  gpointer           data)
+ {
++  GtkAllocation allocation;
+   GdkGLContext *glcontext = gtk_widget_get_gl_context (widget);
+   GdkGLDrawable *gldrawable = gtk_widget_get_gl_drawable (widget);
+ 
+-  GLfloat w = widget->allocation.width;
+-  GLfloat h = widget->allocation.height;
++  GLfloat w;
++  GLfloat h;
+   GLfloat aspect;
+ 
++  gtk_widget_get_allocation (widget, &allocation);
++  w = allocation.width;
++  h = allocation.height;
++
+   /*** OpenGL BEGIN ***/
+   if (!gdk_gl_drawable_gl_begin (gldrawable, glcontext))
+     return FALSE;
+@@ -147,8 +152,13 @@ expose_event (GtkWidget      *widget,
+ static gboolean
+ timeout (GtkWidget *widget)
+ {
++  GtkAllocation allocation;
++  GdkWindow *window;
+   GLfloat t;
+ 
++  window = gtk_widget_get_window (widget);
++  gtk_widget_get_allocation (widget, &allocation);
++
+   angle += 3.0;
+   if (angle >= 360.0)
+     angle -= 360.0;
+@@ -160,10 +170,10 @@ timeout (GtkWidget *widget)
+   pos_y = 2.0 * (sin (t) + 0.4 * sin (3.0*t)) - 1.0;
+ 
+   /* Invalidate the whole window. */
+-  gdk_window_invalidate_rect (widget->window, &widget->allocation, FALSE);
++  gdk_window_invalidate_rect (window, &allocation, FALSE);
+ 
+   /* Update synchronously (fast). */
+-  gdk_window_process_updates (widget->window, FALSE);
++  gdk_window_process_updates (window, FALSE);
+ 
+   return TRUE;
+ }
+@@ -238,6 +248,7 @@ visibility_notify_event (GtkWidget          *widget,
+ static void
+ toggle_animation (GtkWidget *widget)
+ {
++  GtkAllocation allocation;
+   animate = !animate;
+ 
+   if (animate)
+@@ -247,7 +258,8 @@ toggle_animation (GtkWidget *widget)
+   else
+     {
+       timeout_remove (widget);
+-      gdk_window_invalidate_rect (widget->window, &widget->allocation, FALSE);
++      gtk_widget_get_allocation (widget, &allocation);
++      gdk_window_invalidate_rect (gtk_widget_get_window (widget), &allocation, FALSE);
+     }
+ }
+ 
+diff --git a/examples/color.c b/examples/color.c
+index 9342b78..744c4a5 100644
+--- a/examples/color.c
++++ b/examples/color.c
+@@ -43,6 +43,7 @@ configure_event (GtkWidget         *widget,
+                  GdkEventConfigure *event,
+                  gpointer           data)
+ {
++  GtkAllocation allocation;
+   GdkGLContext *glcontext = gtk_widget_get_gl_context (widget);
+   GdkGLDrawable *gldrawable = gtk_widget_get_gl_drawable (widget);
+ 
+@@ -50,8 +51,9 @@ configure_event (GtkWidget         *widget,
+   if (!gdk_gl_drawable_gl_begin (gldrawable, glcontext))
+     goto NO_GL;
+ 
++  gtk_widget_get_allocation (widget, &allocation);
+   glViewport (0, 0,
+-              widget->allocation.width, widget->allocation.height);
++              allocation.width, allocation.height);
+ 
+   gdk_gl_drawable_gl_end (gldrawable);
+   /*** OpenGL END ***/
+diff --git a/examples/coolwave.c b/examples/coolwave.c
+index c550974..34fbf1a 100644
+--- a/examples/coolwave.c
++++ b/examples/coolwave.c
+@@ -281,11 +281,16 @@ configure_event (GtkWidget         *widget,
+ 		 GdkEventConfigure *event,
+ 		 gpointer           data)
+ {
++  GtkAllocation allocation;
+   GdkGLContext *glcontext = gtk_widget_get_gl_context (widget);
+   GdkGLDrawable *gldrawable = gtk_widget_get_gl_drawable (widget);
+ 
+-  GLfloat w = widget->allocation.width;
+-  GLfloat h = widget->allocation.height;
++  GLfloat w;
++  GLfloat h;
++
++  gtk_widget_get_allocation (widget, &allocation);
++  w = allocation.width;
++  h = allocation.height;
+ 
+   /*** OpenGL BEGIN ***/
+   if (!gdk_gl_drawable_gl_begin (gldrawable, glcontext))
+@@ -354,15 +359,20 @@ expose_event (GtkWidget      *widget,
+ static gboolean
+ timeout (GtkWidget *widget)
+ {
++  GtkAllocation allocation;
++  GdkWindow *window;
+   getforce ();
+   getvelocity ();
+   getposition ();
+ 
++  window = gtk_widget_get_window (widget);
++  gtk_widget_get_allocation (widget, &allocation);
++
+   /* Invalidate the whole window. */
+-  gdk_window_invalidate_rect (widget->window, &widget->allocation, FALSE);
++  gdk_window_invalidate_rect (window, &allocation, FALSE);
+ 
+   /* Update synchronously (fast). */
+-  gdk_window_process_updates (widget->window, FALSE);
++  gdk_window_process_updates (window, FALSE);
+ 
+   return TRUE;
+ }
+@@ -376,8 +386,11 @@ motion_notify_event (GtkWidget      *widget,
+ 		     GdkEventMotion *event,
+ 		     gpointer        data)
+ {
++  GtkAllocation allocation;
+   gboolean redraw = FALSE;
+ 
++  gtk_widget_get_allocation (widget, &allocation);
++
+   if (event->state & GDK_BUTTON1_MASK)
+     {
+       sphi += (float)(event->x - beginX) / 4.0;
+@@ -388,7 +401,7 @@ motion_notify_event (GtkWidget      *widget,
+ 
+   if (event->state & GDK_BUTTON2_MASK)
+     {
+-      sdepth -= ((event->y - beginY)/(widget->allocation.height))*(MAXGRID/2);
++      sdepth -= ((event->y - beginY)/(allocation.height))*(MAXGRID/2);
+ 
+       redraw = TRUE;
+     }
+@@ -397,7 +410,7 @@ motion_notify_event (GtkWidget      *widget,
+   beginY = event->y;
+ 
+   if (redraw && !animate)
+-    gdk_window_invalidate_rect (widget->window, &widget->allocation, FALSE);
++    gdk_window_invalidate_rect (gtk_widget_get_window (widget), &allocation, FALSE);
+ 
+   return TRUE;
+ }
+@@ -455,6 +468,8 @@ key_press_event (GtkWidget   *widget,
+ 		 GdkEventKey *event,
+ 		 gpointer     data)
+ {
++  GtkAllocation allocation;
++
+   switch (event->keyval)
+     {
+     case GDK_r:
+@@ -487,7 +502,10 @@ key_press_event (GtkWidget   *widget,
+     }
+ 
+   if (!animate)
+-    gdk_window_invalidate_rect (widget->window, &widget->allocation, FALSE);
++    {
++      gtk_widget_get_allocation (widget, &allocation);
++      gdk_window_invalidate_rect (gtk_widget_get_window (widget), &allocation, FALSE);
++    }
+ 
+   return TRUE;
+ }
+@@ -597,6 +615,7 @@ visibility_notify_event (GtkWidget          *widget,
+ static void
+ toggle_animation (GtkWidget *widget)
+ {
++  GtkAllocation allocation;
+   animate = !animate;
+ 
+   if (animate)
+@@ -606,7 +625,8 @@ toggle_animation (GtkWidget *widget)
+   else
+     {
+       timeout_remove (widget);
+-      gdk_window_invalidate_rect (widget->window, &widget->allocation, FALSE);
++      gtk_widget_get_allocation (widget, &allocation);
++      gdk_window_invalidate_rect (gtk_widget_get_window (widget), &allocation, FALSE);
+     }
+ }
+ 
+@@ -616,8 +636,11 @@ toggle_animation (GtkWidget *widget)
+ static void
+ init_wireframe (GtkWidget *widget)
+ {
++  GtkAllocation allocation;
++
+   resetWireframe ();
+-  gdk_window_invalidate_rect (widget->window, &widget->allocation, FALSE);
++  gtk_widget_get_allocation (widget, &allocation);
++  gdk_window_invalidate_rect (gtk_widget_get_window (widget), &allocation, FALSE);
+ }
+ 
+ 
+diff --git a/examples/coolwave2.c b/examples/coolwave2.c
+index 5b3d433..4c7135a 100644
+--- a/examples/coolwave2.c
++++ b/examples/coolwave2.c
+@@ -294,11 +294,16 @@ configure_event (GtkWidget         *widget,
+ 		 GdkEventConfigure *event,
+ 		 gpointer           data)
+ {
++  GtkAllocation allocation;
+   GdkGLContext *glcontext = gtk_widget_get_gl_context (widget);
+   GdkGLDrawable *gldrawable = gtk_widget_get_gl_drawable (widget);
+ 
+-  GLfloat w = widget->allocation.width;
+-  GLfloat h = widget->allocation.height;
++  GLfloat w;
++  GLfloat h;
++
++  gtk_widget_get_allocation (widget, &allocation);
++  w = allocation.width;
++  h = allocation.height;
+ 
+   /*** OpenGL BEGIN ***/
+   if (!gdk_gl_drawable_gl_begin (gldrawable, glcontext))
+@@ -367,15 +372,20 @@ expose_event (GtkWidget      *widget,
+ static gboolean
+ timeout (GtkWidget *widget)
+ {
++  GtkAllocation allocation;
++  GdkWindow *window;
+   getforce ();
+   getvelocity ();
+   getposition ();
+ 
++  window = gtk_widget_get_window (widget);
++  gtk_widget_get_allocation (widget, &allocation);
++
+   /* Invalidate the whole window. */
+-  gdk_window_invalidate_rect (widget->window, &widget->allocation, FALSE);
++  gdk_window_invalidate_rect (window, &allocation, FALSE);
+ 
+   /* Update synchronously (fast). */
+-  gdk_window_process_updates (widget->window, FALSE);
++  gdk_window_process_updates (window, FALSE);
+ 
+   return TRUE;
+ }
+@@ -389,8 +399,11 @@ motion_notify_event (GtkWidget      *widget,
+ 		     GdkEventMotion *event,
+ 		     gpointer        data)
+ {
++  GtkAllocation allocation;
+   gboolean redraw = FALSE;
+ 
++  gtk_widget_get_allocation (widget, &allocation);
++
+   if (event->state & GDK_BUTTON1_MASK)
+     {
+       sphi += (float)(event->x - beginX) / 4.0;
+@@ -401,7 +414,7 @@ motion_notify_event (GtkWidget      *widget,
+ 
+   if (event->state & GDK_BUTTON2_MASK)
+     {
+-      sdepth -= ((event->y - beginY)/(widget->allocation.height))*(MAXGRID/2);
++      sdepth -= ((event->y - beginY)/(allocation.height))*(MAXGRID/2);
+ 
+       redraw = TRUE;
+     }
+@@ -410,7 +423,7 @@ motion_notify_event (GtkWidget      *widget,
+   beginY = event->y;
+ 
+   if (redraw && !animate)
+-    gdk_window_invalidate_rect (widget->window, &widget->allocation, FALSE);
++    gdk_window_invalidate_rect (gtk_widget_get_window (widget), &allocation, FALSE);
+ 
+   return TRUE;
+ }
+@@ -469,6 +482,8 @@ key_press_event (GtkWidget   *widget,
+ 		 GdkEventKey *event,
+ 		 gpointer     data)
+ {
++  GtkAllocation allocation;
++
+   switch (event->keyval)
+     {
+     case GDK_r:
+@@ -501,7 +516,10 @@ key_press_event (GtkWidget   *widget,
+     }
+ 
+   if (!animate)
+-    gdk_window_invalidate_rect (widget->window, &widget->allocation, FALSE);
++    {
++      gtk_widget_get_allocation (widget, &allocation);
++      gdk_window_invalidate_rect (gtk_widget_get_window (widget), &allocation, FALSE);
++    }
+ 
+   return TRUE;
+ }
+@@ -611,6 +629,7 @@ visibility_notify_event (GtkWidget          *widget,
+ static void
+ toggle_animation (GtkWidget *widget)
+ {
++  GtkAllocation allocation;
+   animate = !animate;
+ 
+   if (animate)
+@@ -620,7 +639,8 @@ toggle_animation (GtkWidget *widget)
+   else
+     {
+       timeout_remove (widget);
+-      gdk_window_invalidate_rect (widget->window, &widget->allocation, FALSE);
++      gtk_widget_get_allocation (widget, &allocation);
++      gdk_window_invalidate_rect (gtk_widget_get_window (widget), &allocation, FALSE);
+     }
+ }
+ 
+@@ -630,8 +650,12 @@ toggle_animation (GtkWidget *widget)
+ static void
+ init_wireframe (GtkWidget *widget)
+ {
++  GtkAllocation allocation;
++
++  gtk_widget_get_allocation (widget, &allocation);
++
+   resetWireframe ();
+-  gdk_window_invalidate_rect (widget->window, &widget->allocation, FALSE);
++  gdk_window_invalidate_rect (gtk_widget_get_window (widget), &allocation, FALSE);
+ }
+ 
+ 
+diff --git a/examples/font-pangoft2-tex.c b/examples/font-pangoft2-tex.c
+index 07c4e14..2e663a3 100644
+--- a/examples/font-pangoft2-tex.c
++++ b/examples/font-pangoft2-tex.c
+@@ -268,11 +268,16 @@ configure_event (GtkWidget         *widget,
+                  GdkEventConfigure *event,
+                  gpointer           data)
+ {
++  GtkAllocation allocation;
+   GdkGLContext *glcontext = gtk_widget_get_gl_context (widget);
+   GdkGLDrawable *gldrawable = gtk_widget_get_gl_drawable (widget);
+ 
+-  GLsizei w = widget->allocation.width;
+-  GLsizei h = widget->allocation.height;
++  GLsizei w;
++  GLsizei h;
++
++  gtk_widget_get_allocation (widget, &allocation);
++  w = allocation.width;
++  h = allocation.height;
+ 
+   /*** OpenGL BEGIN ***/
+   if (!gdk_gl_drawable_gl_begin (gldrawable, glcontext))
+@@ -416,15 +421,21 @@ unrealize (GtkWidget *widget,
+ static gboolean
+ timeout (GtkWidget *widget)
+ {
++  GtkAllocation allocation;
++  GdkWindow *window;
++
++  window = gtk_widget_get_window (widget);
++  gtk_widget_get_allocation (widget, &allocation);
++
+   text_z -= TEXT_Z_DIFF;
+   if (text_z <= TEXT_Z_FAR)
+     text_z = TEXT_Z_NEAR;
+ 
+   /* Invalidate the whole window. */
+-  gdk_window_invalidate_rect (widget->window, &widget->allocation, FALSE);
++  gdk_window_invalidate_rect (window, &allocation, FALSE);
+ 
+   /* Update synchronously. */
+-  gdk_window_process_updates (widget->window, FALSE);
++  gdk_window_process_updates (window, FALSE);
+ 
+   return TRUE;
+ }
+diff --git a/examples/font-pangoft2.c b/examples/font-pangoft2.c
+index 710d97b..1ccac4f 100644
+--- a/examples/font-pangoft2.c
++++ b/examples/font-pangoft2.c
+@@ -168,11 +168,16 @@ configure_event (GtkWidget         *widget,
+                  GdkEventConfigure *event,
+                  gpointer           data)
+ {
++  GtkAllocation allocation;
+   GdkGLContext *glcontext = gtk_widget_get_gl_context (widget);
+   GdkGLDrawable *gldrawable = gtk_widget_get_gl_drawable (widget);
+ 
+-  GLsizei w = widget->allocation.width;
+-  GLsizei h = widget->allocation.height;
++  GLsizei w;
++  GLsizei h;
++
++  gtk_widget_get_allocation (widget, &allocation);
++  w = allocation.width;
++  h = allocation.height;
+ 
+   /*** OpenGL BEGIN ***/
+   if (!gdk_gl_drawable_gl_begin (gldrawable, glcontext))
+@@ -205,6 +210,7 @@ expose_event (GtkWidget      *widget,
+               GdkEventExpose *event,
+               gpointer        data)
+ {
++  GtkAllocation allocation;
+   GdkGLContext *glcontext = gtk_widget_get_gl_context (widget);
+   GdkGLDrawable *gldrawable = gtk_widget_get_gl_drawable (widget);
+ 
+@@ -215,6 +221,8 @@ expose_event (GtkWidget      *widget,
+   GLfloat text_w, text_h;
+   GLfloat tangent_h;
+ 
++  gtk_widget_get_allocation (widget, &allocation);
++
+   /* Font */
+   widget_context = gtk_widget_get_pango_context (widget);
+   font_desc = pango_context_get_font_description (widget_context);
+@@ -223,7 +231,7 @@ expose_event (GtkWidget      *widget,
+ 
+   /* Text layout */
+   layout = pango_layout_new (ft2_context);
+-  pango_layout_set_width (layout, PANGO_SCALE * widget->allocation.width);
++  pango_layout_set_width (layout, PANGO_SCALE * allocation.width);
+   pango_layout_set_alignment (layout, PANGO_ALIGN_CENTER);
+   pango_layout_set_text (layout, text, -1);
+ 
+@@ -244,15 +252,15 @@ expose_event (GtkWidget      *widget,
+   text_h = PANGO_PIXELS (logical_rect.height);
+   /*
+    * tangent = Z_NEAR * tan (FOVY_2 * G_PI / 180.0)
+-   * w = widget->allocation.width
+-   * h = widget->allocation.height
++   * w = allocation.width
++   * h = allocation.height
+    *
+    * x = -1.0 * (text_w/w) * tangent * (w/h) = -text_w * tangent / h
+    * y = -1.0 * (text_h/h) * tangent         = -text_h * tangent / h
+    * z = Z_NEAR
+    */
+   tangent_h = Z_NEAR * tan (FOVY_2 * G_PI / 180.0);
+-  tangent_h /= widget->allocation.height;
++  tangent_h /= allocation.height;
+   glRasterPos3f (-text_w * tangent_h,
+                  -text_h * tangent_h,
+                  Z_NEAR);
+diff --git a/examples/font.c b/examples/font.c
+index c1fa869..e0aa642 100644
+--- a/examples/font.c
++++ b/examples/font.c
+@@ -27,6 +27,7 @@ static void
+ realize (GtkWidget *widget,
+          gpointer   data)
+ {
++  GtkAllocation allocation;
+   GdkGLContext *glcontext = gtk_widget_get_gl_context (widget);
+   GdkGLDrawable *gldrawable = gtk_widget_get_gl_drawable (widget);
+ 
+@@ -64,13 +65,15 @@ realize (GtkWidget *widget,
+   glClearColor (1.0, 1.0, 1.0, 1.0);
+   glClearDepth (1.0);
+ 
++  gtk_widget_get_allocation (widget, &allocation);
++
+   glViewport (0, 0,
+-              widget->allocation.width, widget->allocation.height);
++              allocation.width, allocation.height);
+ 
+   glMatrixMode (GL_PROJECTION);
+   glLoadIdentity ();
+-  glOrtho (0.0, widget->allocation.width,
+-           0.0, widget->allocation.height,
++  glOrtho (0.0, allocation.width,
++           0.0, allocation.height,
+            -1.0, 1.0);
+ 
+   glMatrixMode (GL_MODELVIEW);
+@@ -85,20 +88,23 @@ configure_event (GtkWidget         *widget,
+                  GdkEventConfigure *event,
+                  gpointer           data)
+ {
++  GtkAllocation allocation;
+   GdkGLContext *glcontext = gtk_widget_get_gl_context (widget);
+   GdkGLDrawable *gldrawable = gtk_widget_get_gl_drawable (widget);
+ 
++  gtk_widget_get_allocation (widget, &allocation);
++
+   /*** OpenGL BEGIN ***/
+   if (!gdk_gl_drawable_gl_begin (gldrawable, glcontext))
+     return FALSE;
+ 
+   glViewport (0, 0,
+-              widget->allocation.width, widget->allocation.height);
++              allocation.width, allocation.height);
+ 
+   glMatrixMode (GL_PROJECTION);
+   glLoadIdentity ();
+-  glOrtho (0.0, widget->allocation.width,
+-           0.0, widget->allocation.height,
++  glOrtho (0.0, allocation.width,
++           0.0, allocation.height,
+            -1.0, 1.0);
+ 
+   glMatrixMode (GL_MODELVIEW);
+@@ -115,10 +121,13 @@ expose_event (GtkWidget      *widget,
+               GdkEventExpose *event,
+               gpointer        data)
+ {
++  GtkAllocation allocation;
+   GdkGLContext *glcontext = gtk_widget_get_gl_context (widget);
+   GdkGLDrawable *gldrawable = gtk_widget_get_gl_drawable (widget);
+   int i, j;
+ 
++  gtk_widget_get_allocation (widget, &allocation);
++
+   /*** OpenGL BEGIN ***/
+   if (!gdk_gl_drawable_gl_begin (gldrawable, glcontext))
+     return FALSE;
+@@ -131,7 +140,7 @@ expose_event (GtkWidget      *widget,
+   glColor3f (0.0, 0.0, 0.0);
+   for (i = 2; i >= -2; i--)
+     {
+-      glRasterPos2f (10.0, 0.5*widget->allocation.height + i*font_height);
++      glRasterPos2f (10.0, 0.5*allocation.height + i*font_height);
+       for (j = ' '; j <= 'Z'; j++)
+         glCallList (font_list_base+j);
+     }
+diff --git a/examples/gears.c b/examples/gears.c
+index decc13f..ae76402 100644
+--- a/examples/gears.c
++++ b/examples/gears.c
+@@ -233,16 +233,20 @@ reshape (GtkWidget         *widget,
+ 	 GdkEventConfigure *event,
+ 	 gpointer           data)
+ {
++  GtkAllocation allocation;
+   GdkGLContext *glcontext = gtk_widget_get_gl_context (widget);
+   GdkGLDrawable *gldrawable = gtk_widget_get_gl_drawable (widget);
+ 
+-  GLfloat h = (GLfloat) (widget->allocation.height) / (GLfloat) (widget->allocation.width);
++  GLfloat h;
++
++  gtk_widget_get_allocation (widget, &allocation);
++  h = (GLfloat) (allocation.height) / (GLfloat) (allocation.width);
+ 
+   /*** OpenGL BEGIN ***/
+   if (!gdk_gl_drawable_gl_begin (gldrawable, glcontext))
+     return FALSE;
+ 
+-  glViewport (0, 0, widget->allocation.width, widget->allocation.height);
++  glViewport (0, 0, allocation.width, allocation.height);
+   glMatrixMode (GL_PROJECTION);
+   glLoadIdentity ();
+   glFrustum (-1.0, 1.0, -h, h, 5.0, 60.0);
+@@ -319,14 +323,19 @@ init(GtkWidget *widget,
+ static gboolean
+ idle (GtkWidget *widget)
+ {
++  GtkAllocation allocation;
++  GdkWindow *window;
+   angle += 2.0;
+ 
++  window = gtk_widget_get_window (widget);
++  gtk_widget_get_allocation (widget, &allocation);
++
+   /* Invalidate the whole window. */
+-  gdk_window_invalidate_rect (widget->window, &widget->allocation, FALSE);
++  gdk_window_invalidate_rect (window, &allocation, FALSE);
+ 
+   /* Update synchronously (fast). */
+   if (is_sync)
+-    gdk_window_process_updates (widget->window, FALSE);
++    gdk_window_process_updates (window, FALSE);
+ 
+   return TRUE;
+ }
+@@ -394,6 +403,8 @@ key (GtkWidget   *widget,
+      GdkEventKey *event,
+      gpointer     data)
+ {
++  GtkAllocation allocation;
++
+   switch (event->keyval)
+     {
+     case GDK_z:
+@@ -421,7 +432,8 @@ key (GtkWidget   *widget,
+       return FALSE;
+     }
+ 
+-  gdk_window_invalidate_rect (widget->window, &widget->allocation, FALSE);
++  gtk_widget_get_allocation (widget, &allocation);
++  gdk_window_invalidate_rect (gtk_widget_get_window (widget), &allocation, FALSE);
+ 
+   return TRUE;
+ }
+diff --git a/examples/logo.c b/examples/logo.c
+index 0f171b2..72ca5f7 100644
+--- a/examples/logo.c
++++ b/examples/logo.c
+@@ -220,13 +220,18 @@ configure_event (GtkWidget         *widget,
+ 		 GdkEventConfigure *event,
+ 		 gpointer           data)
+ {
++  GtkAllocation allocation;
+   GdkGLContext *glcontext = gtk_widget_get_gl_context (widget);
+   GdkGLDrawable *gldrawable = gtk_widget_get_gl_drawable (widget);
+ 
+-  GLfloat w = widget->allocation.width;
+-  GLfloat h = widget->allocation.height;
++  GLfloat w;
++  GLfloat h;
+   GLfloat aspect;
+ 
++  gtk_widget_get_allocation (widget, &allocation);
++  w = allocation.width;
++  h = allocation.height;
++
+   /*** OpenGL BEGIN ***/
+   if (!gdk_gl_drawable_gl_begin (gldrawable, glcontext))
+     return FALSE;
+@@ -371,13 +376,18 @@ motion_notify_event (GtkWidget      *widget,
+ 		     GdkEventMotion *event,
+ 		     gpointer        data)
+ {
+-  float w = widget->allocation.width;
+-  float h = widget->allocation.height;
++  GtkAllocation allocation;
++  float w;
++  float h;
+   float x = event->x;
+   float y = event->y;
+   float d_quat[4];
+   gboolean redraw = FALSE;
+ 
++  gtk_widget_get_allocation (widget, &allocation);
++  w = allocation.width;
++  h = allocation.height;
++
+   /* Rotation. */
+   if (event->state & GDK_BUTTON1_MASK)
+     {
+@@ -405,7 +415,7 @@ motion_notify_event (GtkWidget      *widget,
+   begin_y = y;
+ 
+   if (redraw && !animate)
+-    gdk_window_invalidate_rect (widget->window, &widget->allocation, FALSE);
++    gdk_window_invalidate_rect (gtk_widget_get_window (widget), &allocation, FALSE);
+ 
+   return TRUE;
+ }
+@@ -436,11 +446,17 @@ key_press_event (GtkWidget   *widget,
+ static gboolean
+ timeout (GtkWidget *widget)
+ {
++  GtkAllocation allocation;
++  GdkWindow *window;
++
++  window = gtk_widget_get_window (widget);
++  gtk_widget_get_allocation (widget, &allocation);
++
+   /* Invalidate the whole window. */
+-  gdk_window_invalidate_rect (widget->window, &widget->allocation, FALSE);
++  gdk_window_invalidate_rect (window, &allocation, FALSE);
+ 
+   /* Update synchronously. */
+-  gdk_window_process_updates (widget->window, FALSE);
++  gdk_window_process_updates (window, FALSE);
+ 
+   return TRUE;
+ }
+@@ -508,6 +524,7 @@ visibility_notify_event (GtkWidget          *widget,
+ static void
+ toggle_animation (GtkWidget *widget)
+ {
++  GtkAllocation allocation;
+   animate = !animate;
+ 
+   if (animate)
+@@ -517,20 +534,25 @@ toggle_animation (GtkWidget *widget)
+   else
+     {
+       timeout_remove (widget);
+-      gdk_window_invalidate_rect (widget->window, &widget->allocation, FALSE);
++      gtk_widget_get_allocation (widget, &allocation);
++      gdk_window_invalidate_rect (gtk_widget_get_window (widget), &allocation, FALSE);
+     }
+ }
+ 
+ static void
+ init_logo_view (GtkWidget *widget)
+ {
++  GtkAllocation allocation;
+   init_logo_quat ();
+   init_view ();
+   mode = 0;
+   counter = 0;
+ 
+   if (!animate)
+-    gdk_window_invalidate_rect (widget->window, &widget->allocation, FALSE);
++    {
++      gtk_widget_get_allocation (widget, &allocation);
++      gdk_window_invalidate_rect (gtk_widget_get_window (widget), &allocation, FALSE);
++    }
+ }
+ 
+ /* For popup menu. */
+diff --git a/examples/low-level.c b/examples/low-level.c
+index 567b0f0..64126b8 100644
+--- a/examples/low-level.c
++++ b/examples/low-level.c
+@@ -37,20 +37,24 @@ static void
+ realize (GtkWidget *widget,
+          gpointer   data)
+ {
++  GtkAllocation allocation;
++  GdkWindow *window;
+   GLUquadricObj *qobj;
+   static GLfloat light_diffuse[] = {1.0, 0.0, 0.0, 1.0};
+   static GLfloat light_position[] = {1.0, 1.0, 1.0, 0.0};
+ 
++  window = gtk_widget_get_window (widget);
++
+   /*
+    * Create GdkGLWindow for widget->window.
+    */
+ 
+   glwindow = gdk_gl_window_new (glconfig,
+-                                widget->window,
++                                window,
+                                 NULL);
+ 
+   /* Set a background of "None" on window to avoid AIX X server crash */
+-  gdk_window_set_back_pixmap (widget->window, NULL, FALSE);
++  gdk_window_set_back_pixmap (window, NULL, FALSE);
+ 
+   /*
+    * Create OpenGL rendering context.
+@@ -91,8 +95,9 @@ realize (GtkWidget *widget,
+   glClearColor (1.0, 1.0, 1.0, 1.0);
+   glClearDepth (1.0);
+ 
++  gtk_widget_get_allocation (widget, &allocation);
+   glViewport (0, 0,
+-	      widget->allocation.width, widget->allocation.height);
++	      allocation.width, allocation.height);
+ 
+   glMatrixMode (GL_PROJECTION);
+   glLoadIdentity ();
+@@ -125,6 +130,8 @@ configure_event (GtkWidget         *widget,
+                  GdkEventConfigure *event,
+                  gpointer           data)
+ {
++  GtkAllocation allocation;
++
+   /* gtk_drawing_area sends configure_event when it is realized. */
+   if (glwindow == NULL)
+     return FALSE;
+@@ -134,8 +141,9 @@ configure_event (GtkWidget         *widget,
+   if (!gdk_gl_drawable_gl_begin (GDK_GL_DRAWABLE (glwindow), glcontext))
+     return FALSE;
+ 
++  gtk_widget_get_allocation (widget, &allocation);
+   glViewport (0, 0,
+-	      widget->allocation.width, widget->allocation.height);
++	      allocation.width, allocation.height);
+ 
+   gdk_gl_drawable_gl_end (GDK_GL_DRAWABLE (glwindow));
+ 
+diff --git a/examples/multiarb.c b/examples/multiarb.c
+index 0e7fd3e..8764677 100644
+--- a/examples/multiarb.c
++++ b/examples/multiarb.c
+@@ -173,14 +173,17 @@ reshape (GtkWidget         *widget,
+ 	 GdkEventConfigure *event,
+ 	 gpointer           data)
+ {
++  GtkAllocation allocation;
+   GdkGLContext *glcontext = gtk_widget_get_gl_context (widget);
+   GdkGLDrawable *gldrawable = gtk_widget_get_gl_drawable (widget);
+ 
++  gtk_widget_get_allocation (widget, &allocation);
++
+   /*** OpenGL BEGIN ***/
+   if (!gdk_gl_drawable_gl_begin (gldrawable, glcontext))
+     return FALSE;
+ 
+-  glViewport (0, 0, widget->allocation.width, widget->allocation.height);
++  glViewport (0, 0, allocation.width, allocation.height);
+   glMatrixMode (GL_PROJECTION);
+   glLoadIdentity ();
+   glFrustum (-1.0, 1.0, -1.0, 1.0, 10.0, 100.0);
+@@ -262,8 +265,13 @@ display (GtkWidget      *widget,
+ static gboolean
+ timeout (GtkWidget *widget)
+ {
++  GtkAllocation allocation;
++  GdkWindow *window;
+   GLint i;
+ 
++  window = gtk_widget_get_window (widget);
++  gtk_widget_get_allocation (widget, &allocation);
++
+   drift += 0.05;
+   if (drift >= 1.0)
+     drift = 0.0;
+@@ -293,10 +301,10 @@ timeout (GtkWidget *widget)
+   glMatrixMode (GL_MODELVIEW);
+ 
+   /* Invalidate the whole window. */
+-  gdk_window_invalidate_rect (widget->window, &widget->allocation, FALSE);
++  gdk_window_invalidate_rect (window, &allocation, FALSE);
+ 
+   /* Update synchronously. */
+-  gdk_window_process_updates (widget->window, FALSE);
++  gdk_window_process_updates (window, FALSE);
+ 
+   return TRUE;
+ }
+@@ -364,6 +372,7 @@ visible (GtkWidget          *widget,
+ static void
+ toggle_animation (GtkWidget *widget)
+ {
++  GtkAllocation allocation;
+   animate = !animate;
+ 
+   if (animate)
+@@ -373,7 +382,8 @@ toggle_animation (GtkWidget *widget)
+   else
+     {
+       timeout_remove (widget);
+-      gdk_window_invalidate_rect (widget->window, &widget->allocation, FALSE);
++      gtk_widget_get_allocation (widget, &allocation);
++      gdk_window_invalidate_rect (gtk_widget_get_window (widget), &allocation, FALSE);
+     }
+ }
+ 
+@@ -396,6 +406,7 @@ key (GtkWidget   *widget,
+      GdkEventKey *event,
+      gpointer     data)
+ {
++  GtkAllocation allocation;
+   float step = 3.0;
+ 
+   switch (event->keyval)
+@@ -423,7 +434,10 @@ key (GtkWidget   *widget,
+     }
+ 
+   if (!animate)
+-    gdk_window_invalidate_rect (widget->window, &widget->allocation, FALSE);
++    {
++      gtk_widget_get_allocation (widget, &allocation);
++      gdk_window_invalidate_rect (gtk_widget_get_window (widget), &allocation, FALSE);
++    }
+ 
+   return TRUE;
+ }
+diff --git a/examples/pixmap-mixed.c b/examples/pixmap-mixed.c
+index 3e53f14..14b39b8 100644
+--- a/examples/pixmap-mixed.c
++++ b/examples/pixmap-mixed.c
+@@ -62,9 +62,12 @@ configure_event (GtkWidget         *widget,
+                  GdkEventConfigure *event,
+                  gpointer           data)
+ {
++  GtkAllocation allocation;
+   GdkGLDrawable *gldrawable;
+   static gboolean is_initialized = FALSE;
+ 
++  gtk_widget_get_allocation (widget, &allocation);
++
+   /*
+    * Create an OpenGL off-screen rendering area.
+    */
+@@ -72,9 +75,9 @@ configure_event (GtkWidget         *widget,
+   if (pixmap != NULL)
+     g_object_unref (G_OBJECT (pixmap));
+ 
+-  pixmap = gdk_pixmap_new (widget->window,
+-			   widget->allocation.width,
+-			   widget->allocation.height,
++  pixmap = gdk_pixmap_new (gtk_widget_get_window (widget),
++			   allocation.width,
++			   allocation.height,
+                            -1);
+ 
+   /*
+@@ -117,7 +120,7 @@ configure_event (GtkWidget         *widget,
+     }
+ 
+   glViewport (0, 0,
+-              widget->allocation.width, widget->allocation.height);
++              allocation.width, allocation.height);
+ 
+   glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+ 
+@@ -126,12 +129,12 @@ configure_event (GtkWidget         *widget,
+ 
+   /* GDK rendering. */
+   gdk_draw_rectangle (GDK_DRAWABLE (gldrawable),
+-		      widget->style->black_gc,
++		      gtk_widget_get_style (widget)->black_gc,
+ 		      TRUE,
+-		      widget->allocation.width/10,
+-		      widget->allocation.height/10,
+-		      widget->allocation.width*8/10,
+-		      widget->allocation.height*8/10);
++		      allocation.width/10,
++		      allocation.height/10,
++		      allocation.width*8/10,
++		      allocation.height*8/10);
+ 
+   /* Sync. */
+   gdk_gl_drawable_wait_gdk (gldrawable);
+@@ -153,8 +156,12 @@ expose_event (GtkWidget      *widget,
+               GdkEventExpose *event,
+               gpointer        data)
+ {
+-  gdk_draw_drawable (widget->window,
+-		     widget->style->fg_gc[gtk_widget_get_state (widget)],
++  GtkStyle *style;
++
++  style = gtk_widget_get_style (widget);
++
++  gdk_draw_drawable (gtk_widget_get_window (widget),
++		     style->fg_gc[gtk_widget_get_state (widget)],
+ 		     pixmap,
+ 		     event->area.x, event->area.y,
+ 		     event->area.x, event->area.y,
+diff --git a/examples/pixmap.c b/examples/pixmap.c
+index a14a1b7..df7f21b 100644
+--- a/examples/pixmap.c
++++ b/examples/pixmap.c
+@@ -62,9 +62,12 @@ configure_event (GtkWidget         *widget,
+                  GdkEventConfigure *event,
+                  gpointer           data)
+ {
++  GtkAllocation allocation;
+   GdkGLDrawable *gldrawable;
+   static gboolean is_initialized = FALSE;
+ 
++  gtk_widget_get_allocation (widget, &allocation);
++
+   /*
+    * Create an OpenGL off-screen rendering area.
+    */
+@@ -72,9 +75,9 @@ configure_event (GtkWidget         *widget,
+   if (pixmap != NULL)
+     g_object_unref (G_OBJECT (pixmap));
+ 
+-  pixmap = gdk_pixmap_new (widget->window,
+-			   widget->allocation.width,
+-			   widget->allocation.height,
++  pixmap = gdk_pixmap_new (gtk_widget_get_window (widget),
++			   allocation.width,
++			   allocation.height,
+                            -1);
+ 
+   /*
+@@ -117,7 +120,7 @@ configure_event (GtkWidget         *widget,
+     }
+ 
+   glViewport (0, 0,
+-              widget->allocation.width, widget->allocation.height);
++              allocation.width, allocation.height);
+ 
+   glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+ 
+@@ -136,8 +139,8 @@ expose_event (GtkWidget      *widget,
+               GdkEventExpose *event,
+               gpointer        data)
+ {
+-  gdk_draw_drawable (widget->window,
+-		     widget->style->fg_gc[gtk_widget_get_state (widget)],
++  gdk_draw_drawable (gtk_widget_get_window (widget),
++		     gtk_widget_get_style (widget)->fg_gc[gtk_widget_get_state (widget)],
+ 		     pixmap,
+ 		     event->area.x, event->area.y,
+ 		     event->area.x, event->area.y,
+diff --git a/examples/rotating-square.c b/examples/rotating-square.c
+index 3fbc31e..a47db8a 100644
+--- a/examples/rotating-square.c
++++ b/examples/rotating-square.c
+@@ -109,11 +109,16 @@ configure_event (GtkWidget         *widget,
+ 		 GdkEventConfigure *event,
+ 		 gpointer           data)
+ {
++  GtkAllocation allocation;
+   GdkGLContext *glcontext = gtk_widget_get_gl_context (widget);
+   GdkGLDrawable *gldrawable = gtk_widget_get_gl_drawable (widget);
+ 
+-  GLfloat w = widget->allocation.width;
+-  GLfloat h = widget->allocation.height;
++  GLfloat w;
++  GLfloat h;
++
++  gtk_widget_get_allocation (widget, &allocation);
++  w = allocation.width;
++  h = allocation.height;
+ 
+   /*** OpenGL BEGIN ***/
+   if (!gdk_gl_drawable_gl_begin (gldrawable, glcontext))
+@@ -177,14 +182,20 @@ expose_event (GtkWidget      *widget,
+ static gboolean
+ idle (GtkWidget *widget)
+ {
++  GtkAllocation allocation;
++  GdkWindow *window;
++
++  window = gtk_widget_get_window (widget);
++  gtk_widget_get_allocation (widget, &allocation);
++
+   spin += 2.0;
+   if (spin > 360.0) spin -= 360.0;
+ 
+   /* Invalidate the whole window. */
+-  gdk_window_invalidate_rect (widget->window, &widget->allocation, FALSE);
++  gdk_window_invalidate_rect (window, &allocation, FALSE);
+ 
+   /* Update synchronously. */
+-  gdk_window_process_updates (widget->window, FALSE);
++  gdk_window_process_updates (window, FALSE);
+ 
+   return TRUE;
+ }
+@@ -250,6 +261,12 @@ key_press_event (GtkWidget   *widget,
+ 		 GdkEventKey *event,
+ 		 gpointer     data)
+ {
++  GtkAllocation allocation;
++  GdkWindow *window;
++
++  window = gtk_widget_get_window (widget);
++  gtk_widget_get_allocation (widget, &allocation);
++
+   switch (event->keyval)
+     {
+     case GDK_Left:
+@@ -258,7 +275,7 @@ key_press_event (GtkWidget   *widget,
+ 	{
+ 	  spin += 2.0;
+ 	  if (spin > 360.0) spin -= 360.0;
+-	  gdk_window_invalidate_rect (widget->window, &widget->allocation, FALSE);
++	  gdk_window_invalidate_rect (window, &allocation, FALSE);
+ 	}
+       break;
+ 
+@@ -268,7 +285,7 @@ key_press_event (GtkWidget   *widget,
+ 	{
+ 	  spin -= 2.0;
+ 	  if (spin < 360.0) spin += 360.0;
+-	  gdk_window_invalidate_rect (widget->window, &widget->allocation, FALSE);
++	  gdk_window_invalidate_rect (window, &allocation, FALSE);
+ 	}
+       break;
+ 
+@@ -396,6 +413,7 @@ visibility_notify_event (GtkWidget          *widget,
+ static void
+ toggle_animation (GtkWidget *widget)
+ {
++  GtkAllocation allocation;
+   animate = !animate;
+ 
+   if (animate)
+@@ -405,7 +423,8 @@ toggle_animation (GtkWidget *widget)
+   else
+     {
+       idle_remove (widget);
+-      gdk_window_invalidate_rect (widget->window, &widget->allocation, FALSE);
++      gtk_widget_get_allocation (widget, &allocation);
++      gdk_window_invalidate_rect (gtk_widget_get_window (widget), &allocation, FALSE);
+     }
+ }
+ 
+diff --git a/examples/scribble-gl.c b/examples/scribble-gl.c
+index b651663..95458ca 100644
+--- a/examples/scribble-gl.c
++++ b/examples/scribble-gl.c
+@@ -116,13 +116,18 @@ configure_event (GtkWidget         *widget,
+ 		 GdkEventConfigure *event,
+ 		 gpointer           data)
+ {
++  GtkAllocation allocation;
+   GdkGLContext *glcontext = gtk_widget_get_gl_context (widget);
+   GdkGLDrawable *gldrawable = gtk_widget_get_gl_drawable (widget);
+ 
+   guint count;
+ 
+-  GLfloat w = widget->allocation.width;
+-  GLfloat h = widget->allocation.height;
++  GLfloat w;
++  GLfloat h;
++
++  gtk_widget_get_allocation (widget, &allocation);
++  w = allocation.width;
++  h = allocation.height;
+ 
+   /*** OpenGL BEGIN ***/
+   if (!gdk_gl_drawable_gl_begin (gldrawable, glcontext))
+@@ -205,16 +210,18 @@ motion_notify_event (GtkWidget      *widget,
+ 		     GdkEventMotion *event,
+ 		     gpointer        data)
+ {
++  GtkAllocation allocation;
+   Point* coord=NULL;
+ 
+   if (event->state & GDK_BUTTON1_MASK)
+     {
++      gtk_widget_get_allocation (widget, &allocation);
+       coord = g_malloc(sizeof(Point));
+       coord->x = event->x;
+-      coord->y = widget->allocation.height - event->y;
++      coord->y = allocation.height - event->y;
+ 
+       brushStrokeList = g_list_append(brushStrokeList, coord);
+-      gdk_window_invalidate_rect (widget->window, &widget->allocation, FALSE);
++      gdk_window_invalidate_rect (gtk_widget_get_window (widget), &allocation, FALSE);
+       return TRUE;
+     }
+ 
+@@ -231,16 +238,18 @@ button_press_event (GtkWidget      *widget,
+ 		    GdkEventButton *event,
+ 		    gpointer        data)
+ {
++  GtkAllocation allocation;
+   Point* coord=NULL;
+ 
+   if (event->button == 1)
+     {
++      gtk_widget_get_allocation (widget, &allocation);
+       coord = g_malloc(sizeof(Point));
+       coord->x = event->x;
+-      coord->y = widget->allocation.height - event->y;
++      coord->y = allocation.height - event->y;
+ 
+       brushStrokeList = g_list_append(brushStrokeList, coord);
+-      gdk_window_invalidate_rect (widget->window, &widget->allocation, FALSE);
++      gdk_window_invalidate_rect (gtk_widget_get_window (widget), &allocation, FALSE);
+       return TRUE;
+     }
+ 
+diff --git a/examples/shapes.c b/examples/shapes.c
+index 3f0f4de..f9b2d6b 100644
+--- a/examples/shapes.c
++++ b/examples/shapes.c
+@@ -267,13 +267,18 @@ configure_event (GtkWidget         *widget,
+ 		 GdkEventConfigure *event,
+ 		 gpointer           data)
+ {
++  GtkAllocation allocation;
+   GdkGLContext *glcontext = gtk_widget_get_gl_context (widget);
+   GdkGLDrawable *gldrawable = gtk_widget_get_gl_drawable (widget);
+ 
+-  GLfloat w = widget->allocation.width;
+-  GLfloat h = widget->allocation.height;
++  GLfloat w;
++  GLfloat h;
+   GLfloat aspect;
+ 
++  gtk_widget_get_allocation (widget, &allocation);
++  w = allocation.width;
++  h = allocation.height;
++
+   /*** OpenGL BEGIN ***/
+   if (!gdk_gl_drawable_gl_begin (gldrawable, glcontext))
+     return FALSE;
+@@ -398,12 +403,17 @@ motion_notify_event (GtkWidget      *widget,
+ 		     GdkEventMotion *event,
+ 		     gpointer        data)
+ {
+-  float w = widget->allocation.width;
+-  float h = widget->allocation.height;
++  GtkAllocation allocation;
++  float w;
++  float h;
+   float x = event->x;
+   float y = event->y;
+   gboolean redraw = FALSE;
+ 
++  gtk_widget_get_allocation (widget, &allocation);
++  w = allocation.width;
++  h = allocation.height;
++
+   /* Rotation. */
+   if (event->state & GDK_BUTTON1_MASK)
+     {
+@@ -435,7 +445,7 @@ motion_notify_event (GtkWidget      *widget,
+   begin_y = y;
+ 
+   if (redraw && !animate)
+-    gdk_window_invalidate_rect (widget->window, &widget->allocation, FALSE);
++      gdk_window_invalidate_rect (gtk_widget_get_window (widget), &allocation, FALSE);
+ 
+   return TRUE;
+ }
+@@ -461,11 +471,17 @@ key_press_event (GtkWidget   *widget,
+ static gboolean
+ idle (GtkWidget *widget)
+ {
++  GtkAllocation allocation;
++  GdkWindow *window;
++
++  window = gtk_widget_get_window (widget);
++  gtk_widget_get_allocation (widget, &allocation);
++
+   /* Invalidate the whole window. */
+-  gdk_window_invalidate_rect (widget->window, &widget->allocation, FALSE);
++  gdk_window_invalidate_rect (window, &allocation, FALSE);
+ 
+   /* Update synchronously. */
+-  gdk_window_process_updates (widget->window, FALSE);
++  gdk_window_process_updates (window, FALSE);
+ 
+   return TRUE;
+ }
+@@ -535,6 +551,7 @@ visibility_notify_event (GtkWidget          *widget,
+ static void
+ toggle_animation (GtkWidget *widget)
+ {
++  GtkAllocation allocation;
+   animate = !animate;
+ 
+   if (animate)
+@@ -548,7 +565,8 @@ toggle_animation (GtkWidget *widget)
+       view_quat_diff[1] = 0.0;
+       view_quat_diff[2] = 0.0;
+       view_quat_diff[3] = 1.0;
+-      gdk_window_invalidate_rect (widget->window, &widget->allocation, FALSE);
++      gtk_widget_get_allocation (widget, &allocation);
++      gdk_window_invalidate_rect (gtk_widget_get_window (widget), &allocation, FALSE);
+     }
+ }
+ 
+diff --git a/examples/share-lists.c b/examples/share-lists.c
+index c2b598f..dc0bac9 100644
+--- a/examples/share-lists.c
++++ b/examples/share-lists.c
+@@ -99,6 +99,7 @@ configure_event (GtkWidget         *widget,
+                  GdkEventConfigure *event,
+                  gpointer           data)
+ {
++  GtkAllocation allocation;
+   GdkGLContext *glcontext = gtk_widget_get_gl_context (widget);
+   GdkGLDrawable *gldrawable = gtk_widget_get_gl_drawable (widget);
+ 
+@@ -106,8 +107,9 @@ configure_event (GtkWidget         *widget,
+   if (!gdk_gl_drawable_gl_begin (gldrawable, glcontext))
+     return FALSE;
+ 
++  gtk_widget_get_allocation (widget, &allocation);
+   glViewport (0, 0,
+-              widget->allocation.width, widget->allocation.height);
++              allocation.width, allocation.height);
+ 
+   gdk_gl_drawable_gl_end (gldrawable);
+   /*** OpenGL END ***/
+diff --git a/examples/simple-mixed.c b/examples/simple-mixed.c
+index f758b12..6fb3887 100644
+--- a/examples/simple-mixed.c
++++ b/examples/simple-mixed.c
+@@ -23,6 +23,7 @@ static void
+ realize (GtkWidget *widget,
+          gpointer   data)
+ {
++  GtkAllocation allocation;
+   GdkGLContext *glcontext = gtk_widget_get_gl_context (widget);
+   GdkGLDrawable *gldrawable = gtk_widget_get_gl_drawable (widget);
+ 
+@@ -49,8 +50,9 @@ realize (GtkWidget *widget,
+   glClearColor (1.0, 1.0, 1.0, 1.0);
+   glClearDepth (1.0);
+ 
++  gtk_widget_get_allocation (widget, &allocation);
+   glViewport (0, 0,
+-              widget->allocation.width, widget->allocation.height);
++              allocation.width, allocation.height);
+ 
+   glMatrixMode (GL_PROJECTION);
+   glLoadIdentity ();
+@@ -72,6 +74,7 @@ configure_event (GtkWidget         *widget,
+                  GdkEventConfigure *event,
+                  gpointer           data)
+ {
++  GtkAllocation allocation;
+   GdkGLContext *glcontext = gtk_widget_get_gl_context (widget);
+   GdkGLDrawable *gldrawable = gtk_widget_get_gl_drawable (widget);
+ 
+@@ -79,8 +82,9 @@ configure_event (GtkWidget         *widget,
+   if (!gdk_gl_drawable_gl_begin (gldrawable, glcontext))
+     return FALSE;
+ 
++  gtk_widget_get_allocation (widget, &allocation);
+   glViewport (0, 0,
+-              widget->allocation.width, widget->allocation.height);
++              allocation.width, allocation.height);
+ 
+   gdk_gl_drawable_gl_end (gldrawable);
+   /*** OpenGL END ***/
+@@ -93,9 +97,12 @@ expose_event (GtkWidget      *widget,
+               GdkEventExpose *event,
+               gpointer        data)
+ {
++  GtkAllocation allocation;
+   GdkGLContext *glcontext = gtk_widget_get_gl_context (widget);
+   GdkGLDrawable *gldrawable = gtk_widget_get_gl_drawable (widget);
+ 
++  gtk_widget_get_allocation (widget, &allocation);
++
+   /*** OpenGL BEGIN ***/
+   if (!gdk_gl_drawable_gl_begin (gldrawable, glcontext))
+     return FALSE;
+@@ -107,12 +114,12 @@ expose_event (GtkWidget      *widget,
+ 
+   /* GDK rendering. */
+   gdk_draw_rectangle (GDK_DRAWABLE (gldrawable),
+-		      widget->style->black_gc,
++		      gtk_widget_get_style (widget)->black_gc,
+ 		      TRUE,
+-		      widget->allocation.width/10,
+-		      widget->allocation.height/10,
+-		      widget->allocation.width*8/10,
+-		      widget->allocation.height*8/10);
++		      allocation.width/10,
++		      allocation.height/10,
++		      allocation.width*8/10,
++		      allocation.height*8/10);
+ 
+   /* Sync. */
+   gdk_gl_drawable_wait_gdk (gldrawable);
+diff --git a/examples/simple-pbuffer-sgix.c b/examples/simple-pbuffer-sgix.c
+index 071b500..d61a479 100644
+--- a/examples/simple-pbuffer-sgix.c
++++ b/examples/simple-pbuffer-sgix.c
+@@ -24,6 +24,7 @@ static void
+ realize (GtkWidget *widget,
+          gpointer   data)
+ {
++  GtkAllocation allocation;
+   GdkGLContext *glcontext = gtk_widget_get_gl_context (widget);
+   GdkGLDrawable *gldrawable = gtk_widget_get_gl_drawable (widget);
+ 
+@@ -50,8 +51,9 @@ realize (GtkWidget *widget,
+   glClearColor (1.0, 1.0, 1.0, 1.0);
+   glClearDepth (1.0);
+ 
++  gtk_widget_get_allocation (widget, &allocation);
+   glViewport (0, 0,
+-              widget->allocation.width, widget->allocation.height);
++              allocation.width, allocation.height);
+ 
+   glMatrixMode (GL_PROJECTION);
+   glLoadIdentity ();
+@@ -73,15 +75,18 @@ configure_event (GtkWidget         *widget,
+                  GdkEventConfigure *event,
+                  gpointer           data)
+ {
++  GtkAllocation allocation;
+   GdkGLContext *glcontext = gtk_widget_get_gl_context (widget);
+   GdkGLDrawable *gldrawable = gtk_widget_get_gl_drawable (widget);
+ 
++  gtk_widget_get_allocation (widget, &allocation);
++
+   /*** OpenGL BEGIN ***/
+   if (!gdk_gl_drawable_gl_begin (gldrawable, glcontext))
+     return FALSE;
+ 
+   glViewport (0, 0,
+-              widget->allocation.width, widget->allocation.height);
++              allocation.width, allocation.height);
+ 
+   gdk_gl_drawable_gl_end (gldrawable);
+   /*** OpenGL END ***/
+@@ -168,6 +173,7 @@ static void
+ render_to_file (GtkButton *button,
+                 GtkWidget *widget)
+ {
++  GtkAllocation allocation;
+   GdkGLConfig *glconfig;
+   Display *xdisplay;
+   XVisualInfo *xvinfo;
+@@ -206,8 +212,9 @@ render_to_file (GtkButton *button,
+    * Create GLXPbuffer.
+    */
+ 
+-  width = widget->allocation.width;
+-  height = widget->allocation.height;
++  gtk_widget_get_allocation (widget, &allocation);
++  width = allocation.width;
++  height = allocation.height;
+ 
+   g_print ("- create GLXPbuffer\n");
+   pbuffer = pb->glXCreateGLXPbufferSGIX (xdisplay, fbconfig,
+diff --git a/examples/simple.c b/examples/simple.c
+index 597fbaa..53a09d9 100644
+--- a/examples/simple.c
++++ b/examples/simple.c
+@@ -23,6 +23,7 @@ static void
+ realize (GtkWidget *widget,
+          gpointer   data)
+ {
++  GtkAllocation allocation;
+   GdkGLContext *glcontext = gtk_widget_get_gl_context (widget);
+   GdkGLDrawable *gldrawable = gtk_widget_get_gl_drawable (widget);
+ 
+@@ -49,8 +50,9 @@ realize (GtkWidget *widget,
+   glClearColor (1.0, 1.0, 1.0, 1.0);
+   glClearDepth (1.0);
+ 
++  gtk_widget_get_allocation (widget, &allocation);
+   glViewport (0, 0,
+-              widget->allocation.width, widget->allocation.height);
++              allocation.width, allocation.height);
+ 
+   glMatrixMode (GL_PROJECTION);
+   glLoadIdentity ();
+@@ -72,6 +74,7 @@ configure_event (GtkWidget         *widget,
+                  GdkEventConfigure *event,
+                  gpointer           data)
+ {
++  GtkAllocation allocation;
+   GdkGLContext *glcontext = gtk_widget_get_gl_context (widget);
+   GdkGLDrawable *gldrawable = gtk_widget_get_gl_drawable (widget);
+ 
+@@ -80,7 +83,7 @@ configure_event (GtkWidget         *widget,
+     return FALSE;
+ 
+   glViewport (0, 0,
+-              widget->allocation.width, widget->allocation.height);
++              allocation.width, allocation.height);
+ 
+   gdk_gl_drawable_gl_end (gldrawable);
+   /*** OpenGL END ***/
+diff --git a/examples/template.c b/examples/template.c
+index 8a6b26a..7c2ee53 100644
+--- a/examples/template.c
++++ b/examples/template.c
+@@ -121,11 +121,16 @@ configure_event (GtkWidget         *widget,
+ 		 GdkEventConfigure *event,
+ 		 gpointer           data)
+ {
++  GtkAllocation allocation;
+   GdkGLContext *glcontext = gtk_widget_get_gl_context (widget);
+   GdkGLDrawable *gldrawable = gtk_widget_get_gl_drawable (widget);
+ 
+-  GLfloat w = widget->allocation.width;
+-  GLfloat h = widget->allocation.height;
++  GLfloat w;
++  GLfloat h;
++
++  gtk_widget_get_allocation (widget, &allocation);
++  w = allocation.width;
++  h = allocation.height;
+ 
+   g_print ("%s: \"configure_event\"\n", gtk_widget_get_name (widget));
+ 
+@@ -186,15 +191,20 @@ expose_event (GtkWidget      *widget,
+ static gboolean
+ timeout (GtkWidget *widget)
+ {
++  GtkAllocation allocation;
++  GdkWindow *window;
+   g_print (".");
+ 
++  window = gtk_widget_get_window (widget);
++  gtk_widget_get_allocation (widget, &allocation);
++
+   /*** Fill in the details here ***/
+ 
+   /* Invalidate the whole window. */
+-  gdk_window_invalidate_rect (widget->window, &widget->allocation, FALSE);
++  gdk_window_invalidate_rect (window, &allocation, FALSE);
+ 
+   /* Update synchronously. */
+-  gdk_window_process_updates (widget->window, FALSE);
++  gdk_window_process_updates (window, FALSE);
+ 
+   return TRUE;
+ }
+@@ -439,6 +449,7 @@ visibility_notify_event (GtkWidget          *widget,
+ static void
+ toggle_animation (GtkWidget *widget)
+ {
++  GtkAllocation allocation;
+   animate = !animate;
+ 
+   if (animate)
+@@ -448,7 +459,8 @@ toggle_animation (GtkWidget *widget)
+   else
+     {
+       timeout_remove (widget);
+-      gdk_window_invalidate_rect (widget->window, &widget->allocation, FALSE);
++      gtk_widget_get_allocation (widget, &allocation);
++      gdk_window_invalidate_rect (gtk_widget_get_window (widget), &allocation, FALSE);
+     }
+ }
+ 
+diff --git a/examples/viewlw.c b/examples/viewlw.c
+index cb0a175..5fc4f48 100644
+--- a/examples/viewlw.c
++++ b/examples/viewlw.c
+@@ -182,6 +182,7 @@ static gboolean
+ configure(GtkWidget         *widget,
+           GdkEventConfigure *event)
+ {
++  GtkAllocation allocation;
+   GdkGLContext *glcontext;
+   GdkGLDrawable *gldrawable;
+ 
+@@ -189,12 +190,13 @@ configure(GtkWidget         *widget,
+ 
+   glcontext = gtk_widget_get_gl_context(widget);
+   gldrawable = gtk_widget_get_gl_drawable(widget);
++  gtk_widget_get_allocation (widget, &allocation);
+ 
+   /*** OpenGL BEGIN ***/
+   if (!gdk_gl_drawable_gl_begin(gldrawable, glcontext))
+     goto NO_GL;
+ 
+-  glViewport (0, 0, widget->allocation.width, widget->allocation.height);
++  glViewport (0, 0, allocation.width, allocation.height);
+ 
+   gdk_gl_drawable_gl_end(gldrawable);
+   /*** OpenGL END ***/
+@@ -264,13 +266,16 @@ static gboolean
+ motion_notify(GtkWidget      *widget,
+               GdkEventMotion *event)
+ {
++  GtkAllocation allocation;
++  GdkModifierType state = 0;
+   int x = 0;
+   int y = 0;
+-  GdkModifierType state = 0;
+   float width, height;
+   gboolean redraw = FALSE;
+   mesh_info *info = (mesh_info*)g_object_get_data(G_OBJECT(widget), "mesh_info");
+ 
++  gtk_widget_get_allocation (widget, &allocation);
++
+   if (event->is_hint)
+     {
+       // fix this!
+@@ -285,8 +290,8 @@ motion_notify(GtkWidget      *widget,
+       state = event->state;
+     }
+ 
+-  width = widget->allocation.width;
+-  height = widget->allocation.height;
++  width = allocation.width;
++  height = allocation.height;
+ 
+   if (state & GDK_BUTTON1_MASK)
+     {
+@@ -319,7 +324,10 @@ motion_notify(GtkWidget      *widget,
+   info->beginy = y;
+ 
+   if (redraw && !info->animate)
+-    gdk_window_invalidate_rect (widget->window, &widget->allocation, FALSE);
++    {
++      gtk_widget_get_allocation (widget, &allocation);
++      gdk_window_invalidate_rect (gtk_widget_get_window (widget), &allocation, FALSE);
++    }
+ 
+   return TRUE;
+ }
+@@ -327,11 +335,16 @@ motion_notify(GtkWidget      *widget,
+ static gboolean
+ timeout(GtkWidget *widget)
+ {
++  GtkAllocation allocation;
++  GdkWindow *window;
++
++  gtk_widget_get_allocation (widget, &allocation);
++
+   /* Invalidate the whole window. */
+-  gdk_window_invalidate_rect (widget->window, &widget->allocation, FALSE);
++  gdk_window_invalidate_rect (window, &allocation, FALSE);
+ 
+   /* Update synchronously. */
+-  gdk_window_process_updates (widget->window, FALSE);
++  gdk_window_process_updates (window, FALSE);
+ 
+   return TRUE;
+ }
+@@ -364,6 +377,7 @@ timeout_remove(GtkWidget *widget)
+ static void
+ toggle_animation(GtkWidget *widget)
+ {
++  GtkAllocation allocation;
+   mesh_info *info = (mesh_info*)g_object_get_data(G_OBJECT(widget), "mesh_info");
+ 
+   info->animate = !info->animate;
+@@ -379,7 +393,8 @@ toggle_animation(GtkWidget *widget)
+       info->dquat[1] = 0.0;
+       info->dquat[2] = 0.0;
+       info->dquat[3] = 1.0;
+-      gdk_window_invalidate_rect (widget->window, &widget->allocation, FALSE);
++      gtk_widget_get_allocation (widget, &allocation);
++      gdk_window_invalidate_rect (gtk_widget_get_window (widget), &allocation, FALSE);
+     }
+ }
+ 
+@@ -425,8 +440,13 @@ static gboolean
+ key_press_event(GtkWidget   *widget,
+                 GdkEventKey *event)
+ {
++  GtkAllocation allocation;
++  GdkWindow *window;
+   mesh_info *info = (mesh_info*)g_object_get_data(G_OBJECT(widget), "mesh_info");
+ 
++  window = gtk_widget_get_window (widget);
++  gtk_widget_get_allocation (widget, &allocation);
++
+   switch (event->keyval)
+     {
+     case GDK_plus:
+@@ -435,7 +455,7 @@ key_press_event(GtkWidget   *widget,
+       if (info->zoom < 5.0) info->zoom = 5.0;
+       if (info->zoom > 120.0) info->zoom = 120.0;
+       /* zoom has changed, redraw mesh */
+-      gdk_window_invalidate_rect (widget->window, &widget->allocation, FALSE);
++      gdk_window_invalidate_rect (window, &allocation, FALSE);
+       break;
+ 
+     case GDK_minus:
+@@ -444,7 +464,7 @@ key_press_event(GtkWidget   *widget,
+       if (info->zoom < 5.0) info->zoom = 5.0;
+       if (info->zoom > 120.0) info->zoom = 120.0;
+       /* zoom has changed, redraw mesh */
+-      gdk_window_invalidate_rect (widget->window, &widget->allocation, FALSE);
++      gdk_window_invalidate_rect (window, &allocation, FALSE);
+       break;
+ 
+     case GDK_Escape:
+diff --git a/gtk/gtkglwidget.c b/gtk/gtkglwidget.c
+index ca60626..2caef08 100644
+--- a/gtk/gtkglwidget.c
++++ b/gtk/gtkglwidget.c
+@@ -70,6 +70,7 @@ static void
+ gtk_gl_widget_realize (GtkWidget       *widget,
+                        GLWidgetPrivate *private)
+ {
++  GdkWindow *window;
+   GdkGLWindow *glwindow;
+ 
+   GTK_GL_NOTE_FUNC_PRIVATE ();
+@@ -79,9 +80,10 @@ gtk_gl_widget_realize (GtkWidget       *widget,
+    * handlers.
+    */
+ 
+-  if (!gdk_window_is_gl_capable (widget->window))
++  window = gtk_widget_get_window (widget);
++  if (!gdk_window_is_gl_capable (window))
+     {
+-      glwindow = gdk_window_set_gl_capability (widget->window,
++      glwindow = gdk_window_set_gl_capability (window,
+                                                private->glconfig,
+                                                NULL);
+       if (glwindow == NULL)
+@@ -131,7 +133,7 @@ gtk_gl_widget_size_allocate (GtkWidget       *widget,
+ 
+   if (gtk_widget_get_realized (widget) && private->is_realized)
+     {
+-      gldrawable = gdk_window_get_gl_drawable (widget->window);
++      gldrawable = gdk_window_get_gl_drawable (gtk_widget_get_window (widget));
+       gdk_gl_drawable_wait_gdk (gldrawable);
+     }
+ }
+@@ -157,7 +159,7 @@ gtk_gl_widget_unrealize (GtkWidget       *widget,
+    */
+ 
+   if (gtk_widget_get_realized (widget))
+-    gdk_window_unset_gl_capability (widget->window);
++    gdk_window_unset_gl_capability (gtk_widget_get_window (widget));
+ 
+   private->is_realized = FALSE;
+ }
+@@ -190,6 +192,8 @@ gtk_gl_widget_style_set (GtkWidget *widget,
+                          GtkStyle  *previous_style,
+                          gpointer   user_data)
+ {
++  GdkWindow *window;
++
+   GTK_GL_NOTE_FUNC_PRIVATE ();
+ 
+   /* 
+@@ -198,15 +202,17 @@ gtk_gl_widget_style_set (GtkWidget *widget,
+ 
+   if (gtk_widget_get_realized (widget))
+     {
++      window = gtk_widget_get_window (widget);
++
+       GTK_GL_NOTE (MISC,
+         g_message (" - window->bg_pixmap = %p",
+-                   ((GdkWindowObject *) (widget->window))->bg_pixmap));
++                   ((GdkWindowObject *) window)->bg_pixmap));
+ 
+-      gdk_window_set_back_pixmap (widget->window, NULL, FALSE);
++      gdk_window_set_back_pixmap (window, NULL, FALSE);
+ 
+       GTK_GL_NOTE (MISC,
+         g_message (" - window->bg_pixmap = %p",
+-                   ((GdkWindowObject *) (widget->window))->bg_pixmap));
++                   ((GdkWindowObject *) window)->bg_pixmap));
+     }
+ }
+ 
+@@ -436,7 +442,7 @@ gtk_widget_create_gl_context (GtkWidget    *widget,
+   g_return_val_if_fail (GTK_IS_WIDGET (widget), NULL);
+   g_return_val_if_fail (gtk_widget_get_realized (widget), NULL);
+ 
+-  gldrawable = gdk_window_get_gl_drawable (widget->window);
++  gldrawable = gdk_window_get_gl_drawable (gtk_widget_get_window (widget));
+   if (gldrawable == NULL)
+     return NULL;
+ 
+@@ -505,5 +511,5 @@ gtk_widget_get_gl_window (GtkWidget *widget)
+   g_return_val_if_fail (GTK_IS_WIDGET (widget), NULL);
+   g_return_val_if_fail (gtk_widget_get_realized (widget), NULL);
+ 
+-  return gdk_window_get_gl_window (widget->window);
++  return gdk_window_get_gl_window (gtk_widget_get_window (widget));
+ }
+-- 
+1.7.0.4
+

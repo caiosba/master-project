@@ -1,0 +1,247 @@
+<refentry id="gtkglext-gdkglshapes">
+<refmeta>
+<refentrytitle role="top_of_page">Geometric Object Rendering</refentrytitle>
+<manvolnum>3</manvolnum>
+<refmiscinfo>GTKGLEXT Library</refmiscinfo>
+</refmeta>
+
+<refnamediv>
+<refname>Geometric Object Rendering</refname>
+<refpurpose>Functions for generating easily recognizable 3D geometric objects</refpurpose>
+<!--[<xref linkend="desc" endterm="desc.title"/>]-->
+</refnamediv>
+
+<refsynopsisdiv role="synopsis">
+<title role="synopsis.title">Synopsis</title>
+
+<synopsis>
+
+#include &lt;gdk/gdkgl.h&gt;
+
+
+<link linkend="void">void</link>        <link linkend="gdk-gl-draw-cube">gdk_gl_draw_cube</link>                (<link linkend="gboolean">gboolean</link> solid,
+                                             <link linkend="double">double</link> size);
+<link linkend="void">void</link>        <link linkend="gdk-gl-draw-sphere">gdk_gl_draw_sphere</link>              (<link linkend="gboolean">gboolean</link> solid,
+                                             <link linkend="double">double</link> radius,
+                                             <link linkend="int">int</link> slices,
+                                             <link linkend="int">int</link> stacks);
+<link linkend="void">void</link>        <link linkend="gdk-gl-draw-cone">gdk_gl_draw_cone</link>                (<link linkend="gboolean">gboolean</link> solid,
+                                             <link linkend="double">double</link> base,
+                                             <link linkend="double">double</link> height,
+                                             <link linkend="int">int</link> slices,
+                                             <link linkend="int">int</link> stacks);
+<link linkend="void">void</link>        <link linkend="gdk-gl-draw-torus">gdk_gl_draw_torus</link>               (<link linkend="gboolean">gboolean</link> solid,
+                                             <link linkend="double">double</link> inner_radius,
+                                             <link linkend="double">double</link> outer_radius,
+                                             <link linkend="int">int</link> nsides,
+                                             <link linkend="int">int</link> rings);
+<link linkend="void">void</link>        <link linkend="gdk-gl-draw-tetrahedron">gdk_gl_draw_tetrahedron</link>         (<link linkend="gboolean">gboolean</link> solid);
+<link linkend="void">void</link>        <link linkend="gdk-gl-draw-octahedron">gdk_gl_draw_octahedron</link>          (<link linkend="gboolean">gboolean</link> solid);
+<link linkend="void">void</link>        <link linkend="gdk-gl-draw-dodecahedron">gdk_gl_draw_dodecahedron</link>        (<link linkend="gboolean">gboolean</link> solid);
+<link linkend="void">void</link>        <link linkend="gdk-gl-draw-icosahedron">gdk_gl_draw_icosahedron</link>         (<link linkend="gboolean">gboolean</link> solid);
+<link linkend="void">void</link>        <link linkend="gdk-gl-draw-teapot">gdk_gl_draw_teapot</link>              (<link linkend="gboolean">gboolean</link> solid,
+                                             <link linkend="double">double</link> scale);
+</synopsis>
+</refsynopsisdiv>
+
+
+
+
+
+
+
+
+
+<refsect1 role="desc">
+<title role="desc.title">Description</title>
+<para>
+
+</para>
+</refsect1>
+
+<refsect1 role="details">
+<title role="details.title">Details</title>
+<refsect2>
+<title><anchor id="gdk-gl-draw-cube" role="function"/>gdk_gl_draw_cube ()</title>
+<indexterm><primary>gdk_gl_draw_cube</primary></indexterm><programlisting><link linkend="void">void</link>        gdk_gl_draw_cube                (<link linkend="gboolean">gboolean</link> solid,
+                                             <link linkend="double">double</link> size);</programlisting>
+<para>
+Renders a cube.
+The cube is centered at the modeling coordinates origin with sides of
+length <parameter>size</parameter>.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>solid</parameter>&nbsp;:</term>
+<listitem><simpara> TRUE if the cube should be solid.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>size</parameter>&nbsp;:</term>
+<listitem><simpara> length of cube sides.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="gdk-gl-draw-sphere" role="function"/>gdk_gl_draw_sphere ()</title>
+<indexterm><primary>gdk_gl_draw_sphere</primary></indexterm><programlisting><link linkend="void">void</link>        gdk_gl_draw_sphere              (<link linkend="gboolean">gboolean</link> solid,
+                                             <link linkend="double">double</link> radius,
+                                             <link linkend="int">int</link> slices,
+                                             <link linkend="int">int</link> stacks);</programlisting>
+<para>
+Renders a sphere centered at the modeling coordinates origin of
+the specified <parameter>radius</parameter>. The sphere is subdivided around the Z axis into
+<parameter>slices</parameter> and along the Z axis into <parameter>stacks</parameter>.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>solid</parameter>&nbsp;:</term>
+<listitem><simpara> TRUE if the sphere should be solid.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>radius</parameter>&nbsp;:</term>
+<listitem><simpara> the radius of the sphere.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>slices</parameter>&nbsp;:</term>
+<listitem><simpara> the number of subdivisions around the Z axis (similar to lines of
+         longitude).
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>stacks</parameter>&nbsp;:</term>
+<listitem><simpara> the number of subdivisions along the Z axis (similar to lines of
+         latitude).
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="gdk-gl-draw-cone" role="function"/>gdk_gl_draw_cone ()</title>
+<indexterm><primary>gdk_gl_draw_cone</primary></indexterm><programlisting><link linkend="void">void</link>        gdk_gl_draw_cone                (<link linkend="gboolean">gboolean</link> solid,
+                                             <link linkend="double">double</link> base,
+                                             <link linkend="double">double</link> height,
+                                             <link linkend="int">int</link> slices,
+                                             <link linkend="int">int</link> stacks);</programlisting>
+<para>
+Renders a cone oriented along the Z axis.
+The <parameter>base</parameter> of the cone is placed at Z = 0, and the top at Z = <parameter>height</parameter>.
+The cone is subdivided around the Z axis into <parameter>slices</parameter>, and along
+the Z axis into <parameter>stacks</parameter>.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>solid</parameter>&nbsp;:</term>
+<listitem><simpara> TRUE if the cone should be solid.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>base</parameter>&nbsp;:</term>
+<listitem><simpara> the radius of the base of the cone.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>height</parameter>&nbsp;:</term>
+<listitem><simpara> the height of the cone.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>slices</parameter>&nbsp;:</term>
+<listitem><simpara> the number of subdivisions around the Z axis.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>stacks</parameter>&nbsp;:</term>
+<listitem><simpara> the number of subdivisions along the Z axis.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="gdk-gl-draw-torus" role="function"/>gdk_gl_draw_torus ()</title>
+<indexterm><primary>gdk_gl_draw_torus</primary></indexterm><programlisting><link linkend="void">void</link>        gdk_gl_draw_torus               (<link linkend="gboolean">gboolean</link> solid,
+                                             <link linkend="double">double</link> inner_radius,
+                                             <link linkend="double">double</link> outer_radius,
+                                             <link linkend="int">int</link> nsides,
+                                             <link linkend="int">int</link> rings);</programlisting>
+<para>
+Renders a torus (doughnut) centered at the modeling coordinates
+origin whose axis is aligned with the Z axis.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>solid</parameter>&nbsp;:</term>
+<listitem><simpara> TRUE if the torus should be solid.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>inner_radius</parameter>&nbsp;:</term>
+<listitem><simpara> inner radius of the torus.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>outer_radius</parameter>&nbsp;:</term>
+<listitem><simpara> outer radius of the torus.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>nsides</parameter>&nbsp;:</term>
+<listitem><simpara> number of sides for each radial section.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>rings</parameter>&nbsp;:</term>
+<listitem><simpara> number of radial divisions for the torus.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="gdk-gl-draw-tetrahedron" role="function"/>gdk_gl_draw_tetrahedron ()</title>
+<indexterm><primary>gdk_gl_draw_tetrahedron</primary></indexterm><programlisting><link linkend="void">void</link>        gdk_gl_draw_tetrahedron         (<link linkend="gboolean">gboolean</link> solid);</programlisting>
+<para>
+Renders a tetrahedron centered at the modeling coordinates
+origin with a radius of the square root of 3.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>solid</parameter>&nbsp;:</term>
+<listitem><simpara> TRUE if the tetrahedron should be solid.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="gdk-gl-draw-octahedron" role="function"/>gdk_gl_draw_octahedron ()</title>
+<indexterm><primary>gdk_gl_draw_octahedron</primary></indexterm><programlisting><link linkend="void">void</link>        gdk_gl_draw_octahedron          (<link linkend="gboolean">gboolean</link> solid);</programlisting>
+<para>
+Renders a octahedron centered at the modeling coordinates
+origin with a radius of 1.0.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>solid</parameter>&nbsp;:</term>
+<listitem><simpara> TRUE if the octahedron should be solid.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="gdk-gl-draw-dodecahedron" role="function"/>gdk_gl_draw_dodecahedron ()</title>
+<indexterm><primary>gdk_gl_draw_dodecahedron</primary></indexterm><programlisting><link linkend="void">void</link>        gdk_gl_draw_dodecahedron        (<link linkend="gboolean">gboolean</link> solid);</programlisting>
+<para>
+Renders a dodecahedron centered at the modeling coordinates
+origin with a radius of the square root of 3.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>solid</parameter>&nbsp;:</term>
+<listitem><simpara> TRUE if the dodecahedron should be solid.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="gdk-gl-draw-icosahedron" role="function"/>gdk_gl_draw_icosahedron ()</title>
+<indexterm><primary>gdk_gl_draw_icosahedron</primary></indexterm><programlisting><link linkend="void">void</link>        gdk_gl_draw_icosahedron         (<link linkend="gboolean">gboolean</link> solid);</programlisting>
+<para>
+Renders a icosahedron.
+The icosahedron is centered at the modeling coordinates origin
+and has a radius of 1.0.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>solid</parameter>&nbsp;:</term>
+<listitem><simpara> TRUE if the icosahedron should be solid.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="gdk-gl-draw-teapot" role="function"/>gdk_gl_draw_teapot ()</title>
+<indexterm><primary>gdk_gl_draw_teapot</primary></indexterm><programlisting><link linkend="void">void</link>        gdk_gl_draw_teapot              (<link linkend="gboolean">gboolean</link> solid,
+                                             <link linkend="double">double</link> scale);</programlisting>
+<para>
+Renders a teapot.
+Both surface normals and texture coordinates for the teapot are generated.
+The teapot is generated with OpenGL evaluators.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>solid</parameter>&nbsp;:</term>
+<listitem><simpara> TRUE if the teapot should be solid.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>scale</parameter>&nbsp;:</term>
+<listitem><simpara> relative size of the teapot.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+
+</refsect1>
+
+
+
+
+</refentry>

@@ -1,0 +1,5 @@
+\form#0:\[ \left[ \begin{array}{cccc} f_{11} & f_{12} & f_{13} & f_{14} \\ f_{21} & f_{22} & f_{23} & f_{24} \\ f_{31} & f_{32} & f_{33} & f_{34} \\ f_{41} & f_{42} & f_{43} & f_{44} \\ \end{array} \right] \]
+\form#1:\[ qr = ( \vec{q_v} \times \vec{r_v} + r_w \vec{q_v} + q_w \vec{r_v}, q_w r_w - \vec{q_v} \cdotp \vec{r_v}) \]
+\form#2:\[ q^* = (- \vec{q_v}, q_w) \]
+\form#3:\[ q^{-1} = \frac{q^*}{n(q)} \]
+\form#4:\[ n(q) = q_x^2 + q_y^2 + q_z^2 + q_w^2 \]

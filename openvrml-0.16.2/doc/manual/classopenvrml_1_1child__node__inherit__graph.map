@@ -1,0 +1,8 @@
+base referer
+rect $classopenvrml_1_1grouping__node.html 561,6 751,32
+rect $classopenvrml_1_1light__node.html 575,56 737,83
+rect $classopenvrml_1_1navigation__info__node.html 540,107 772,134
+rect $classopenvrml_1_1pointing__device__sensor__node.html 513,158 799,184
+rect $classopenvrml_1_1script__node.html 572,208 740,235
+rect $classopenvrml_1_1viewpoint__node.html 559,259 753,286
+rect $classopenvrml_1_1bounded__volume__node.html 5,132 251,159

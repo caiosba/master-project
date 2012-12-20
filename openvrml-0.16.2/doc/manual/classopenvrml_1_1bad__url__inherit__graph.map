@@ -1,0 +1,4 @@
+base referer
+rect $classopenvrml_1_1bad__media__type.html 5,80 205,107
+rect $classopenvrml_1_1invalid__url.html 229,80 389,107
+rect $classopenvrml_1_1no__alternative__url.html 413,80 624,107

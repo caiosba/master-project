@@ -1,0 +1,11 @@
+target=x11
+api_version=1.0
+
+multihead=yes
+
+Name: GtkGLExt Uninstalled
+Description: OpenGL Extension to GTK+ (${target} target), Not Installed
+Version: 1.2.0
+Requires: gdkglext-${target}-${api_version}-uninstalled gtk+-2.0
+Libs: ${pc_top_builddir}${pcfiledir}/gtk/libgtkglext-${target}-${api_version}.la 
+Cflags: -I${pc_top_builddir}${pcfiledir} -I${pc_top_builddir}${pcfiledir}/. 

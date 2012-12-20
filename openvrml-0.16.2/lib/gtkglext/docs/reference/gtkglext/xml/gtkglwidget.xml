@@ -1,0 +1,212 @@
+<refentry id="gtkglext-gtkglwidget">
+<refmeta>
+<refentrytitle role="top_of_page">OpenGL-Capable Widget</refentrytitle>
+<manvolnum>3</manvolnum>
+<refmiscinfo>GTKGLEXT Library</refmiscinfo>
+</refmeta>
+
+<refnamediv>
+<refname>OpenGL-Capable Widget</refname>
+<refpurpose>OpenGL extension to GtkWidget API</refpurpose>
+<!--[<xref linkend="desc" endterm="desc.title"/>]-->
+</refnamediv>
+
+<refsynopsisdiv role="synopsis">
+<title role="synopsis.title">Synopsis</title>
+
+<synopsis>
+
+#include &lt;gtk/gtkgl.h&gt;
+
+
+<link linkend="gboolean">gboolean</link>    <link linkend="gtk-widget-set-gl-capability">gtk_widget_set_gl_capability</link>    (<link linkend="GtkWidget">GtkWidget</link> *widget,
+                                             <link linkend="GdkGLConfig">GdkGLConfig</link> *glconfig,
+                                             <link linkend="GdkGLContext">GdkGLContext</link> *share_list,
+                                             <link linkend="gboolean">gboolean</link> direct,
+                                             <link linkend="int">int</link> render_type);
+<link linkend="gboolean">gboolean</link>    <link linkend="gtk-widget-is-gl-capable">gtk_widget_is_gl_capable</link>        (<link linkend="GtkWidget">GtkWidget</link> *widget);
+<link linkend="GdkGLConfig">GdkGLConfig</link>* <link linkend="gtk-widget-get-gl-config">gtk_widget_get_gl_config</link>       (<link linkend="GtkWidget">GtkWidget</link> *widget);
+<link linkend="GdkGLContext">GdkGLContext</link>* <link linkend="gtk-widget-create-gl-context">gtk_widget_create_gl_context</link>  (<link linkend="GtkWidget">GtkWidget</link> *widget,
+                                             <link linkend="GdkGLContext">GdkGLContext</link> *share_list,
+                                             <link linkend="gboolean">gboolean</link> direct,
+                                             <link linkend="int">int</link> render_type);
+<link linkend="GdkGLContext">GdkGLContext</link>* <link linkend="gtk-widget-get-gl-context">gtk_widget_get_gl_context</link>     (<link linkend="GtkWidget">GtkWidget</link> *widget);
+<link linkend="GdkGLWindow">GdkGLWindow</link>* <link linkend="gtk-widget-get-gl-window">gtk_widget_get_gl_window</link>       (<link linkend="GtkWidget">GtkWidget</link> *widget);
+#define     <link linkend="gtk-widget-get-gl-drawable">gtk_widget_get_gl_drawable</link>      (widget)
+</synopsis>
+</refsynopsisdiv>
+
+
+
+
+
+
+
+
+
+<refsect1 role="desc">
+<title role="desc.title">Description</title>
+<para>
+GtkGLExt is an extension to GTK which adds OpenGL capabilities to
+GtkWidget. Its use is quite simple: use <link linkend="gtk-widget-set-gl-capability"><type>gtk_widget_set_gl_capability</type></link>
+to add OpenGL support to a widget, it will create a OpenGL drawable
+(<link linkend="GdkGLDrawable"><type>GdkGLDrawable</type></link>) for the widget, which can be obtained via
+<link linkend="gtk-widget-get-gl-drawable"><type>gtk_widget_get_gl_drawable</type></link>. OpenGL rendering context (<link linkend="GdkGLContext"><type>GdkGLContext</type></link>)
+can also be obtained via <link linkend="gtk-widget-get-gl-context"><type>gtk_widget_get_gl_context</type></link>.
+With <link linkend="GdkGLDrawable"><type>GdkGLDrawable</type></link> and <link linkend="GdkGLContext"><type>GdkGLContext</type></link>, <link linkend="gdk-gl-drawable-gl-begin"><type>gdk_gl_drawable_gl_begin</type></link> and
+<link linkend="gdk-gl-drawable-gl-end"><type>gdk_gl_drawable_gl_end</type></link> can be called, and OpenGL function calls can
+be made between those two functions.
+</para>
+</refsect1>
+
+<refsect1 role="details">
+<title role="details.title">Details</title>
+<refsect2>
+<title><anchor id="gtk-widget-set-gl-capability" role="function"/>gtk_widget_set_gl_capability ()</title>
+<indexterm><primary>gtk_widget_set_gl_capability</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gtk_widget_set_gl_capability    (<link linkend="GtkWidget">GtkWidget</link> *widget,
+                                             <link linkend="GdkGLConfig">GdkGLConfig</link> *glconfig,
+                                             <link linkend="GdkGLContext">GdkGLContext</link> *share_list,
+                                             <link linkend="gboolean">gboolean</link> direct,
+                                             <link linkend="int">int</link> render_type);</programlisting>
+<para>
+Set the OpenGL-capability to the <parameter>widget</parameter>.
+This function prepares the widget for its use with OpenGL.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>widget</parameter>&nbsp;:</term>
+<listitem><simpara> the <link linkend="GtkWidget"><type>GtkWidget</type></link> to be used as the rendering area.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>glconfig</parameter>&nbsp;:</term>
+<listitem><simpara> a <link linkend="GdkGLConfig"><type>GdkGLConfig</type></link>.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>share_list</parameter>&nbsp;:</term>
+<listitem><simpara> the <link linkend="GdkGLContext"><type>GdkGLContext</type></link> with which to share display lists and texture
+             objects. NULL indicates that no sharing is to take place.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>direct</parameter>&nbsp;:</term>
+<listitem><simpara> whether rendering is to be done with a direct connection to
+         the graphics system.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>render_type</parameter>&nbsp;:</term>
+<listitem><simpara> GDK_GL_RGBA_TYPE or GDK_GL_COLOR_INDEX_TYPE (currently not
+              used).
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE if it is successful, FALSE otherwise.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="gtk-widget-is-gl-capable" role="function"/>gtk_widget_is_gl_capable ()</title>
+<indexterm><primary>gtk_widget_is_gl_capable</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gtk_widget_is_gl_capable        (<link linkend="GtkWidget">GtkWidget</link> *widget);</programlisting>
+<para>
+Returns whether the <parameter>widget</parameter> is OpenGL-capable.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>widget</parameter>&nbsp;:</term>
+<listitem><simpara> a <link linkend="GtkWidget"><type>GtkWidget</type></link>.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE if the <parameter>widget</parameter> is OpenGL-capable, FALSE otherwise.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="gtk-widget-get-gl-config" role="function"/>gtk_widget_get_gl_config ()</title>
+<indexterm><primary>gtk_widget_get_gl_config</primary></indexterm><programlisting><link linkend="GdkGLConfig">GdkGLConfig</link>* gtk_widget_get_gl_config       (<link linkend="GtkWidget">GtkWidget</link> *widget);</programlisting>
+<para>
+Returns the <link linkend="GdkGLConfig"><type>GdkGLConfig</type></link> referred by the <parameter>widget</parameter>.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>widget</parameter>&nbsp;:</term>
+<listitem><simpara> a <link linkend="GtkWidget"><type>GtkWidget</type></link>.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the <link linkend="GdkGLConfig"><type>GdkGLConfig</type></link>.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="gtk-widget-create-gl-context" role="function"/>gtk_widget_create_gl_context ()</title>
+<indexterm><primary>gtk_widget_create_gl_context</primary></indexterm><programlisting><link linkend="GdkGLContext">GdkGLContext</link>* gtk_widget_create_gl_context  (<link linkend="GtkWidget">GtkWidget</link> *widget,
+                                             <link linkend="GdkGLContext">GdkGLContext</link> *share_list,
+                                             <link linkend="gboolean">gboolean</link> direct,
+                                             <link linkend="int">int</link> render_type);</programlisting>
+<para>
+Creates a new <link linkend="GdkGLContext"><type>GdkGLContext</type></link> with the appropriate <link linkend="GdkGLDrawable"><type>GdkGLDrawable</type></link>
+for this widget. The GL context must be freed when you're
+finished with it. See also <link linkend="gtk-widget-get-gl-context"><function>gtk_widget_get_gl_context()</function></link>.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>widget</parameter>&nbsp;:</term>
+<listitem><simpara> a <link linkend="GtkWidget"><type>GtkWidget</type></link>.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>share_list</parameter>&nbsp;:</term>
+<listitem><simpara> the <link linkend="GdkGLContext"><type>GdkGLContext</type></link> with which to share display lists and texture
+             objects. NULL indicates that no sharing is to take place.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>direct</parameter>&nbsp;:</term>
+<listitem><simpara> whether rendering is to be done with a direct connection to
+         the graphics system.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>render_type</parameter>&nbsp;:</term>
+<listitem><simpara> GDK_GL_RGBA_TYPE or GDK_GL_COLOR_INDEX_TYPE (currently not
+              used).
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the new <link linkend="GdkGLContext"><type>GdkGLContext</type></link>.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="gtk-widget-get-gl-context" role="function"/>gtk_widget_get_gl_context ()</title>
+<indexterm><primary>gtk_widget_get_gl_context</primary></indexterm><programlisting><link linkend="GdkGLContext">GdkGLContext</link>* gtk_widget_get_gl_context     (<link linkend="GtkWidget">GtkWidget</link> *widget);</programlisting>
+<para>
+Returns the <link linkend="GdkGLContext"><type>GdkGLContext</type></link> with the appropriate <link linkend="GdkGLDrawable"><type>GdkGLDrawable</type></link>
+for this widget. Unlike the GL context returned by
+<link linkend="gtk-widget-create-gl-context"><function>gtk_widget_create_gl_context()</function></link>,  this context is owned by the widget.
+</para>
+<para>
+<link linkend="GdkGLContext"><type>GdkGLContext</type></link> is needed for the function gdk_gl_drawable_begin,
+or for sharing display lists (see <link linkend="gtk-widget-set-gl-capability"><function>gtk_widget_set_gl_capability()</function></link>).</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>widget</parameter>&nbsp;:</term>
+<listitem><simpara> a <link linkend="GtkWidget"><type>GtkWidget</type></link>.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the <link linkend="GdkGLContext"><type>GdkGLContext</type></link>.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="gtk-widget-get-gl-window" role="function"/>gtk_widget_get_gl_window ()</title>
+<indexterm><primary>gtk_widget_get_gl_window</primary></indexterm><programlisting><link linkend="GdkGLWindow">GdkGLWindow</link>* gtk_widget_get_gl_window       (<link linkend="GtkWidget">GtkWidget</link> *widget);</programlisting>
+<para>
+Returns the <link linkend="GdkGLWindow"><type>GdkGLWindow</type></link> owned by the <parameter>widget</parameter>.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>widget</parameter>&nbsp;:</term>
+<listitem><simpara> a <link linkend="GtkWidget"><type>GtkWidget</type></link>.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the <link linkend="GdkGLWindow"><type>GdkGLWindow</type></link>.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="gtk-widget-get-gl-drawable" role="macro"/>gtk_widget_get_gl_drawable()</title>
+<indexterm><primary>gtk_widget_get_gl_drawable</primary></indexterm><programlisting>#define     gtk_widget_get_gl_drawable(widget)</programlisting>
+<para>
+Returns the <link linkend="GdkGLDrawable"><type>GdkGLDrawable</type></link> owned by the <parameter>widget</parameter>. In fact, this is
+macro that casts the result of <link linkend="gtk-widget-get-gl-window"><type>gtk_widget_get_gl_window</type></link> to <link linkend="GdkGLDrawable"><type>GdkGLDrawable</type></link>.
+</para><variablelist role="params">
+<varlistentry><term><parameter>widget</parameter>&nbsp;:</term>
+<listitem><simpara>a <link linkend="GtkWidget"><type>GtkWidget</type></link>.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara>the <link linkend="GdkGLDrawable"><type>GdkGLDrawable</type></link>.
+
+
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+
+</refsect1>
+
+
+
+
+</refentry>

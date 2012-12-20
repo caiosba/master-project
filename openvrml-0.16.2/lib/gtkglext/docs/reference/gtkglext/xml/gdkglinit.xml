@@ -1,0 +1,141 @@
+<refentry id="gtkglext-gdkglinit">
+<refmeta>
+<refentrytitle role="top_of_page">Initialization</refentrytitle>
+<manvolnum>3</manvolnum>
+<refmiscinfo>GTKGLEXT Library</refmiscinfo>
+</refmeta>
+
+<refnamediv>
+<refname>Initialization</refname>
+<refpurpose>Library initialization functions</refpurpose>
+<!--[<xref linkend="desc" endterm="desc.title"/>]-->
+</refnamediv>
+
+<refsynopsisdiv role="synopsis">
+<title role="synopsis.title">Synopsis</title>
+
+<synopsis>
+
+#include &lt;gdk/gdkgl.h&gt;
+
+
+<link linkend="void">void</link>        <link linkend="gdk-gl-init">gdk_gl_init</link>                     (<link linkend="int">int</link> *argc,
+                                             <link linkend="char">char</link> ***argv);
+<link linkend="gboolean">gboolean</link>    <link linkend="gdk-gl-init-check">gdk_gl_init_check</link>               (<link linkend="int">int</link> *argc,
+                                             <link linkend="char">char</link> ***argv);
+<link linkend="gboolean">gboolean</link>    <link linkend="gdk-gl-parse-args">gdk_gl_parse_args</link>               (<link linkend="int">int</link> *argc,
+                                             <link linkend="char">char</link> ***argv);
+</synopsis>
+</refsynopsisdiv>
+
+
+
+
+
+
+
+
+
+<refsect1 role="desc">
+<title role="desc.title">Description</title>
+<para>
+
+</para>
+</refsect1>
+
+<refsect1 role="details">
+<title role="details.title">Details</title>
+<refsect2>
+<title><anchor id="gdk-gl-init" role="function"/>gdk_gl_init ()</title>
+<indexterm><primary>gdk_gl_init</primary></indexterm><programlisting><link linkend="void">void</link>        gdk_gl_init                     (<link linkend="int">int</link> *argc,
+                                             <link linkend="char">char</link> ***argv);</programlisting>
+<para>
+Call this function before using any other GdkGLExt functions in your 
+applications.  It will initialize everything needed to operate the library
+and parses some standard command line options. <parameter>argc</parameter> and 
+<parameter>argv</parameter> are adjusted accordingly so your own code will 
+never see those standard arguments.
+</para>
+<para>
+<note><para>
+This function will terminate your program if it was unable to initialize 
+the library for some reason. If you want your program to fall back to a 
+textual interface you want to call <link linkend="gdk-gl-init-check"><function>gdk_gl_init_check()</function></link> instead.
+</para></note></para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>argc</parameter>&nbsp;:</term>
+<listitem><simpara> Address of the <parameter>argc</parameter> parameter of your 
+       <function><link linkend="main"><function>main()</function></link></function> function. Changed if any arguments
+       were handled.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>argv</parameter>&nbsp;:</term>
+<listitem><simpara> Address of the <parameter>argv</parameter> parameter of 
+       <function><link linkend="main"><function>main()</function></link></function>. Any parameters understood by
+       <link linkend="gdk-gl-init"><function>gdk_gl_init()</function></link> are stripped before return.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="gdk-gl-init-check" role="function"/>gdk_gl_init_check ()</title>
+<indexterm><primary>gdk_gl_init_check</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gdk_gl_init_check               (<link linkend="int">int</link> *argc,
+                                             <link linkend="char">char</link> ***argv);</programlisting>
+<para>
+This function does the same work as <link linkend="gdk-gl-init"><function>gdk_gl_init()</function></link> with only 
+a single change: It does not terminate the program if the library can't be 
+initialized. Instead it returns <link linkend="FALSE:CAPS"><literal>FALSE</literal></link> on failure.
+</para>
+<para>
+This way the application can fall back to some other means of communication 
+with the user - for example a curses or command line interface.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>argc</parameter>&nbsp;:</term>
+<listitem><simpara> Address of the <parameter>argc</parameter> parameter of your 
+       <function><link linkend="main"><function>main()</function></link></function> function. Changed if any arguments
+       were handled.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>argv</parameter>&nbsp;:</term>
+<listitem><simpara> Address of the <parameter>argv</parameter> parameter of 
+       <function><link linkend="main"><function>main()</function></link></function>. Any parameters understood by
+       <link linkend="gdk-gl-init"><function>gdk_gl_init()</function></link> are stripped before return.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> <link linkend="TRUE:CAPS"><literal>TRUE</literal></link> if the GUI has been successfully initialized, 
+              <link linkend="FALSE:CAPS"><literal>FALSE</literal></link> otherwise.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="gdk-gl-parse-args" role="function"/>gdk_gl_parse_args ()</title>
+<indexterm><primary>gdk_gl_parse_args</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gdk_gl_parse_args               (<link linkend="int">int</link> *argc,
+                                             <link linkend="char">char</link> ***argv);</programlisting>
+<para>
+Parses command line arguments, and initializes global
+attributes of GdkGLExt.
+</para>
+<para>
+Any arguments used by GdkGLExt are removed from the array and
+<parameter>argc</parameter> and <parameter>argv</parameter> are updated accordingly.
+</para>
+<para>
+You shouldn't call this function explicitely if you are using
+<link linkend="gdk-gl-init"><function>gdk_gl_init()</function></link>, or <link linkend="gdk-gl-init-check"><function>gdk_gl_init_check()</function></link>.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>argc</parameter>&nbsp;:</term>
+<listitem><simpara> the number of command line arguments.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>argv</parameter>&nbsp;:</term>
+<listitem><simpara> the array of command line arguments.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> <link linkend="TRUE:CAPS"><literal>TRUE</literal></link> if initialization succeeded, otherwise <link linkend="FALSE:CAPS"><literal>FALSE</literal></link>.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+
+</refsect1>
+
+
+
+
+</refentry>

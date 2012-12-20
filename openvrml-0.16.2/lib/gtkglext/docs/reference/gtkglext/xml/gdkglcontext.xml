@@ -1,0 +1,234 @@
+<refentry id="gtkglext-gdkglcontext">
+<refmeta>
+<refentrytitle role="top_of_page">Rendering Context</refentrytitle>
+<manvolnum>3</manvolnum>
+<refmiscinfo>GTKGLEXT Library</refmiscinfo>
+</refmeta>
+
+<refnamediv>
+<refname>Rendering Context</refname>
+<refpurpose>OpenGL rendering context object</refpurpose>
+<!--[<xref linkend="desc" endterm="desc.title"/>]-->
+</refnamediv>
+
+<refsynopsisdiv role="synopsis">
+<title role="synopsis.title">Synopsis</title>
+<anchor id="GdkGLContext"/>
+<synopsis>
+
+#include &lt;gdk/gdkgl.h&gt;
+
+
+            <link linkend="GdkGLContext-struct">GdkGLContext</link>;
+<link linkend="GdkGLContext">GdkGLContext</link>* <link linkend="gdk-gl-context-new">gdk_gl_context_new</link>            (<link linkend="GdkGLDrawable">GdkGLDrawable</link> *gldrawable,
+                                             <link linkend="GdkGLContext">GdkGLContext</link> *share_list,
+                                             <link linkend="gboolean">gboolean</link> direct,
+                                             <link linkend="int">int</link> render_type);
+<link linkend="void">void</link>        <link linkend="gdk-gl-context-destroy">gdk_gl_context_destroy</link>          (<link linkend="GdkGLContext">GdkGLContext</link> *glcontext);
+<link linkend="gboolean">gboolean</link>    <link linkend="gdk-gl-context-copy">gdk_gl_context_copy</link>             (<link linkend="GdkGLContext">GdkGLContext</link> *glcontext,
+                                             <link linkend="GdkGLContext">GdkGLContext</link> *src,
+                                             long <link linkend="mask">mask</link> );
+<link linkend="GdkGLDrawable">GdkGLDrawable</link>* <link linkend="gdk-gl-context-get-gl-drawable">gdk_gl_context_get_gl_drawable</link>
+                                            (<link linkend="GdkGLContext">GdkGLContext</link> *glcontext);
+<link linkend="GdkGLConfig">GdkGLConfig</link>* <link linkend="gdk-gl-context-get-gl-config">gdk_gl_context_get_gl_config</link>   (<link linkend="GdkGLContext">GdkGLContext</link> *glcontext);
+<link linkend="GdkGLContext">GdkGLContext</link>* <link linkend="gdk-gl-context-get-share-list">gdk_gl_context_get_share_list</link> (<link linkend="GdkGLContext">GdkGLContext</link> *glcontext);
+<link linkend="gboolean">gboolean</link>    <link linkend="gdk-gl-context-is-direct">gdk_gl_context_is_direct</link>        (<link linkend="GdkGLContext">GdkGLContext</link> *glcontext);
+<link linkend="int">int</link>         <link linkend="gdk-gl-context-get-render-type">gdk_gl_context_get_render_type</link>  (<link linkend="GdkGLContext">GdkGLContext</link> *glcontext);
+<link linkend="GdkGLContext">GdkGLContext</link>* <link linkend="gdk-gl-context-get-current">gdk_gl_context_get_current</link>    (void);
+
+
+</synopsis>
+</refsynopsisdiv>
+
+<refsect1 role="object_hierarchy">
+<title role="object_hierarchy.title">Object Hierarchy</title>
+<synopsis>
+
+  <link linkend="GObject">GObject</link>
+   +----GdkGLContext
+</synopsis>
+
+</refsect1>
+
+
+
+
+
+
+
+
+<refsect1 role="desc">
+<title role="desc.title">Description</title>
+<para>
+
+</para>
+</refsect1>
+
+<refsect1 role="details">
+<title role="details.title">Details</title>
+<refsect2>
+<title><anchor id="GdkGLContext-struct" role="struct"/>GdkGLContext</title>
+<indexterm><primary>GdkGLContext</primary></indexterm><programlisting>typedef struct _GdkGLContext GdkGLContext;</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="gdk-gl-context-new" role="function"/>gdk_gl_context_new ()</title>
+<indexterm><primary>gdk_gl_context_new</primary></indexterm><programlisting><link linkend="GdkGLContext">GdkGLContext</link>* gdk_gl_context_new            (<link linkend="GdkGLDrawable">GdkGLDrawable</link> *gldrawable,
+                                             <link linkend="GdkGLContext">GdkGLContext</link> *share_list,
+                                             <link linkend="gboolean">gboolean</link> direct,
+                                             <link linkend="int">int</link> render_type);</programlisting>
+<para>
+Creates a new OpenGL rendering context.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>gldrawable</parameter>&nbsp;:</term>
+<listitem><simpara> a <link linkend="GdkGLDrawable"><type>GdkGLDrawable</type></link>.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>share_list</parameter>&nbsp;:</term>
+<listitem><simpara> the <link linkend="GdkGLContext"><type>GdkGLContext</type></link> with which to share display lists and texture
+             objects. NULL indicates that no sharing is to take place.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>direct</parameter>&nbsp;:</term>
+<listitem><simpara> whether rendering is to be done with a direct connection to
+         the graphics system.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>render_type</parameter>&nbsp;:</term>
+<listitem><simpara> GDK_GL_RGBA_TYPE or GDK_GL_COLOR_INDEX_TYPE (currently not
+              used).
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the new <link linkend="GdkGLContext"><type>GdkGLContext</type></link>.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="gdk-gl-context-destroy" role="function"/>gdk_gl_context_destroy ()</title>
+<indexterm><primary>gdk_gl_context_destroy</primary></indexterm><programlisting><link linkend="void">void</link>        gdk_gl_context_destroy          (<link linkend="GdkGLContext">GdkGLContext</link> *glcontext);</programlisting>
+<para>
+Destroys the OpenGL resources associated with <parameter>glcontext</parameter> and
+decrements <parameter>glcontext</parameter>'s reference count.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>glcontext</parameter>&nbsp;:</term>
+<listitem><simpara> a <link linkend="GdkGLContext"><type>GdkGLContext</type></link>.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="gdk-gl-context-copy" role="function"/>gdk_gl_context_copy ()</title>
+<indexterm><primary>gdk_gl_context_copy</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gdk_gl_context_copy             (<link linkend="GdkGLContext">GdkGLContext</link> *glcontext,
+                                             <link linkend="GdkGLContext">GdkGLContext</link> *src,
+                                             long <link linkend="mask">mask</link> );</programlisting>
+<para>
+Copy state from <parameter>src</parameter> rendering context to <parameter>glcontext</parameter>.
+</para>
+<para>
+<parameter>mask</parameter> contains the bitwise-OR of the same symbolic names that are passed to
+the <link linkend="glPushAttrib"><function>glPushAttrib()</function></link> function. You can use GL_ALL_ATTRIB_BITS to copy all the
+rendering state information.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>glcontext</parameter>&nbsp;:</term>
+<listitem><simpara> a <link linkend="GdkGLContext"><type>GdkGLContext</type></link>.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>src</parameter>&nbsp;:</term>
+<listitem><simpara> the source context.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>Param3</parameter>&nbsp;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> FALSE if it fails, TRUE otherwise.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="gdk-gl-context-get-gl-drawable" role="function"/>gdk_gl_context_get_gl_drawable ()</title>
+<indexterm><primary>gdk_gl_context_get_gl_drawable</primary></indexterm><programlisting><link linkend="GdkGLDrawable">GdkGLDrawable</link>* gdk_gl_context_get_gl_drawable
+                                            (<link linkend="GdkGLContext">GdkGLContext</link> *glcontext);</programlisting>
+<para>
+Gets <link linkend="GdkGLDrawable"><type>GdkGLDrawable</type></link> to which the <parameter>glcontext</parameter> is bound.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>glcontext</parameter>&nbsp;:</term>
+<listitem><simpara> a <link linkend="GdkGLContext"><type>GdkGLContext</type></link>.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the <link linkend="GdkGLDrawable"><type>GdkGLDrawable</type></link> or NULL if no <link linkend="GdkGLDrawable"><type>GdkGLDrawable</type></link> is bound.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="gdk-gl-context-get-gl-config" role="function"/>gdk_gl_context_get_gl_config ()</title>
+<indexterm><primary>gdk_gl_context_get_gl_config</primary></indexterm><programlisting><link linkend="GdkGLConfig">GdkGLConfig</link>* gdk_gl_context_get_gl_config   (<link linkend="GdkGLContext">GdkGLContext</link> *glcontext);</programlisting>
+<para>
+Gets <link linkend="GdkGLConfig"><type>GdkGLConfig</type></link> with which the <parameter>glcontext</parameter> is configured.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>glcontext</parameter>&nbsp;:</term>
+<listitem><simpara> a <link linkend="GdkGLContext"><type>GdkGLContext</type></link>.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the <link linkend="GdkGLConfig"><type>GdkGLConfig</type></link>.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="gdk-gl-context-get-share-list" role="function"/>gdk_gl_context_get_share_list ()</title>
+<indexterm><primary>gdk_gl_context_get_share_list</primary></indexterm><programlisting><link linkend="GdkGLContext">GdkGLContext</link>* gdk_gl_context_get_share_list (<link linkend="GdkGLContext">GdkGLContext</link> *glcontext);</programlisting>
+<para>
+Gets <link linkend="GdkGLContext"><type>GdkGLContext</type></link> with which the <parameter>glcontext</parameter> shares the display lists and
+texture objects.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>glcontext</parameter>&nbsp;:</term>
+<listitem><simpara> a <link linkend="GdkGLContext"><type>GdkGLContext</type></link>.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the <link linkend="GdkGLContext"><type>GdkGLContext</type></link>.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="gdk-gl-context-is-direct" role="function"/>gdk_gl_context_is_direct ()</title>
+<indexterm><primary>gdk_gl_context_is_direct</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gdk_gl_context_is_direct        (<link linkend="GdkGLContext">GdkGLContext</link> *glcontext);</programlisting>
+<para>
+Returns whether the <parameter>glcontext</parameter> is a direct rendering context.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>glcontext</parameter>&nbsp;:</term>
+<listitem><simpara> a <link linkend="GdkGLContext"><type>GdkGLContext</type></link>.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE if the <parameter>glcontext</parameter> is a direct rendering contest.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="gdk-gl-context-get-render-type" role="function"/>gdk_gl_context_get_render_type ()</title>
+<indexterm><primary>gdk_gl_context_get_render_type</primary></indexterm><programlisting><link linkend="int">int</link>         gdk_gl_context_get_render_type  (<link linkend="GdkGLContext">GdkGLContext</link> *glcontext);</programlisting>
+<para>
+Gets render_type of the <parameter>glcontext</parameter>.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>glcontext</parameter>&nbsp;:</term>
+<listitem><simpara> a <link linkend="GdkGLContext"><type>GdkGLContext</type></link>.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> GDK_GL_RGBA_TYPE or GDK_GL_COLOR_INDEX_TYPE.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="gdk-gl-context-get-current" role="function"/>gdk_gl_context_get_current ()</title>
+<indexterm><primary>gdk_gl_context_get_current</primary></indexterm><programlisting><link linkend="GdkGLContext">GdkGLContext</link>* gdk_gl_context_get_current    (void);</programlisting>
+<para>
+Returns the current <link linkend="GdkGLContext"><type>GdkGLContext</type></link>.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the current <link linkend="GdkGLContext"><type>GdkGLContext</type></link> or NULL if there is no current
+              context.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+
+</refsect1>
+
+
+
+
+</refentry>

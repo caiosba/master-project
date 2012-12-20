@@ -1,0 +1,227 @@
+<refentry id="gtkglext-gdkgldrawable">
+<refmeta>
+<refentrytitle role="top_of_page">Rendering Surface</refentrytitle>
+<manvolnum>3</manvolnum>
+<refmiscinfo>GTKGLEXT Library</refmiscinfo>
+</refmeta>
+
+<refnamediv>
+<refname>Rendering Surface</refname>
+<refpurpose>OpenGL rendering surface interface</refpurpose>
+<!--[<xref linkend="desc" endterm="desc.title"/>]-->
+</refnamediv>
+
+<refsynopsisdiv role="synopsis">
+<title role="synopsis.title">Synopsis</title>
+<anchor id="GdkGLDrawable"/>
+<synopsis>
+
+#include &lt;gdk/gdkgl.h&gt;
+
+
+            <link linkend="GdkGLDrawable-struct">GdkGLDrawable</link>;
+<link linkend="gboolean">gboolean</link>    <link linkend="gdk-gl-drawable-make-current">gdk_gl_drawable_make_current</link>    (<link linkend="GdkGLDrawable">GdkGLDrawable</link> *gldrawable,
+                                             <link linkend="GdkGLContext">GdkGLContext</link> *glcontext);
+<link linkend="gboolean">gboolean</link>    <link linkend="gdk-gl-drawable-is-double-buffered">gdk_gl_drawable_is_double_buffered</link>
+                                            (<link linkend="GdkGLDrawable">GdkGLDrawable</link> *gldrawable);
+<link linkend="void">void</link>        <link linkend="gdk-gl-drawable-swap-buffers">gdk_gl_drawable_swap_buffers</link>    (<link linkend="GdkGLDrawable">GdkGLDrawable</link> *gldrawable);
+<link linkend="void">void</link>        <link linkend="gdk-gl-drawable-wait-gl">gdk_gl_drawable_wait_gl</link>         (<link linkend="GdkGLDrawable">GdkGLDrawable</link> *gldrawable);
+<link linkend="void">void</link>        <link linkend="gdk-gl-drawable-wait-gdk">gdk_gl_drawable_wait_gdk</link>        (<link linkend="GdkGLDrawable">GdkGLDrawable</link> *gldrawable);
+<link linkend="gboolean">gboolean</link>    <link linkend="gdk-gl-drawable-gl-begin">gdk_gl_drawable_gl_begin</link>        (<link linkend="GdkGLDrawable">GdkGLDrawable</link> *gldrawable,
+                                             <link linkend="GdkGLContext">GdkGLContext</link> *glcontext);
+<link linkend="void">void</link>        <link linkend="gdk-gl-drawable-gl-end">gdk_gl_drawable_gl_end</link>          (<link linkend="GdkGLDrawable">GdkGLDrawable</link> *gldrawable);
+<link linkend="GdkGLConfig">GdkGLConfig</link>* <link linkend="gdk-gl-drawable-get-gl-config">gdk_gl_drawable_get_gl_config</link>  (<link linkend="GdkGLDrawable">GdkGLDrawable</link> *gldrawable);
+<link linkend="void">void</link>        <link linkend="gdk-gl-drawable-get-size">gdk_gl_drawable_get_size</link>        (<link linkend="GdkGLDrawable">GdkGLDrawable</link> *gldrawable,
+                                             <link linkend="gint">gint</link> *width,
+                                             <link linkend="gint">gint</link> *height);
+<link linkend="GdkGLDrawable">GdkGLDrawable</link>* <link linkend="gdk-gl-drawable-get-current">gdk_gl_drawable_get_current</link>  (void);
+
+
+</synopsis>
+</refsynopsisdiv>
+
+<refsect1 role="object_hierarchy">
+<title role="object_hierarchy.title">Object Hierarchy</title>
+<synopsis>
+
+  <link linkend="GInterface">GInterface</link>
+   +----GdkGLDrawable
+</synopsis>
+
+</refsect1>
+
+
+
+
+
+
+
+
+<refsect1 role="desc">
+<title role="desc.title">Description</title>
+<para>
+
+</para>
+</refsect1>
+
+<refsect1 role="details">
+<title role="details.title">Details</title>
+<refsect2>
+<title><anchor id="GdkGLDrawable-struct" role="struct"/>GdkGLDrawable</title>
+<indexterm><primary>GdkGLDrawable</primary></indexterm><programlisting>typedef struct _GdkGLDrawable GdkGLDrawable;</programlisting>
+<para>
+
+</para></refsect2>
+<refsect2>
+<title><anchor id="gdk-gl-drawable-make-current" role="function"/>gdk_gl_drawable_make_current ()</title>
+<indexterm><primary>gdk_gl_drawable_make_current</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gdk_gl_drawable_make_current    (<link linkend="GdkGLDrawable">GdkGLDrawable</link> *gldrawable,
+                                             <link linkend="GdkGLContext">GdkGLContext</link> *glcontext);</programlisting>
+<para>
+Attach an OpenGL rendering context to a <parameter>gldrawable</parameter>.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>gldrawable</parameter>&nbsp;:</term>
+<listitem><simpara> a <link linkend="GdkGLDrawable"><type>GdkGLDrawable</type></link>.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>glcontext</parameter>&nbsp;:</term>
+<listitem><simpara> a <link linkend="GdkGLContext"><type>GdkGLContext</type></link>.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE if it is successful, FALSE otherwise.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="gdk-gl-drawable-is-double-buffered" role="function"/>gdk_gl_drawable_is_double_buffered ()</title>
+<indexterm><primary>gdk_gl_drawable_is_double_buffered</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gdk_gl_drawable_is_double_buffered
+                                            (<link linkend="GdkGLDrawable">GdkGLDrawable</link> *gldrawable);</programlisting>
+<para>
+Returns whether the <parameter>gldrawable</parameter> supports the double-buffered visual.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>gldrawable</parameter>&nbsp;:</term>
+<listitem><simpara> a <link linkend="GdkGLDrawable"><type>GdkGLDrawable</type></link>.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE if the double-buffered visual is supported,
+              FALSE otherwise.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="gdk-gl-drawable-swap-buffers" role="function"/>gdk_gl_drawable_swap_buffers ()</title>
+<indexterm><primary>gdk_gl_drawable_swap_buffers</primary></indexterm><programlisting><link linkend="void">void</link>        gdk_gl_drawable_swap_buffers    (<link linkend="GdkGLDrawable">GdkGLDrawable</link> *gldrawable);</programlisting>
+<para>
+Exchange front and back buffers.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>gldrawable</parameter>&nbsp;:</term>
+<listitem><simpara> a <link linkend="GdkGLDrawable"><type>GdkGLDrawable</type></link>.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="gdk-gl-drawable-wait-gl" role="function"/>gdk_gl_drawable_wait_gl ()</title>
+<indexterm><primary>gdk_gl_drawable_wait_gl</primary></indexterm><programlisting><link linkend="void">void</link>        gdk_gl_drawable_wait_gl         (<link linkend="GdkGLDrawable">GdkGLDrawable</link> *gldrawable);</programlisting>
+<para>
+Complete OpenGL execution prior to subsequent GDK drawing calls.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>gldrawable</parameter>&nbsp;:</term>
+<listitem><simpara> a <link linkend="GdkGLDrawable"><type>GdkGLDrawable</type></link>.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="gdk-gl-drawable-wait-gdk" role="function"/>gdk_gl_drawable_wait_gdk ()</title>
+<indexterm><primary>gdk_gl_drawable_wait_gdk</primary></indexterm><programlisting><link linkend="void">void</link>        gdk_gl_drawable_wait_gdk        (<link linkend="GdkGLDrawable">GdkGLDrawable</link> *gldrawable);</programlisting>
+<para>
+Complete GDK drawing execution prior to subsequent OpenGL calls.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>gldrawable</parameter>&nbsp;:</term>
+<listitem><simpara> a <link linkend="GdkGLDrawable"><type>GdkGLDrawable</type></link>.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="gdk-gl-drawable-gl-begin" role="function"/>gdk_gl_drawable_gl_begin ()</title>
+<indexterm><primary>gdk_gl_drawable_gl_begin</primary></indexterm><programlisting><link linkend="gboolean">gboolean</link>    gdk_gl_drawable_gl_begin        (<link linkend="GdkGLDrawable">GdkGLDrawable</link> *gldrawable,
+                                             <link linkend="GdkGLContext">GdkGLContext</link> *glcontext);</programlisting>
+<para>
+Delimits the begining of the OpenGL execution.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>gldrawable</parameter>&nbsp;:</term>
+<listitem><simpara> a <link linkend="GdkGLDrawable"><type>GdkGLDrawable</type></link>.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>glcontext</parameter>&nbsp;:</term>
+<listitem><simpara> a <link linkend="GdkGLContext"><type>GdkGLContext</type></link>.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> TRUE if it is successful, FALSE otherwise.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="gdk-gl-drawable-gl-end" role="function"/>gdk_gl_drawable_gl_end ()</title>
+<indexterm><primary>gdk_gl_drawable_gl_end</primary></indexterm><programlisting><link linkend="void">void</link>        gdk_gl_drawable_gl_end          (<link linkend="GdkGLDrawable">GdkGLDrawable</link> *gldrawable);</programlisting>
+<para>
+Delimits the end of the OpenGL execution.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>gldrawable</parameter>&nbsp;:</term>
+<listitem><simpara> a <link linkend="GdkGLDrawable"><type>GdkGLDrawable</type></link>.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="gdk-gl-drawable-get-gl-config" role="function"/>gdk_gl_drawable_get_gl_config ()</title>
+<indexterm><primary>gdk_gl_drawable_get_gl_config</primary></indexterm><programlisting><link linkend="GdkGLConfig">GdkGLConfig</link>* gdk_gl_drawable_get_gl_config  (<link linkend="GdkGLDrawable">GdkGLDrawable</link> *gldrawable);</programlisting>
+<para>
+Gets <link linkend="GdkGLConfig"><type>GdkGLConfig</type></link> with which the <parameter>gldrawable</parameter> is configured.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>gldrawable</parameter>&nbsp;:</term>
+<listitem><simpara> a <link linkend="GdkGLDrawable"><type>GdkGLDrawable</type></link>.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the <link linkend="GdkGLConfig"><type>GdkGLConfig</type></link>.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="gdk-gl-drawable-get-size" role="function"/>gdk_gl_drawable_get_size ()</title>
+<indexterm><primary>gdk_gl_drawable_get_size</primary></indexterm><programlisting><link linkend="void">void</link>        gdk_gl_drawable_get_size        (<link linkend="GdkGLDrawable">GdkGLDrawable</link> *gldrawable,
+                                             <link linkend="gint">gint</link> *width,
+                                             <link linkend="gint">gint</link> *height);</programlisting>
+<para>
+Fills *width and *height with the size of GL drawable.
+width or height can be NULL if you only want the other one.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>gldrawable</parameter>&nbsp;:</term>
+<listitem><simpara> a <link linkend="GdkGLDrawable"><type>GdkGLDrawable</type></link>.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>width</parameter>&nbsp;:</term>
+<listitem><simpara> location to store drawable's width, or NULL.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>height</parameter>&nbsp;:</term>
+<listitem><simpara> location to store drawable's height, or NULL.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="gdk-gl-drawable-get-current" role="function"/>gdk_gl_drawable_get_current ()</title>
+<indexterm><primary>gdk_gl_drawable_get_current</primary></indexterm><programlisting><link linkend="GdkGLDrawable">GdkGLDrawable</link>* gdk_gl_drawable_get_current  (void);</programlisting>
+<para>
+Returns the current <link linkend="GdkGLDrawable"><type>GdkGLDrawable</type></link>.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the current <link linkend="GdkGLDrawable"><type>GdkGLDrawable</type></link> or NULL if there is no current drawable.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+
+</refsect1>
+
+
+
+
+</refentry>

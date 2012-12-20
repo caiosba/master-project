@@ -1,0 +1,115 @@
+<refentry id="gtkglext-gdkglfont">
+<refmeta>
+<refentrytitle role="top_of_page">Font Rendering</refentrytitle>
+<manvolnum>3</manvolnum>
+<refmiscinfo>GTKGLEXT Library</refmiscinfo>
+</refmeta>
+
+<refnamediv>
+<refname>Font Rendering</refname>
+<refpurpose>Functions for font rendering in OpenGL</refpurpose>
+<!--[<xref linkend="desc" endterm="desc.title"/>]-->
+</refnamediv>
+
+<refsynopsisdiv role="synopsis">
+<title role="synopsis.title">Synopsis</title>
+
+<synopsis>
+
+#include &lt;gdk/gdkgl.h&gt;
+
+
+<link linkend="PangoFont">PangoFont</link>*  <link linkend="gdk-gl-font-use-pango-font">gdk_gl_font_use_pango_font</link>      (const <link linkend="PangoFontDescription">PangoFontDescription</link> *font_desc,
+                                             <link linkend="int">int</link> first,
+                                             <link linkend="int">int</link> count,
+                                             <link linkend="int">int</link> list_base);
+<link linkend="PangoFont">PangoFont</link>*  <link linkend="gdk-gl-font-use-pango-font-for-display">gdk_gl_font_use_pango_font_for_display</link>
+                                            (<link linkend="GdkDisplay">GdkDisplay</link> *display,
+                                             const <link linkend="PangoFontDescription">PangoFontDescription</link> *font_desc,
+                                             <link linkend="int">int</link> first,
+                                             <link linkend="int">int</link> count,
+                                             <link linkend="int">int</link> list_base);
+</synopsis>
+</refsynopsisdiv>
+
+
+
+
+
+
+
+
+
+<refsect1 role="desc">
+<title role="desc.title">Description</title>
+<para>
+
+</para>
+</refsect1>
+
+<refsect1 role="details">
+<title role="details.title">Details</title>
+<refsect2>
+<title><anchor id="gdk-gl-font-use-pango-font" role="function"/>gdk_gl_font_use_pango_font ()</title>
+<indexterm><primary>gdk_gl_font_use_pango_font</primary></indexterm><programlisting><link linkend="PangoFont">PangoFont</link>*  gdk_gl_font_use_pango_font      (const <link linkend="PangoFontDescription">PangoFontDescription</link> *font_desc,
+                                             <link linkend="int">int</link> first,
+                                             <link linkend="int">int</link> count,
+                                             <link linkend="int">int</link> list_base);</programlisting>
+<para>
+Creates bitmap display lists from a <link linkend="PangoFont"><type>PangoFont</type></link>.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>font_desc</parameter>&nbsp;:</term>
+<listitem><simpara> a <link linkend="PangoFontDescription"><type>PangoFontDescription</type></link> describing the font to use.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>first</parameter>&nbsp;:</term>
+<listitem><simpara> the index of the first glyph to be taken.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>count</parameter>&nbsp;:</term>
+<listitem><simpara> the number of glyphs to be taken.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>list_base</parameter>&nbsp;:</term>
+<listitem><simpara> the index of the first display list to be generated.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the <link linkend="PangoFont"><type>PangoFont</type></link> used, or NULL if no font matched.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2>
+<title><anchor id="gdk-gl-font-use-pango-font-for-display" role="function"/>gdk_gl_font_use_pango_font_for_display ()</title>
+<indexterm><primary>gdk_gl_font_use_pango_font_for_display</primary></indexterm><programlisting><link linkend="PangoFont">PangoFont</link>*  gdk_gl_font_use_pango_font_for_display
+                                            (<link linkend="GdkDisplay">GdkDisplay</link> *display,
+                                             const <link linkend="PangoFontDescription">PangoFontDescription</link> *font_desc,
+                                             <link linkend="int">int</link> first,
+                                             <link linkend="int">int</link> count,
+                                             <link linkend="int">int</link> list_base);</programlisting>
+<para>
+Creates bitmap display lists from a <link linkend="PangoFont"><type>PangoFont</type></link>.</para>
+<para>
+
+</para><variablelist role="params">
+<varlistentry><term><parameter>display</parameter>&nbsp;:</term>
+<listitem><simpara> a <link linkend="GdkDisplay"><type>GdkDisplay</type></link>.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>font_desc</parameter>&nbsp;:</term>
+<listitem><simpara> a <link linkend="PangoFontDescription"><type>PangoFontDescription</type></link> describing the font to use.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>first</parameter>&nbsp;:</term>
+<listitem><simpara> the index of the first glyph to be taken.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>count</parameter>&nbsp;:</term>
+<listitem><simpara> the number of glyphs to be taken.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>list_base</parameter>&nbsp;:</term>
+<listitem><simpara> the index of the first display list to be generated.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&nbsp;:</term><listitem><simpara> the <link linkend="PangoFont"><type>PangoFont</type></link> used, or NULL if no font matched.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+
+</refsect1>
+
+
+
+
+</refentry>
