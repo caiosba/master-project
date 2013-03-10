@@ -1,9 +1,0 @@
-#UDEV rule for the Vuzix Wrap 920AR 3D glasses
-#
-# Once installed into /etc/udev/rules.d, udev will recognize the glasses and
-# create a /dev/wrap920AR device where you can access the data stream.
-# A decoded datastream will appear at /dev/wrap920ARdecoded
-
-ATTR{manufacturer}=="Vuzix Corporation", ATTRS{product}=="Wrap 920AR"
-
-SUBSYSTEM=="hidraw", ATTRS{idVendor}=="1bae", ATTRS{idProduct}=="014b", SYMLINK+="wrap920AR", MODE="0444", RUN +="/usr/local/bin/wrap920ARdecode /dev/wrap920AR > /dev/wrap920ARdecoded"

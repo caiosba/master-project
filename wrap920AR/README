@@ -1,9 +1,0 @@
-Based on https://github.com/HairyFotr/Lumen
-
-An attempt at a Wrap 920AR driver.
-
-Currently maps device to /dev/wrap920AR,
-but doesn't decode. But the final plan
-is to move the DCM algorithm here and
-have a virtual device that gives out
-the correct roll, pitch, yaw angles.
