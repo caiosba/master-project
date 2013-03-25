@@ -1,0 +1,1 @@
+http://blog.martinperis.com/2011/01/opencv-stereo-camera-calibration.html
