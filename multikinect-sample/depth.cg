@@ -1,0 +1,54 @@
+//Cg
+//Cg profile arbvp1 arbfp1
+
+/* Será passado via shader. Específico para cada kinect */
+float resX = 640;
+float resY = 480;
+float fovH = 1.02102;
+float fovV = 0.79587;
+float xzFactor = 1.12005;
+float yzFactor = 0.840723;
+
+/**
+ * Converts the position to world position.
+ */
+float3 getWorldPos(in float3 depth){
+	float normX = depth.x / resX - 0.5f;
+	float normY = 0.5f - depth.y / resY;
+	
+	float3 pworld;
+	pworld.x = normX * depth.z * xzFactor;
+	pworld.y = normY * depth.z * yzFactor;
+	pworld.z = depth.z;
+	
+	return pworld * 0.001;
+}
+
+/**
+ * Vertex Shader.
+ * Pega o valor de depth da textura, transforma para world space (3D), 
+ * deslocando os vértices de acordo.
+ */
+float4 vshader(   in float4 vtx_position : POSITION,
+               
+                in uniform float4x4 mat_modelproj,  
+                uniform float4x4 trans_model_to_clip,
+                in uniform sampler2D tex_0 : TEXUNIT0,
+                
+                out float4 l_vtx_position : TEXCOORD0
+                ) : POSITION
+{
+	float depthValue = tex2D(tex_0, vtx_position.xy / float2(resX, -resY)).r * 65535;
+	float4 world_pos = float4(getWorldPos(float3(vtx_position.x, vtx_position.y, depthValue)), 1);
+	l_vtx_position = float4(vtx_position.xy, depthValue, 1);
+	return mul(trans_model_to_clip, float4(world_pos.xyz, 1));
+}
+
+
+void fshader(    in float4 l_vtx_position : TEXCOORD0,    			 
+      			 in uniform sampler2D tex_1 : TEXUNIT1,
+      			 out float4 o_color : COLOR)
+{
+	o_color = float4(tex2D(tex_1, l_vtx_position.xy / float2(resX, -resY)).rgb, 1.0f);
+//	if(l_vtx_position.z < 1.0f) o_color.a = 0.0f;
+}
