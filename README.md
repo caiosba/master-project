@@ -2,8 +2,14 @@ This is my master project on Computer Science at Federal University of Bahia - B
 
 This repository is organized the following way:
 
-* misc: codes not directly related to the project... includes testing code, related stuff and so on.
+* misc: codes not directly related to the project... includes testing code, related stuff and so on
 * src: the project code
 * old: old stuff, not used anymore (like VRML, ARToolKit, etc.)
 
-Check the documentation at https://github.com/caiosba/master-project/wiki/Documentation.
+In order to run the system:
+
+* Enter each directory on src/ and compile each component
+* Define the IP for each component
+* For the listener, open the port: sudo iptables -I INPUT -p udp --dport 6001 -j ACCEPT
+* Run each component
+* Run the listener
