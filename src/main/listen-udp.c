@@ -38,12 +38,12 @@ main(int argc, char *argv[]) {
   printf("Socket has port number #%d\n", ntohs(name.sin_port));
  
   char code;
-  int yaw, pitch, roll; 
+  long yaw, pitch, roll;
   while ((bytes = read(sock, message, 1024)) > 0) {
     message[bytes] = '\0';
     printf("Received: %s\n", message);
 
-    sscanf(message, "%c %d %d %d\n", &code, &yaw, &pitch, &roll);
+    sscanf(message, "%c %ld %ld %ld\n", &code, &yaw, &pitch, &roll);
 
     // Data coming from the glasses
     if (code == 'G') {

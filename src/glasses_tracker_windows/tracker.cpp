@@ -14,8 +14,8 @@
 #define NUM_TX_LOOPS      20     /* number of time sender transmits data */
 
 /* broadcast IP address for 10.64.172.xxx network using subnetmask 255.255.255.0 */
-// #define RECEIVER_IP_ADDR "192.168.129.119"
-#define RECEIVER_IP_ADDR "10.1.1.118"
+#define RECEIVER_IP_ADDR "192.168.129.119"
+// #define RECEIVER_IP_ADDR "10.1.1.118"
 
 using namespace std;
 
@@ -102,16 +102,17 @@ int main() {
       yaw = yaw/MAGIC;
       pitch = pitch/MAGIC;
       roll = roll/MAGIC;
-      printf("Got data from glasses: yaw: %d pitch: %d roll: %d\n", yaw, pitch, roll);
-      IWRGetTracking(&yaw, &pitch, &roll);
-      i++;
+      printf("Got data from glasses: yaw: %ld pitch: %ld roll: %ld\n", yaw, pitch, roll);
       
       // Send to socket
       char buf[100];
-      int len = snprintf(buf, 100, "%c %d %d %d\n", 'G', yaw, pitch, roll);
+      int len = snprintf(buf, 100, "%c %ld %ld %ld\n", 'G', yaw, pitch, roll);
       ret = sendto(socket_fd, buf, len, 0, (SOCKADDR*)&ra,sizeof(ra));
       if (ret < 0) { printf("Could not send data to socket\n"); }
       printf("Sent data #%d: %s\n", i, buf);
+      
+      IWRGetTracking(&yaw, &pitch, &roll);
+      i++;
       
       // Don't maximize CPU
       Sleep(500);
