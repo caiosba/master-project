@@ -7,11 +7,13 @@
 #include "iwrstdrv.h"
 #include <winsock.h>
 #include <windows.h>
+#include "IWRFilterTracking.cpp"
 
 #define MAGIC 183
 #define RECEIVER_PORT_NUM 6001   /* receiver port number */
 #define SENDER_PORT_NUM   8000   /* sender port number   */
 #define NUM_TX_LOOPS      20     /* number of time sender transmits data */
+#define FILTER 1
 
 /* broadcast IP address for 10.64.172.xxx network using subnetmask 255.255.255.0 */
 #define RECEIVER_IP_ADDR "192.168.129.119"
@@ -102,6 +104,11 @@ int main() {
       yaw = yaw/MAGIC;
       pitch = pitch/MAGIC;
       roll = roll/MAGIC;
+      
+      if (FILTER) {
+        IWRFilterTracking(&yaw, &pitch, &roll);
+      }
+      
       printf("Got data from glasses: yaw: %ld pitch: %ld roll: %ld\n", yaw, pitch, roll);
       
       // Send to socket
@@ -115,7 +122,7 @@ int main() {
       i++;
       
       // Don't maximize CPU
-      Sleep(500);
+      Sleep(100);
     }
 
   } else {

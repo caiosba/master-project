@@ -5,15 +5,38 @@
 #include <stdlib.h>
 #include <fcntl.h>
 #include <string.h>
+#include "../control_cube/cube.c"
 
 #define SERVER_PORT 6001
 
-main(int argc, char *argv[]) {
+int sock;
+
+void listenToUDP() {
+  char code;
   char message[1024];
-  int sock;
+  long yaw, pitch, roll;
+  int bytes;
+
+  bytes = read(sock, message, 1024);
+
+  if (bytes > 0) {
+    message[bytes] = '\0';
+    printf("Received: %s\n", message);
+
+    sscanf(message, "%c %ld %ld %ld\n", &code, &yaw, &pitch, &roll);
+
+    // Data coming from the glasses
+    if (code == 'G') {
+      printf("Data coming from the glasses\n");
+      printf("Yaw: %d Pitch: %d Roll: %d\n", yaw, pitch, roll);
+      controlCube(yaw, pitch, roll);
+    }
+  }
+}
+
+main(int argc, char *argv[]) {
   struct sockaddr_in name;
   struct hostent *hp, *gethostbyname();
-  int bytes;
 
   printf("Listen activating.\n");
 
@@ -37,21 +60,6 @@ main(int argc, char *argv[]) {
   
   printf("Socket has port number #%d\n", ntohs(name.sin_port));
  
-  char code;
-  long yaw, pitch, roll;
-  while ((bytes = read(sock, message, 1024)) > 0) {
-    message[bytes] = '\0';
-    printf("Received: %s\n", message);
-
-    sscanf(message, "%c %ld %ld %ld\n", &code, &yaw, &pitch, &roll);
-
-    // Data coming from the glasses
-    if (code == 'G') {
-      printf("Data coming from the glasses\n");
-      printf("Yaw: %d Pitch: %d Roll: %d\n", yaw, pitch, roll);
-      // TODO: Do something with yaw, pitch and roll
-    }
-  }
-
+  initiateCube(sock);
   close(sock);
 }
