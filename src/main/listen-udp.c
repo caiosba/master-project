@@ -6,6 +6,7 @@
 #include <fcntl.h>
 #include <string.h>
 #include "../control_cube/cube.c"
+#include <math.h>
 
 #define SERVER_PORT 6001
 

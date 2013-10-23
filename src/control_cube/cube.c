@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <GL/glut.h>
+#include <math.h>
  
 void listenToUDP();
 
@@ -66,8 +67,13 @@ void display() {
   0.0f, 0.0f, 3.0f,
   0.0f, 0.0f, 0.0f,
   0.0f, 1.0f, 0.0f);
+  /*
   glRotatef(xrot, 1.0f, 0.0f, 0.0f);
   glRotatef(yrot, 0.0f, 1.0f, 0.0f);
+  */
+  glRotatef(-roll, 0, 0, 1); // roll
+  glRotatef(-yaw, 0, 1, 0); // heading
+  glRotatef(-pitch, 1, 0, 0); // pitch
   drawBox();
   glFlush();
   glutSwapBuffers();
@@ -98,13 +104,52 @@ void initiateCube() {
   glutMainLoop();
 }
 
+typedef struct {
+  float x;
+  float y;
+  float z;
+} Vector;
+
+void anglesToAxes(const Vector angles, Vector * left, Vector * up, Vector * forward) {
+  const float DEG2RAD = 3.141593f / 180;
+  float sx, sy, sz, cx, cy, cz, theta;
+
+  // rotation angle about X-axis (pitch)
+  theta = angles.x * DEG2RAD;
+  sx = sinf(theta);
+  cx = cosf(theta);
+
+  // rotation angle about Y-axis (yaw)
+  theta = angles.y * DEG2RAD;
+  sy = sinf(theta);
+  cy = cosf(theta);
+
+  // rotation angle about Z-axis (roll)
+  theta = angles.z * DEG2RAD;
+  sz = sinf(theta);
+  cz = cosf(theta);
+
+  // determine left axis
+  left->x = cy*cz;
+  left->y = sx*sy*cz + cx*sz;
+  left->z = -cx*sy*cz + sx*sz;
+
+  // determine up axis
+  up->x = -cy*sz;
+  up->y = -sx*sy*sz + cx*cz;
+  up->z = cx*sy*sz + sx*cz;
+
+  // determine forward axis
+  forward->x = sy;
+  forward->y = -sx*cy;
+  forward->z = cx*cy;
+}
+
 void controlCube(long y, long p, long r) {
   printf("Yaw: %d Pitch: %d Roll: %d\n", y, p, r);
   yaw = y;
   pitch = p;
   roll = r;
-  xrot = pitch;
-  yrot = yaw;
   glutPostRedisplay();
   glutTimerFunc(200, &listenToUDP, 0);
 }
