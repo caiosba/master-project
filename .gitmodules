@@ -1,0 +1,6 @@
+[submodule "src/kinect-chessboard"]
+	path = src/kinect-chessboard
+	url = https://github.com/caiosba/kinect-chessboard.git
+[submodule "src/kinfu"]
+	path = src/kinfu
+	url = https://github.com/caiosba/MyKinectFusion.git
