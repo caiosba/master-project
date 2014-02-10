@@ -49,9 +49,10 @@ void *cv_threadfunc (void *ptr) {
   rgbimg = Mat(FREENECTOPENCV_RGB_HEIGHT, FREENECTOPENCV_RGB_WIDTH, CV_8UC3);
   tempimg = Mat(FREENECTOPENCV_RGB_HEIGHT, FREENECTOPENCV_RGB_WIDTH, CV_8UC3);
 
-  int numBoards = 30;
+  int numBoards = 10;
   int board_w = 8;
   int board_h = 5;
+	float squareSize = 3;
 
   Size board_sz = Size(board_w, board_h);
   int board_n = board_w*board_h;
@@ -61,9 +62,18 @@ void *cv_threadfunc (void *ptr) {
   vector<Point2f> corners1, corners2;
 
   vector<Point3f> obj;
+	/*
+	for (int i=0; i < board_sz.height; i++)
+	{
+    for (int j=0; j < board_sz.width; j++)
+		{
+		  obj.push_back(Point3f(float(j*squareSize), float(i*squareSize), 0));
+    }
+	}
+	*/
   for (int j=0; j<board_n; j++)
   {
-      obj.push_back(Point3f(j/board_w, j%board_w, 0.0f));
+    obj.push_back(Point3f(j/board_w, j%board_w, 0.0f));
   }
 
   Mat img1, img2, gray1, gray2;
@@ -91,8 +101,8 @@ void *cv_threadfunc (void *ptr) {
 		waitKey(10);
     
     // FIXME: grayx or imgx?
-    found1 = findChessboardCorners(gray1, board_sz, corners1, CV_CALIB_CB_ADAPTIVE_THRESH); // | CV_CALIB_CB_FILTER_QUADS);
-    found2 = findChessboardCorners(gray2, board_sz, corners2, CV_CALIB_CB_ADAPTIVE_THRESH); // | CV_CALIB_CB_FILTER_QUADS);
+    found1 = findChessboardCorners(gray1, board_sz, corners1, CV_CALIB_CB_ADAPTIVE_THRESH);
+    found2 = findChessboardCorners(gray2, board_sz, corners2, CV_CALIB_CB_ADAPTIVE_THRESH);
 
     if (found1)
     {
@@ -167,7 +177,7 @@ void *cv_threadfunc (void *ptr) {
   stereoCalibrate(object_points, imagePoints1, imagePoints2, 
                   CM1, D1, CM2, D2, img1.size(), R, T, E, F,
                   cvTermCriteria(CV_TERMCRIT_ITER+CV_TERMCRIT_EPS, 100, 1e-5), 
-                  CV_CALIB_FIX_INTRINSIC + CV_CALIB_ZERO_TANGENT_DIST + CV_CALIB_SAME_FOCAL_LENGTH);
+                  CV_CALIB_FIX_INTRINSIC + CV_CALIB_ZERO_TANGENT_DIST);
 
   FileStorage fs1("mystereocalib.yml", FileStorage::WRITE);
   // fs1 << "CM1" << CM1;
