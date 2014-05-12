@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <sstream>
 #include <math.h>
 #include <libfreenect.h>
 #include <pthread.h>
@@ -49,7 +50,7 @@ void *cv_threadfunc (void *ptr) {
   rgbimg = Mat(FREENECTOPENCV_RGB_HEIGHT, FREENECTOPENCV_RGB_WIDTH, CV_8UC3);
   tempimg = Mat(FREENECTOPENCV_RGB_HEIGHT, FREENECTOPENCV_RGB_WIDTH, CV_8UC3);
 
-  int numBoards = 10;
+  int numBoards = 40;
   int board_w = 8;
   int board_h = 5;
 	float squareSize = 3;
@@ -138,6 +139,13 @@ void *cv_threadfunc (void *ptr) {
         object_points.push_back(obj);
         success++;
         printf ("Corners stored (%d)\n", success);
+
+				std::stringstream filename1;
+				filename1 << "images/kinect/" << success << ".png";
+				std::stringstream filename2;
+				filename2 << "images/glasses/" << success << ".png";
+        imwrite(filename1.str(), gray1);
+        imwrite(filename2.str(), gray2);
 
         if (success >= numBoards)
         {
