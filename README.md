@@ -8,6 +8,7 @@ This repository is organized the following way:
 
 In order to run the system:
 
+* Copy the *.rules files to /etc/udev/rules.d, restart the udev service and connect the glasses to the computer... check if a /dev/wrap920AR device was created
 * Enter each directory on src/ and compile each component (there is a README and a Makefile for each component)
 * Define the IP for each component
 * For the listener, open the port: sudo iptables -I INPUT -p udp --dport 6001 -j ACCEPT
