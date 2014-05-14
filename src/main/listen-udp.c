@@ -22,14 +22,14 @@ void listenToUDP() {
 
   if (bytes > 0) {
     message[bytes] = '\0';
-    printf("Received: %s\n", message);
+    // printf("Received: %s\n", message);
 
     sscanf(message, "%c %ld %ld %ld\n", &code, &yaw, &pitch, &roll);
 
     // Data coming from the glasses
     if (code == 'G') {
-      printf("Data coming from the glasses\n");
-      printf("Yaw: %d Pitch: %d Roll: %d\n", yaw, pitch, roll);
+      // printf("Data coming from the glasses\n");
+      // printf("Yaw: %d Pitch: %d Roll: %d\n", yaw, pitch, roll);
       controlCube(yaw, pitch, roll);
     }
   }

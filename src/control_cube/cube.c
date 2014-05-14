@@ -146,10 +146,10 @@ void anglesToAxes(const Vector angles, Vector * left, Vector * up, Vector * forw
 }
 
 void controlCube(long y, long p, long r) {
-  printf("Yaw: %d Pitch: %d Roll: %d\n", y, p, r);
+  // printf("Yaw: %d Pitch: %d Roll: %d\n", y, p, r);
   yaw = y;
   pitch = p;
   roll = r;
   glutPostRedisplay();
-  glutTimerFunc(200, &listenToUDP, 0);
+  glutTimerFunc(100, &listenToUDP, 0);
 }
