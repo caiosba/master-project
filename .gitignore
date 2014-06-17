@@ -2,3 +2,4 @@ src/utils/freenectcv
 src/utils/images
 src/utils/mystereocalib.yml
 src/glasses_tracker_linux/attitudesensor.conf
+src/glasses_tracker_windows/tracker.exe
