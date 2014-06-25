@@ -1,9 +1,12 @@
 #include "opencv2/video/tracking.hpp"
 #include "opencv2/imgproc/imgproc.hpp"
 #include "opencv2/highgui/highgui.hpp"
+#include "opencv2/calib3d/calib3d.hpp"
 
 #include <iostream>
 #include <ctype.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 using namespace cv;
 using namespace std;
@@ -24,6 +27,12 @@ static void help()
 
 Point2f point;
 bool addRemovePt = false;
+
+int handleError( int status, const char* func_name, const char* err_msg, const char* file_name,	int line, void* userdata )
+{
+  // Do nothing -- will suppress console output
+	return 0; // Return value is not used
+}
 
 static void onMouse( int event, int x, int y, int /*flags*/, void* /*param*/ )
 {
@@ -91,6 +100,18 @@ int main( int argc, char** argv )
                 gray.copyTo(prevGray);
             calcOpticalFlowPyrLK(prevGray, gray, points[0], points[1], status, err, winSize,
                                  3, termcrit, 0, 0.001);
+				    Mat homo;
+						redirectError(handleError);
+						try {
+						  homo = findHomography(points[0], points[1], CV_RANSAC, 3);
+              cout << "Homography" << endl;
+              cout << homo << endl;
+							printf("Translation is (%f, %f)\n", homo.at<double>(0,2), homo.at<double>(1,2));
+						}
+						catch (Exception &e) {
+              // Do nothing
+						}
+
             size_t i, k;
             for( i = k = 0; i < points[1].size(); i++ )
             {
