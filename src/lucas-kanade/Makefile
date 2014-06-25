@@ -12,11 +12,11 @@ LIBPATHS = $(LOCALLIBPATH) $(LIBPATH)
 
 # Libs
 
-OPENCVLIBS = -lopencv_core -lopencv_flann -lopencv_highgui -lopencv_imgproc -lopencv_gpu -lopencv_calib3d -lcv2 -lopencv_video
+OPENCVLIBS = -lopencv_core -lopencv_flann -lopencv_highgui -lopencv_imgproc -lopencv_gpu -lopencv_calib3d -lopencv_video
 LIBS = $(OPENCVLIBS)
 
-CXX = g++-4.6
-CFLAGS = -fPIC -g -w `pkg-config --cflags opencv` -O3 -Wno-switch
+CXX = g++-4.4
+CFLAGS = -fPIC -g -w -O3 -Wno-switch
 
 HEADERFILES := $(foreach dir,src,$(wildcard $(dir)/*.h))
 SRC := $(foreach dir,src,$(wildcard $(dir)/*.cpp))
