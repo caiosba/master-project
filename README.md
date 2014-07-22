@@ -6,6 +6,8 @@ This repository is organized the following way:
 * src: the project code
 * old: old stuff, not used anymore (like VRML, ARToolKit, etc.)
 
+We have some submodules. So, run `git submodule update --init` in order to get them.
+
 In order to run the system:
 
 * Copy the *.rules files to /etc/udev/rules.d, restart the udev service and connect the glasses to the computer... check if a /dev/wrap920AR device was created
@@ -14,3 +16,5 @@ In order to run the system:
 * For the listener, open the port: sudo iptables -I INPUT -p udp --dport 6001 -j ACCEPT
 * Run each component
 * Run the listener
+
+Check the README under src/kinfu for more information.
