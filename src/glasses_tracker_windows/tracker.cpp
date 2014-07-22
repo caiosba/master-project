@@ -16,7 +16,7 @@
 #define FILTER 1
 
 /* broadcast IP address for 10.64.172.xxx network using subnetmask 255.255.255.0 */
-#define RECEIVER_IP_ADDR "192.168.1.9"
+#define RECEIVER_IP_ADDR "192.168.1.12"
 // #define RECEIVER_IP_ADDR "10.1.1.118"
 
 using namespace std;
