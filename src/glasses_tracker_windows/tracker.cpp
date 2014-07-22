@@ -8,6 +8,7 @@
 #include <winsock.h>
 #include <windows.h>
 #include "IWRFilterTracking.cpp"
+#include <conio.h>
 
 #define MAGIC 183
 #define RECEIVER_PORT_NUM 6001   /* receiver port number */
@@ -96,6 +97,9 @@ int main() {
     } else {
       printf("Something strange happenned\n");
     }
+    
+    ofstream output;
+    output.open("glasses.out");
 
     // Update data periodically
     while (true) {
@@ -117,9 +121,15 @@ int main() {
       ret = sendto(socket_fd, buf, len, 0, (SOCKADDR*)&ra,sizeof(ra));
       if (ret < 0) { printf("Could not send data to socket\n"); }
       printf("Sent data #%d: %s\n", i, buf);
-      
+      output << buf;
       IWRGetTracking(&yaw, &pitch, &roll);
       i++;
+      
+      if (kbhit()) {
+        printf("Exiting...");
+        output.close();
+        break;
+      }
       
       // Don't maximize CPU
       Sleep(100);
