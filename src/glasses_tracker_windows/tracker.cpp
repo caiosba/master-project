@@ -52,7 +52,6 @@ int main() {
    sa.sin_addr.s_addr = htonl(INADDR_ANY);
    sa.sin_port = htons(SENDER_PORT_NUM);
 
-
    if (bind(socket_fd, (struct sockaddr *)&sa, sizeof(struct sockaddr_in)) == -1)
    {
        printf("Bind to port number %d ,IP address %s failed\n",RECEIVER_PORT_NUM,RECEIVER_IP_ADDR);
@@ -98,8 +97,8 @@ int main() {
       printf("Something strange happenned\n");
     }
     
-    ofstream output;
-    output.open("glasses.out");
+    // ofstream output;
+    // output.open("glasses.out");
 
     // Update data periodically
     while (true) {
@@ -121,13 +120,13 @@ int main() {
       ret = sendto(socket_fd, buf, len, 0, (SOCKADDR*)&ra,sizeof(ra));
       if (ret < 0) { printf("Could not send data to socket\n"); }
       printf("Sent data #%d: %s\n", i, buf);
-      output << buf;
+      // output << buf;
       IWRGetTracking(&yaw, &pitch, &roll);
       i++;
       
       if (kbhit()) {
         printf("Exiting...");
-        output.close();
+        // output.close();
         break;
       }
       
