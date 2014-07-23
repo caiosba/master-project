@@ -4,3 +4,6 @@
 [submodule "src/kinfu"]
 	path = src/kinfu
 	url = https://github.com/caiosba/MyKinectFusion.git
+[submodule "src/openni"]
+	path = src/openni
+	url = https://github.com/caiosba/OpenNI.git
