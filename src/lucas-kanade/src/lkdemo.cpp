@@ -72,6 +72,10 @@ int main( int argc, char** argv )
     Mat gray, prevGray, image;
     vector<Point2f> points[2];
 
+		int x, y;
+		x = 0;
+		y = 0;
+
     for(;;)
     {
         Mat frame;
@@ -105,7 +109,9 @@ int main( int argc, char** argv )
 						  homo = findHomography(points[0], points[1], CV_RANSAC, 3);
               cout << "Homography" << endl;
               cout << homo << endl;
-							printf("Translation is (%f, %f)\n", homo.at<double>(0,2), homo.at<double>(1,2));
+							x += (int)homo.at<double>(0,2);
+							y += (int)homo.at<double>(1,2);
+							printf("Translation is (%d, %d)\n", x, y);
 						}
 						catch (Exception &e) {
               // Do nothing
