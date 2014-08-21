@@ -1,0 +1,169 @@
+diff --git a/src/control_cube/cube.c b/src/control_cube/cube.c
+index f54437d..20f1bb9 100644
+--- a/src/control_cube/cube.c
++++ b/src/control_cube/cube.c
+@@ -13,7 +13,8 @@ float yrot = 0.0f;
+ float xdiff = 0.0f;
+ float ydiff = 0.0f;
+ long yaw, pitch, roll;
+- 
++double x, y, z;
++
+ void drawBox() {
+   glBegin(GL_QUADS);
+   glColor3f(1.0f, 0.0f, 0.0f);
+@@ -74,6 +75,7 @@ void display() {
+   glRotatef(-roll, 0, 0, 1); // roll
+   glRotatef(-yaw, 0, 1, 0); // heading
+   glRotatef(-pitch, 1, 0, 0); // pitch
++	glTranslatef(x, y, 0);
+   drawBox();
+   glFlush();
+   glutSwapBuffers();
+@@ -89,6 +91,7 @@ void resize(int w, int h) {
+ }
+  
+ void initiateCube() {
++  printf("Starting cube\n");
+   int argc = 1;
+   char *argv[1] = {(char*)"Something"};
+   glutInit(&argc, argv);
+@@ -100,7 +103,7 @@ void initiateCube() {
+   glutPositionWindow(50, 50);
+   glutDisplayFunc(display);
+   glutReshapeFunc(resize);
+-  glutTimerFunc(200, &listenToUDP, 0);
++  glutTimerFunc(100, &listenToUDP, 0);
+   glutMainLoop();
+ }
+ 
+@@ -145,11 +148,14 @@ void anglesToAxes(const Vector angles, Vector * left, Vector * up, Vector * forw
+   forward->z = cx*cy;
+ }
+ 
+-void controlCube(long y, long p, long r) {
+-  // printf("Yaw: %d Pitch: %d Roll: %d\n", y, p, r);
++void controlCube(long y, long p, long r, double xx, double yy, double zz) {
++  printf("Yaw: %d Pitch: %d Roll: %d X: %d Y: %d Z: %d\n", y, p, r, (int)xx, (int)yy, (int)zz);
+   yaw = y;
+   pitch = p;
+   roll = r;
++	x = xx;
++	y = yy;
++	z = zz;
+   glutPostRedisplay();
+   glutTimerFunc(100, &listenToUDP, 0);
+ }
+diff --git a/src/main/Makefile b/src/main/Makefile
+index 1ada8f0..46474a8 100644
+--- a/src/main/Makefile
++++ b/src/main/Makefile
+@@ -1,2 +1,32 @@
++# Includes
++
++INCPATH = -I/usr/include
++LOCALINCPATH = -I/usr/local/include
++INCLUDES = $(INCPATH) $(LOCALINCPATH)
++
++# Lib paths
++
++LIBPATH = -L/usr/lib/
++LOCALLIBPATH = -L/usr/local/lib
++LIBPATHS = $(LOCALLIBPATH) $(LIBPATH)
++
++# Libs
++
++OPENCVLIBS = -lopencv_core -lopencv_flann -lopencv_highgui -lopencv_imgproc -lopencv_gpu -lopencv_calib3d -lopencv_video
++LIBS = $(OPENCVLIBS) -lGL -lGLU -lglut -lGLEW
++
++# Includes
++
++INCLUDES = -I/usr/include/eigen3 -I/usr/include/eigen3/unsupported
++
++CXX = g++-4.4
++CFLAGS = -fPIC -g -w -O3 -Wno-switch -fpermissive -Wno-deprecated
++
+ tracker:
+-	gcc listen-udp.c -o listen-udp -lGL -lGLU -lglut
++	$(CXX) $(CFLAGS) listen-udp.cpp -o listen-udp $(LIBPATHS) $(LIBS) $(INCLUDES) -Wl,-rpath ./
++	$(CXX) $(CFLAGS) listen-udp-2.cpp -o listen-udp-2 $(LIBPATHS) $(LIBS) $(INCLUDES) -Wl,-rpath ./
++
++clean:
++	rm -f listen-udp listen-udp-2
++
++all: tracker
+diff --git a/src/main/listen-udp b/src/main/listen-udp
+index 525690b..291c7dd 100755
+Binary files a/src/main/listen-udp and b/src/main/listen-udp differ
+diff --git a/src/main/listen-udp.c b/src/main/listen-udp.c
+deleted file mode 100644
+index 30ec12e..0000000
+--- a/src/main/listen-udp.c
++++ /dev/null
+@@ -1,66 +0,0 @@
+-#include <sys/types.h>
+-#include <sys/socket.h>
+-#include <netinet/in.h>
+-#include <stdio.h>
+-#include <stdlib.h>
+-#include <fcntl.h>
+-#include <string.h>
+-#include "../control_cube/cube.c"
+-#include <math.h>
+-
+-#define SERVER_PORT 6001
+-
+-int sock;
+-
+-void listenToUDP() {
+-  char code;
+-  char message[1024];
+-  long yaw, pitch, roll;
+-  int bytes;
+-
+-  bytes = read(sock, message, 1024);
+-
+-  if (bytes > 0) {
+-    message[bytes] = '\0';
+-    // printf("Received: %s\n", message);
+-
+-    sscanf(message, "%c %ld %ld %ld\n", &code, &yaw, &pitch, &roll);
+-
+-    // Data coming from the glasses
+-    if (code == 'G') {
+-      // printf("Data coming from the glasses\n");
+-      // printf("Yaw: %d Pitch: %d Roll: %d\n", yaw, pitch, roll);
+-      controlCube(yaw, pitch, roll);
+-    }
+-  }
+-}
+-
+-main(int argc, char *argv[]) {
+-  struct sockaddr_in name;
+-  struct hostent *hp, *gethostbyname();
+-
+-  printf("Listen activating.\n");
+-
+-  /* Create socket from which to read */
+-  sock = socket(AF_INET, SOCK_DGRAM, 0);
+-  if (sock < 0)   {
+-    perror("Opening datagram socket\n");
+-    exit(EXIT_FAILURE);
+-  }
+-  
+-  /* Bind our local address so that the client can send to us */
+-  bzero((char *) &name, sizeof(name));
+-  name.sin_family = AF_INET;
+-  name.sin_addr.s_addr = htonl(INADDR_ANY);
+-  name.sin_port = htons(SERVER_PORT);
+-  
+-  if (bind(sock, (struct sockaddr *) &name, sizeof(name))) {
+-    perror("Binding datagram socket\n");
+-    exit(EXIT_FAILURE);
+-  }
+-  
+-  printf("Socket has port number #%d\n", ntohs(name.sin_port));
+- 
+-  initiateCube(sock);
+-  close(sock);
+-}
