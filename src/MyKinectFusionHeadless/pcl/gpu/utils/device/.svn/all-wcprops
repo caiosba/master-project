@@ -1,0 +1,83 @@
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/pcl/!svn/ver/3244/trunk/cuda/utils/include/pcl/gpu/utils/device
+END
+cutil_math.h
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/pcl/!svn/ver/2235/trunk/cuda/utils/include/pcl/gpu/utils/device/cutil_math.h
+END
+warp.hpp
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/pcl/!svn/ver/2522/trunk/cuda/utils/include/pcl/gpu/utils/device/warp.hpp
+END
+block.hpp
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/pcl/!svn/ver/3230/trunk/cuda/utils/include/pcl/gpu/utils/device/block.hpp
+END
+vector_math.hpp
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/pcl/!svn/ver/3168/trunk/cuda/utils/include/pcl/gpu/utils/device/vector_math.hpp
+END
+emulation.hpp
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/pcl/!svn/ver/2302/trunk/cuda/utils/include/pcl/gpu/utils/device/emulation.hpp
+END
+asm.hpp
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/pcl/!svn/ver/2302/trunk/cuda/utils/include/pcl/gpu/utils/device/asm.hpp
+END
+funcattrib.hpp
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/pcl/!svn/ver/3244/trunk/cuda/utils/include/pcl/gpu/utils/device/funcattrib.hpp
+END
+limits.hpp
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/pcl/!svn/ver/2522/trunk/cuda/utils/include/pcl/gpu/utils/device/limits.hpp
+END
+functional.hpp
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/pcl/!svn/ver/2734/trunk/cuda/utils/include/pcl/gpu/utils/device/functional.hpp
+END
+cache.hpp
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/pcl/!svn/ver/2302/trunk/cuda/utils/include/pcl/gpu/utils/device/cache.hpp
+END
+static_check.hpp
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/pcl/!svn/ver/2235/trunk/cuda/utils/include/pcl/gpu/utils/device/static_check.hpp
+END
+algorithm.hpp
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/pcl/!svn/ver/2522/trunk/cuda/utils/include/pcl/gpu/utils/device/algorithm.hpp
+END
+reduce.hpp
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/pcl/!svn/ver/2522/trunk/cuda/utils/include/pcl/gpu/utils/device/reduce.hpp
+END

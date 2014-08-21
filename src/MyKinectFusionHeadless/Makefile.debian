@@ -1,0 +1,160 @@
+# This is the Makefile tested on Debian Squeeze
+
+.SUFFIXES: .cpp .cxx .h .cu .hpp
+
+# compiler names:
+CXX		= g++-4.4
+CC		= gcc
+NVCC	= nvcc
+
+# flags for C++ compiler:
+CFLAGS		= -g -fpermissive -Wno-deprecated -w
+
+# libraries to link with:
+
+LIBPATH = -L/usr/include/pcl-1.6/ -L/usr/include/eigen3 -L/usr/include/eigen3/Eigen
+
+INCFLAGS = -I/usr/include/pcl-1.6/ -I/usr/include/eigen3 -I/usr/include/eigen3/Eigen -Iinclude -I. -I/usr/include/vtk-5.4 -I/usr/include/openni -I/usr/include/pcl-1.6/pcl/io -Iinclude/HeadPoseEstimator -I/usr/local/include/opencv
+
+NVCCFLAGS = -arch=sm_11
+
+#LDFLAGS = -lpcl_search_release -lpcl_features_release -lpcl_kdtree_release -lopencv_core231 -lopencv_highgui231 -lopencv_imgproc231 -lopencv_objdetect231 -lpcl_common_release -lpcl_io_release -lpcl_io_ply_release -lvtkexpat -lvtkDICOMParser -lopenNI64 -lvtkjpeg -lvtkjpeg-gd -lvtktiff -lvtktiff-gd -lopengl32 -lvtkCharts -lvtkCharts-gd -lvtkalglib -lvtkalglib-gd -lvtkpng -lvtkpng-gd -lvtklibxml2 -lvtklibxml2-gd -lvtkIO -lvtkIO-gd -lvtkInfovis -lvtkInfovis-gd -lvtkzlib -lvtkzlib-gd -lvtkVolumeRendering -lvtkVolumeRendering-gd -lvtksys -lvtksys-gd -lvtkRendering -lvtkRendering-gd -lvtkGraphics -lvtkGraphics-gd -lvtkCommon -lvtkCommon-gd -lvtkFiltering -lvtkFiltering-gd -lcuda -lcudart -lboost_date_time-vc100-mt-1_47 -lboost_date_time-vc100-mt-gd-1_47 -lpcl_visualization_release -lpcl_gpu_containers -lGL -lGLU -lglut
+LDFLAGS = -lGL -lGLU -lglut -lcuda -lcufft -lcv -lhighgui -lcvaux -lopencv_imgproc -lpcl_search -lpcl_features -lpcl_kdtree -lpcl_common -lpcl_io -lpcl_io_ply -lpcl_visualization -lGLEW
+
+OBJFILES = obj/device_memory.o obj/error.o obj/initialization.o obj/main.o obj/ColorVolume.o obj/FaceDetection.o obj/Image.o obj/MarchingCubes.o obj/Mesh.o obj/MyCVPointCloud.o obj/MyPointCloud.o obj/Reconstruction.o obj/TsdfVolume.o obj/HeadPoseEstimator/CRTree.o obj/HeadPoseEstimator/CRForestEstimator.o obj/HeadPoseEstimator/HeadPoseEstimator.o obj/cuda/colors.o obj/cuda/estimate_combined.o obj/cuda/extract.o obj/cuda/image_generator.o obj/cuda/maps.o obj/cuda/marching_cubes.o obj/cuda/normals_eigen.o obj/cuda/ray_caster.o obj/cuda/tsdf_volume.o obj/Viewers/MyGLImageViewer.o obj/Viewers/MyGLCloudViewer.o obj/Mediators/ColoredReconstructionMediator.o obj/Mediators/HeadPoseEstimationMediator.o obj/Mediators/MeshGenerationMediator.o obj/VolumetricData.o obj/Viewers/shader.o obj/Viewers/glm.o obj/cuda/bilateral_pyrdown.o
+
+EXECFILES	= KinectFusion
+
+# ***********************************************************************************
+all:	$(EXECFILES)
+
+KinectFusion:	$(OBJFILES) obj/Kinect.o
+	@echo "Linking ...."
+	$(CXX)  $(CFLAG) $(CPPFLAGS) $(INCFLAGS) $(LIBPATH) $(OBJFILES) obj/Kinect.o $(LDFLAGS) -o KinectFusion
+
+obj/Kinect.o: src/Kinect.cpp
+	$(CXX) $(CFLAGS) -o obj/Kinect.o -c src/Kinect.cpp $(INCFLAGS) $(LIBPATH) $(LDFLAGS)
+
+obj/VolumetricData.o: src/VolumetricData.cpp
+	$(CXX) $(CFLAGS) -o obj/VolumetricData.o -c src/VolumetricData.cpp $(INCFLAGS) $(LIBPATH) $(LDFLAGS)
+
+obj/device_memory.o:	tools/device_memory.cpp
+	$(CXX) $(CFLAGS) -o obj/device_memory.o -c tools/device_memory.cpp $(INCFLAGS) $(LIBPATH) $(LDFLAGS)
+	
+obj/error.o:	tools/error.cpp
+	$(CXX) $(CFLAGS) -o obj/error.o -c tools/error.cpp $(INCFLAGS) $(LIBPATH) $(LDFLAGS)
+
+obj/initialization.o:	tools/initialization.cpp
+	$(CXX) $(CFLAGS) -o obj/initialization.o -c tools/initialization.cpp $(INCFLAGS) $(LIBPATH) $(LDFLAGS)
+
+obj/main.o:	src/main.cpp
+	$(CXX) $(CFLAGS) -o obj/main.o -c src/main.cpp $(INCFLAGS) $(LIBPATH) $(LDFLAGS)
+
+# obj/CaptureFromFile.o:	src/CaptureFromFile.cpp
+# 	$(CXX) $(CFLAGS) -o obj/CaptureFromFile.o -c src/CaptureFromFile.cpp $(INCFLAGS) $(LIBPATH) $(LDFLAGS)
+
+obj/ColorVolume.o:	src/ColorVolume.cpp
+	$(CXX) $(CFLAGS) -o obj/ColorVolume.o -c src/ColorVolume.cpp $(INCFLAGS) $(LIBPATH) $(LDFLAGS)
+
+obj/FaceDetection.o:	src/FaceDetection.cpp
+	$(CXX) $(CFLAGS) -o obj/FaceDetection.o -c src/FaceDetection.cpp $(INCFLAGS) $(LIBPATH) $(LDFLAGS)
+
+obj/Image.o:	src/Image.cpp
+	$(CXX) $(CFLAGS) -o obj/Image.o -c src/Image.cpp $(INCFLAGS) $(LIBPATH) $(LDFLAGS)
+
+obj/MarchingCubes.o:	src/MarchingCubes.cpp
+	$(CXX) $(CFLAGS) -o obj/MarchingCubes.o -c src/MarchingCubes.cpp $(INCFLAGS) $(LIBPATH) $(LDFLAGS)
+
+obj/Mesh.o:	src/Mesh.cpp
+	$(CXX) $(CFLAGS) -o obj/Mesh.o -c src/Mesh.cpp $(INCFLAGS) $(LIBPATH) $(LDFLAGS)
+
+obj/MyCVPointCloud.o:	src/MyCVPointCloud.cpp
+	$(CXX) $(CFLAGS) -o obj/MyCVPointCloud.o -c src/MyCVPointCloud.cpp $(INCFLAGS) $(LIBPATH) $(LDFLAGS)
+
+obj/MyPointCloud.o:	src/MyPointCloud.cpp
+	$(CXX) -o obj/MyPointCloud.o -c src/MyPointCloud.cpp $(INCFLAGS) $(LIBPATH) $(LDFLAGS)
+
+obj/Reconstruction.o:	src/Reconstruction.cpp
+	$(CXX) $(CFLAGS) -o obj/Reconstruction.o -c src/Reconstruction.cpp $(INCFLAGS) $(LIBPATH) $(LDFLAGS)
+
+obj/TsdfVolume.o:	src/TsdfVolume.cpp
+	$(CXX) $(CFLAGS) -o obj/TsdfVolume.o -c src/TsdfVolume.cpp $(INCFLAGS) $(LIBPATH) $(LDFLAGS)
+
+obj/Viewers/MyGLImageViewer.o:	src/Viewers/MyGLImageViewer.cpp
+	$(CXX) $(CFLAGS) -o obj/Viewers/MyGLImageViewer.o -c src/Viewers/MyGLImageViewer.cpp $(INCFLAGS) $(LIBPATH) $(LDFLAGS)
+
+#obj/Viewers/My3DImageViewer.o:	src/Viewers/My3DImageViewer.cpp
+#	$(CXX) $(CFLAGS) -o obj/Viewers/My3DImageViewer.o -c src/Viewers/My3DImageViewer.cpp $(INCFLAGS) $(LIBPATH) $(LDFLAGS)
+
+obj/Viewers/MyGLCloudViewer.o:	src/Viewers/MyGLCloudViewer.cpp
+	$(CXX) $(CFLAGS) -o obj/Viewers/MyGLCloudViewer.o -c src/Viewers/MyGLCloudViewer.cpp $(INCFLAGS) $(LIBPATH) $(LDFLAGS)
+
+obj/Viewers/shader.o:	src/Viewers/shader.cpp
+	$(CXX) $(CFLAGS) -o obj/Viewers/shader.o -c src/Viewers/shader.cpp $(INCFLAGS) $(LIBPATH) $(LDFLAGS)
+
+obj/Viewers/glm.o:	src/Viewers/glm.cpp
+	$(CXX) $(CFLAGS) -o obj/Viewers/glm.o -c src/Viewers/glm.cpp $(INCFLAGS) $(LIBPATH) $(LDFLAGS)
+
+obj/HeadPoseEstimator/CRTree.o:	src/HeadPoseEstimator/CRTree.cpp
+	$(CXX) $(CFLAGS) -o obj/HeadPoseEstimator/CRTree.o -c src/HeadPoseEstimator/CRTree.cpp $(INCFLAGS) $(LIBPATH) $(LDFLAGS)
+
+obj/Mediators/ColoredReconstructionMediator.o: src/Mediators/ColoredReconstructionMediator.cpp
+	$(CXX) $(CFLAGS) -o obj/Mediators/ColoredReconstructionMediator.o -c src/Mediators/ColoredReconstructionMediator.cpp $(INCFLAGS) $(LIBPATH) $(LDFLAGS)
+
+obj/Mediators/HeadPoseEstimationMediator.o: src/Mediators/HeadPoseEstimationMediator.cpp
+	$(CXX) $(CFLAGS) -o obj/Mediators/HeadPoseEstimationMediator.o -c src/Mediators/HeadPoseEstimationMediator.cpp $(INCFLAGS) $(LIBPATH) $(LDFLAGS)
+
+obj/Mediators/MeshGenerationMediator.o: src/Mediators/MeshGenerationMediator.cpp
+	$(CXX) $(CFLAGS) -o obj/Mediators/MeshGenerationMediator.o -c src/Mediators/MeshGenerationMediator.cpp $(INCFLAGS) $(LIBPATH) $(LDFLAGS)
+
+obj/HeadPoseEstimator/CRForestEstimator.o:	src/HeadPoseEstimator/CRForestEstimator.cpp
+	$(CXX) $(CFLAGS) -o obj/HeadPoseEstimator/CRForestEstimator.o -c src/HeadPoseEstimator/CRForestEstimator.cpp $(INCFLAGS) $(LIBPATH) $(LDFLAGS)
+
+obj/HeadPoseEstimator/HeadPoseEstimator.o:	src/HeadPoseEstimator/HeadPoseEstimator.cpp
+	$(CXX) $(CFLAGS) -o obj/HeadPoseEstimator/HeadPoseEstimator.o -c src/HeadPoseEstimator/HeadPoseEstimator.cpp $(INCFLAGS) $(LIBPATH) $(LDFLAGS)
+
+obj/cuda/bilateral_pyrdown.o:	src/cuda/bilateral_pyrdown.cu
+	$(NVCC) -o obj/cuda/bilateral_pyrdown.o -c src/cuda/bilateral_pyrdown.cu $(INCFLAGS) $(LIBPATH) $(LDFLAGS)
+
+obj/cuda/colors.o:	src/cuda/colors.cu
+	$(NVCC) -o obj/cuda/colors.o -c src/cuda/colors.cu $(INCFLAGS) $(LIBPATH) $(LDFLAGS) $(NVCCFLAGS)
+
+obj/cuda/estimate_combined.o:	src/cuda/estimate_combined.cu
+	$(NVCC) -o obj/cuda/estimate_combined.o -c src/cuda/estimate_combined.cu $(INCFLAGS) $(LIBPATH) $(LDFLAGS) $(NVCCFLAGS)
+
+obj/cuda/extract.o:	src/cuda/extract.cu
+	$(NVCC) -o obj/cuda/extract.o -c src/cuda/extract.cu $(INCFLAGS) $(LIBPATH) $(LDFLAGS) $(NVCCFLAGS)
+
+obj/cuda/image_generator.o:	src/cuda/image_generator.cu
+	$(NVCC) -o obj/cuda/image_generator.o -c src/cuda/image_generator.cu $(INCFLAGS) $(LIBPATH) $(LDFLAGS) $(NVCCFLAGS)
+
+obj/cuda/maps.o:	src/cuda/maps.cu
+	$(NVCC) -o obj/cuda/maps.o -c src/cuda/maps.cu $(INCFLAGS) $(LIBPATH) $(LDFLAGS) $(NVCCFLAGS)
+
+obj/cuda/marching_cubes.o:	src/cuda/marching_cubes.cu
+	$(NVCC) -o obj/cuda/marching_cubes.o -c src/cuda/marching_cubes.cu $(INCFLAGS) $(LIBPATH) $(LDFLAGS) $(NVCCFLAGS)
+
+obj/cuda/normals_eigen.o:	src/cuda/normals_eigen.cu
+	$(NVCC) -o obj/cuda/normals_eigen.o -c src/cuda/normals_eigen.cu $(INCFLAGS) $(LIBPATH) $(LDFLAGS) $(NVCCFLAGS)
+
+obj/cuda/ray_caster.o:	src/cuda/ray_caster.cu
+	$(NVCC) -o obj/cuda/ray_caster.o -c src/cuda/ray_caster.cu $(INCFLAGS) $(LIBPATH) $(LDFLAGS) $(NVCCFLAGS)
+
+obj/cuda/tsdf_volume.o:	src/cuda/tsdf_volume.cu
+	$(NVCC) -o obj/cuda/tsdf_volume.o -c src/cuda/tsdf_volume.cu $(INCFLAGS) $(LIBPATH) $(LDFLAGS) $(NVCCFLAGS)
+
+.c.o:	$*.h
+	@echo "Compiling C code ...."
+	$(CXX) -o $*.o -c $(CFLAGS) $(DEFFLAGS) $(INCFLAGS) $*.c
+
+.cpp.o:	$*.h
+	@echo "Compiling C++ code ...."
+	$(CXX) $(CFLAGS) -o $*.o -c $(CXXFLAGS)  $(DEFFLAGS) $(INCFLAGS) $*.cpp
+
+.cu.o: $*.h
+	@echo "Compiling CUDA code ...."
+	$(NVCC) -o $*.o -c $(NVCCFLAGS)  $(DEFFLAGS) $(INCFLAGS) $*.cu $(NVCCFLAGS)
+
+clean:	
+	@echo "Clearing ..."
+	rm -fr obj/* core *~ $(EXECFILES) && mkdir obj/cuda obj/HeadPoseEstimator obj/Viewers obj/Mediators

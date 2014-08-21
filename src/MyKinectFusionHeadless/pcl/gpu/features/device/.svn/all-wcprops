@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/pcl/!svn/ver/2860/trunk/cuda/gpu_features/include/pcl/gpu/features/device
+END
+pair_features.hpp
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/pcl/!svn/ver/2735/trunk/cuda/gpu_features/include/pcl/gpu/features/device/pair_features.hpp
+END
+rodrigues.hpp
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/pcl/!svn/ver/2734/trunk/cuda/gpu_features/include/pcl/gpu/features/device/rodrigues.hpp
+END
+eigen.hpp
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/pcl/!svn/ver/2860/trunk/cuda/gpu_features/include/pcl/gpu/features/device/eigen.hpp
+END

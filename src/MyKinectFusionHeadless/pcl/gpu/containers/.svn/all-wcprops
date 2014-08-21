@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/pcl/!svn/ver/3252/trunk/cuda/containers/include/pcl/gpu/containers
+END
+device_array.hpp
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/pcl/!svn/ver/3244/trunk/cuda/containers/include/pcl/gpu/containers/device_array.hpp
+END
+kernel_containers.hpp
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/pcl/!svn/ver/2860/trunk/cuda/containers/include/pcl/gpu/containers/kernel_containers.hpp
+END
+device_memory.hpp
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/pcl/!svn/ver/2979/trunk/cuda/containers/include/pcl/gpu/containers/device_memory.hpp
+END
+initialization.hpp
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/pcl/!svn/ver/3252/trunk/cuda/containers/include/pcl/gpu/containers/initialization.hpp
+END

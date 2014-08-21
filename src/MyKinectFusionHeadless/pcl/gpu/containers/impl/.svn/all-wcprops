@@ -1,0 +1,17 @@
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/pcl/!svn/ver/3244/trunk/cuda/containers/include/pcl/gpu/containers/impl
+END
+device_array_impl.hpp
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/pcl/!svn/ver/3244/trunk/cuda/containers/include/pcl/gpu/containers/impl/device_array_impl.hpp
+END
+device_memory_impl.hpp
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/pcl/!svn/ver/2979/trunk/cuda/containers/include/pcl/gpu/containers/impl/device_memory_impl.hpp
+END

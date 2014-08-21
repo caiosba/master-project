@@ -1,0 +1,11 @@
+obj/*
+KinectFusion
+*.pcd
+*.ply
+*.patch
+*.sw*
+*~
+*.yml*
+*.oni
+*.out
+*.avi
